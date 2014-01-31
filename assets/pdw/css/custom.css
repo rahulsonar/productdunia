@@ -1,0 +1,35 @@
+div.error {	    
+	float: left;
+	padding: 5px 0px 0px 0px;
+	letter-spacing: 0.05em;
+	background: none repeat scroll 0 0 #CC0000;
+        border-radius: 5px 5px 5px 5px;
+        color: #FFFFFF;
+        font-family: tahoma;
+        font-size: 11px;
+        padding: 4px 10px;
+        min-width: 150px;
+        z-index: 5001;
+        margin-top: 5px;
+}
+
+textarea.input input.error {
+    position: relative;    
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: block;
+}
+
+.proddetailsleft ul li {margin:4px 7px;}
+.proddetailsleft .prodimg{width: 270px; height: 270px;}
+
+#navigation ul li .submenu .submenubox{min-height: 50px !important;}
+
+#mostview ul.tablist li{margin-bottom: 5px; padding: 5px 0;}
+#mostview ul.tablist li .imgbox{ width: 42px; height: 42px; text-align: center;}
+#mostview ul.tablist li .price{float: right; display: block; text-align: right; min-width: 115px;}

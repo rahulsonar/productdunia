@@ -1,0 +1,347 @@
+Date : 27/Oct/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `stores` ADD COLUMN `storeName` VARCHAR(255) NULL DEFAULT NULL  AFTER `areaId` , ADD COLUMN `latitude` VARCHAR(45) NULL DEFAULT NULL  AFTER `storeName` , ADD COLUMN `longitude` VARCHAR(45) NULL DEFAULT NULL  AFTER `latitude` , ADD COLUMN `countryId` INT(10) NULL DEFAULT NULL  AFTER `longitude` , CHANGE COLUMN `storeId` `storeId` INT(10) NOT NULL AUTO_INCREMENT  , CHANGE COLUMN `cityId` `cityId` INT(10) NOT NULL  , CHANGE COLUMN `areaId` `areaId` INT(10) NOT NULL  ;
+
+ALTER TABLE `stores` ADD COLUMN `agencyId` VARCHAR(25) NOT NULL  AFTER `storeId` , ADD INDEX `fk_stores_agencies1` (`agencyId` ASC) ;
+
+ALTER TABLE `stores` ADD COLUMN `create_date` DATETIME NULL DEFAULT NULL  AFTER `countryId` , ADD COLUMN `create_by` VARCHAR(45) NULL DEFAULT NULL  AFTER `create_date` , ADD COLUMN `modify_date` DATETIME NULL DEFAULT NULL  AFTER `create_by` , ADD COLUMN `modify_by` VARCHAR(45) NULL DEFAULT NULL  AFTER `modify_date` ;
+ALTER TABLE `stores` ADD COLUMN `status` ENUM('Active','Inactive','Delete') NULL DEFAULT 'Active'  AFTER `countryId` ;
+-------------------------------------------
+
+
+Date : 09/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+
+ALTER TABLE `cities` COLLATE = utf8_general_ci , DROP COLUMN `countryName` , ADD COLUMN `countryId` INT(11) NULL DEFAULT NULL  AFTER `cityName` 
+, ADD INDEX `fk_cities_countries1` (`countryId` ASC) ;
+
+ALTER TABLE `stores` CHANGE COLUMN `agencyId` `agencyId` INT(11) NOT NULL  ;
+
+ALTER TABLE `master_profile` ADD COLUMN `type` ENUM('System','Store') NULL DEFAULT 'System'  AFTER `status` ;
+
+ALTER TABLE `store_user_detail` CHANGE COLUMN `agencyId` `agencyId` INT(11) NOT NULL  ;
+
+ALTER TABLE `agencies` CHANGE COLUMN `agencyId` `agencyId` INT(11) NOT NULL  ;
+
+CREATE  TABLE IF NOT EXISTS `agency_has_profile` (
+  `agencyId` INT(11) NOT NULL ,
+  `profile_id` INT(10) NOT NULL ,
+  INDEX `fk_agencies_has_master_profile_master_profile1` (`profile_id` ASC) ,
+  INDEX `fk_agencies_has_master_profile_agencies1` (`agencyId` ASC) ,
+  CONSTRAINT `fk_agencies_has_master_profile_agencies1`
+    FOREIGN KEY (`agencyId` )
+    REFERENCES `agencies` (`agencyId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_agencies_has_master_profile_master_profile1`
+    FOREIGN KEY (`profile_id` )
+    REFERENCES `master_profile` (`profile_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = latin1
+COLLATE = latin1_swedish_ci;
+
+CREATE  TABLE IF NOT EXISTS `countries` (
+  `countryId` INT(11) NOT NULL ,
+  `countryName` VARCHAR(45) NULL DEFAULT NULL ,
+  PRIMARY KEY (`countryId`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = latin1
+COLLATE = latin1_swedish_ci;
+-------------------------------------------
+Date : 12/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `categories` ADD `categoryName` VARCHAR( 200 ) NOT NULL AFTER `categoryId` ,
+ADD `parentId` INT( 11 ) NOT NULL DEFAULT '0' AFTER `categoryName` ,
+ADD `status` ENUM( 'Active', 'Inactive', 'Delete' ) NOT NULL DEFAULT 'Active' AFTER `parentId` ,
+ADD `catSeq` INT( 11 ) NOT NULL AFTER `status` 
+
+-------------------------------------------
+Date : 13/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `brands` ADD `brandImg` VARCHAR( 100 ) NOT NULL AFTER `brandName` ,
+ADD `isHome` ENUM( '1', '0' ) NOT NULL DEFAULT '0' AFTER `brandImg` 
+
+-------------------------------------------
+
+Date : 15/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `pd`.`master_attributes` (
+`attributeId` int( 11 ) NOT NULL AUTO_INCREMENT ,
+`attributeType` varchar( 100 ) NOT NULL ,
+`attributeValue` varchar( 100 ) NOT NULL ,
+`status` enum( 'Active', 'Inactive', 'Delete' ) DEFAULT 'Active',
+`create_date` datetime DEFAULT NULL ,
+`create_by` varchar( 25 ) DEFAULT NULL ,
+`modify_date` datetime DEFAULT NULL ,
+`modify_by` varchar( 25 ) DEFAULT NULL ,
+PRIMARY KEY ( `attributeId` )
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+
+ALTER TABLE `products` ADD `productName` VARCHAR( 255 ) NOT NULL AFTER `brandId` ,
+ADD `productSKU` VARCHAR( 50 ) NOT NULL AFTER `productName` ,
+ADD `productModel` VARCHAR( 100 ) NOT NULL AFTER `productSKU` ,
+ADD `productDesc` TEXT NOT NULL AFTER `productModel` ,
+ADD `status` ENUM( 'Active', 'Inactive', 'Delete' ) NOT NULL DEFAULT 'Active' AFTER `productDesc` ,
+ADD `create_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `status` ,
+ADD `create_by` VARCHAR( 25 ) NOT NULL AFTER `create_date` ,
+ADD `modify_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `create_by` ,
+ADD `modify_by` VARCHAR( 25 ) NOT NULL AFTER `modify_date` 
+
+-------------------------------------------
+
+Date : 18/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `meta_data` (                
+             `target` varchar(45) DEFAULT NULL,      
+             `targetCode` int(11) DEFAULT NULL,      
+             `pageTitle` varchar(255) DEFAULT NULL,  
+             `metaKeyword` text,                     
+             `metaDesc` text                         
+           ) ENGINE=MyISAM DEFAULT CHARSET=latin1
+
+
+ALTER TABLE `master_gallery` ADD `imgCaption` VARCHAR( 255 ) NOT NULL AFTER `galleryId` ,
+ADD `imgDesc` VARCHAR( 255 ) NOT NULL AFTER `imgCaption` ,
+ADD `imgName` VARCHAR( 255 ) NOT NULL AFTER `imgDesc` ,
+ADD `imgTitle` VARCHAR( 255 ) NOT NULL AFTER `imgName` ,
+ADD `target` VARCHAR( 100 ) NOT NULL AFTER `imgTitle` ,
+ADD `targetCode` VARCHAR( 50 ) NOT NULL AFTER `target` 
+
+-------------------------------------------
+
+Date : 21/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `product_specification` ADD `specLabel` VARCHAR( 100 ) NOT NULL AFTER `productId` ,
+ADD `specValue` VARCHAR( 255 ) NOT NULL AFTER `specLabel` 
+
+ALTER TABLE `specification_group` ADD `groupName` VARCHAR( 100 ) NOT NULL 
+
+---------------------------------------------------------
+
+Date : 24/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `products` ADD `productImg` VARCHAR( 100 ) NOT NULL AFTER `productDesc` ;
+
+-------------------------------------------
+
+Date : 28/Nov/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `products` ADD `productMRP` FLOAT( 10, 2 ) NOT NULL DEFAULT '0.00' AFTER `productImg` ,
+ADD `productDP` INT( 11 ) NOT NULL DEFAULT '0' AFTER `productMRP` 
+
+-------------------------------------------
+
+Date : 02/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE IF NOT EXISTS `user_has_stores` (
+  `userId` int(11) NOT NULL,
+  `storeId` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-------------------------------------------
+
+Date : 03/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `products` ADD `productVariant` VARCHAR( 100 ) NOT NULL AFTER `productDP` ,
+ADD `productColor` VARCHAR( 50 ) NOT NULL AFTER `productVariant` 
+
+ALTER TABLE `products` ADD `productFeatures` TEXT NOT NULL AFTER `productColor` 
+
+-------------------------------------------
+
+Date : 06/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `master_filters` (                                  
+                  `filterId` int(11) NOT NULL AUTO_INCREMENT,                    
+                  `categoryId` int(11) DEFAULT NULL,                             
+                  `filterType` varchar(100) DEFAULT NULL,                        
+                  `filterValue` varchar(100) DEFAULT NULL,                       
+                  `status` enum('Active','Inactive','Delete') DEFAULT 'Active',  
+                  `create_date` datetime DEFAULT NULL,                           
+                  `create_by` varchar(25) DEFAULT NULL,                          
+                  `modify_date` datetime DEFAULT NULL,                           
+                  `modify_by` varchar(25) DEFAULT NULL,                          
+                  PRIMARY KEY (`filterId`)                                       
+                ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 
+
+                CREATE TABLE `product_filters` (        
+                   `productId` int(11) DEFAULT NULL,     
+                   `filterId` int(11) DEFAULT NULL       
+                 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 
+
+
+-------------------------------------------
+
+Date : 09/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `areas` ADD `areaIncludes` VARCHAR( 255 ) NOT NULL AFTER `longitude` ,
+ADD `isMajor` ENUM( '0', '1' ) NOT NULL DEFAULT '0' AFTER `areaIncludes`
+
+alter table `categories` add column `categoryIcon` varchar (100)  NULL  after `parentId`
+-------------------------------------------
+
+Date : 10/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `static_content` (
+`id` int( 11 ) NOT NULL AUTO_INCREMENT ,
+`page_heading` varchar( 255 ) NOT NULL ,
+`page_content` text NOT NULL ,
+`status` enum( 'Active', 'Inactive', 'Delete' ) NOT NULL DEFAULT 'Active',
+`create_date` datetime DEFAULT NULL ,
+`create_by` varchar( 25 ) DEFAULT NULL ,
+`modify_date` datetime DEFAULT NULL ,
+`modify_by` varchar( 25 ) DEFAULT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+CREATE TABLE `master_faq` (
+`faq_id` int( 10 ) unsigned NOT NULL AUTO_INCREMENT ,
+`faq_ques` varchar( 255 ) DEFAULT NULL ,
+`faq_ans` text,
+`status` enum( 'Active', 'Inactive', 'Delete' ) DEFAULT 'Active',
+`create_date` datetime DEFAULT NULL ,
+`create_by` varchar( 10 ) DEFAULT NULL ,
+`modify_date` datetime DEFAULT NULL ,
+`modify_by` varchar( 10 ) DEFAULT NULL ,
+PRIMARY KEY ( `faq_id` )
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+ALTER TABLE `master_faq` ADD `faq_category` VARCHAR( 255 ) NOT NULL AFTER `faq_id` 
+
+-------------------------------------------
+
+Date : 11/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `area_has_subareas` (
+`areaId` int( 11 ) NOT NULL ,
+`subAreaId` int( 11 ) NOT NULL
+) ENGINE = MYISAM DEFAULT CHARSET = latin1;
+
+-------------------------------------------
+
+Date : 18/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `stores_has_products` ADD `storeProdSku` VARCHAR( 100 ) NOT NULL AFTER `productId` ,
+ADD `sellPrice` FLOAT( 10, 2 ) NOT NULL AFTER `storeProdSku` ,
+ADD `qty` INT NOT NULL AFTER `sellPrice` ,
+ADD `dispatchPeriod` VARCHAR( 100 ) NOT NULL AFTER `qty` ,
+ADD `offerPrice` FLOAT( 10, 2 ) NOT NULL AFTER `dispatchPeriod` ,
+ADD `offerRemark` VARCHAR( 255 ) NOT NULL AFTER `offerPrice` ,
+ADD `remark` VARCHAR( 255 ) NOT NULL AFTER `offerRemark` ,
+ADD `create_date` DATETIME NOT NULL AFTER `remark` ,
+ADD `create_by` VARCHAR( 50 ) NOT NULL AFTER `create_date`
+
+
+ALTER TABLE `stores_has_products` ADD `status` ENUM( 'Unpublish', 'Active', 'Inactive' ) NOT NULL DEFAULT 'Unpublish' AFTER `remark` 
+
+-------------------------------------------
+
+Date : 21/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+
+ALTER TABLE `products` ADD `isHome` ENUM( '0', '1' ) NOT NULL DEFAULT '0' AFTER `productFeatures` ;
+
+-------------------------------------------
+
+Date : 22/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+alter table `newsletter_subscription` add column `email` varchar (100)  NULL  after `subscriptionId`, add column `subscribed` enum ('0','1') DEFAULT '1' NULL  after `email`, add column `create_date` datetime  DEFAULT '0000-00-00 00:00:00' NULL  after `subscribed`, add column `create_by` varchar (50)  NULL  after `create_date`, add column `modify_date` datetime  DEFAULT '0000-00-00 00:00:00' NULL  after `create_by`, add column `modify_by` varchar (50)  NULL  after `modify_date`
+
+-------------------------------------------
+
+Date : 24/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+create table `product_reviews` (  `reviewId` int (11) NOT NULL AUTO_INCREMENT , `productId` int (11) NOT NULL , `customerId` int (11) NOT NULL , `reviewTitle` varchar (255) , `reviewDesc` text , `rating` float (10,2) , `usefull` int , `notUsefull` int , `create_date` datetime DEFAULT '0000-00-00 00:00:00', `create_by` varchar (45) , `modify_date` datetime DEFAULT '0000-00-00 00:00:00', `modify_by` varchar (45) , PRIMARY KEY (`reviewId`))  
+
+alter table `customers` add column `name` varchar (100)  NULL  after `customerId`
+
+-------------------------------------------
+
+Date : 25/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+alter table `product_reviews` add column `status` enum ('Active','Inactive','Delete') DEFAULT 'Inactive' NOT NULL  after `notUsefull`
+
+-------------------------------------------
+
+Date : 29/Dec/2013
+Changed By : Chaitenya yadav
+Change : 
+
+alter table `customers` add column `fbId` varchar (255) DEFAULT '0' NOT NULL  after `name`, add column `googleId` varchar (255) DEFAULT '0' NOT NULL  after `fbId`, add column `email` varchar (100)  NOT NULL  after `googleId`, add column `username` varchar (100)  NOT NULL  after `email`, add column `password` varchar (255)  NULL  after `username`, add column `status` enum ('Active','Inactive','Delete') DEFAULT 'Active' NOT NULL  after `password`, add column `create_date` datetime  DEFAULT '0000-00-00 00:00:00' NOT NULL  after `status`, add column `create_by` varchar (50)  NULL  after `create_date`, add column `modify_date` datetime  DEFAULT '0000-00-00 00:00:00' NULL  after `create_by`, add column `modify_by` varchar (50)  NULL  after `modify_date`
+
+-------------------------------------------
+
+Date : 23/Jan/2013
+Changed By : Chaitenya yadav
+Change : 
+
+alter table `products` add column `rating` float (5,1) DEFAULT '0.0' NULL  after `isHome`
+
+-------------------------------------------
+
+Date : 29/Jan/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `customers` ADD `mobile` INT( 11 ) NOT NULL AFTER `password` ,
+ADD `gender` ENUM( 'Male', 'Female' ) NOT NULL DEFAULT 'Male' AFTER `mobile` 
+
+ALTER TABLE `customers` CHANGE `mobile` `mobile` VARCHAR( 10 ) NOT NULL 
+
+-------------------------------------------
+
+Date : 30/Jan/2013
+Changed By : Chaitenya yadav
+Change : 
+
+ALTER TABLE `customers` CHANGE `fbId` `fbId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
+CHANGE `googleId` `googleId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0'
+
+ALTER TABLE `customers` CHANGE `fbId` `fbId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `googleId` `googleId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
+
+
+
