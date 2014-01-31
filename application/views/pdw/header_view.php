@@ -164,7 +164,7 @@ line-height: 1.5;
                             <h2 class="majoretra">Major Area</h2>
                             <ul>
                                 <?php foreach ($majorAreas as $areaId => $areaName) { ?>
-                                    <li><input type="checkbox" class="commencheck" id="<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis"><input type="checkbox" class="commencheck" id="<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span></div>

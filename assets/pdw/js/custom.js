@@ -8,7 +8,6 @@ $(document).ready(function(){
 })(jQuery);
 $(document).ready(function(){
 
-
 /* $( "a.selsearch" ).click(function() {
   $(this).next('#multipleareas').css("display", "block").delay(300).fadeIn(300);
 }, function() {
@@ -20,6 +19,35 @@ $('.selsearch').click(function(e){
   $(this).next('#multipleareas').slideToggle(100);
 });
 
+$('.inpselsearch').keyup(function(e){
+	var str=$(this).val().toLowerCase();
+	
+	$('#multipleareas').show();
+	$('.majorArealis').hide();
+	if(str.length>=1) {
+	
+	//console.log('I AM HERE');
+		$('.commencheck').each(function(index,value){
+			var id1=$(this).attr('id').toLowerCase();
+			
+			if(id1.substring(0,str.length)==str) {
+				$(this).parent().show();
+			}
+		});
+	}
+});
+
+$('.commencheck').click(function(){
+	//var thisCheck = $(this);
+	if ($(this).is(':checked'))
+	{
+		//alert($(this).attr('id'));
+	}
+	else
+	{
+		//alert('unchecked');
+	}
+});
 /* $( "div.selsearchholder" ).hover(function() {
   $(this).find('#multipleareas').delay(300).fadeIn(300);
 }, function() {
