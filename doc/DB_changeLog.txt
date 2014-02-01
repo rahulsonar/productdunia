@@ -343,5 +343,16 @@ CHANGE `googleId` `googleId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_gene
 ALTER TABLE `customers` CHANGE `fbId` `fbId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 CHANGE `googleId` `googleId` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
 
+-------------------------------------------
 
+Date : 01/Feb/2014
+Changed By : Chaitenya yadav
+Change : 
+
+CREATE TABLE `product_wishlist` (                
+                    `wishlistId` int(11) NOT NULL AUTO_INCREMENT,  
+                    `productId` int(11) DEFAULT NULL,              
+                    `customerId` int(11) DEFAULT NULL,             
+                    PRIMARY KEY (`wishlistId`)                     
+                  ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
