@@ -3,7 +3,7 @@
         <div class="box_holder_act">
             <h3 class="activities">My Activities</h3>
             <ul>
-                <li><a href="#">Wishlist</a></li>
+                <li><a href="<?php echo site_url('customer/account/wishlist'); ?>">Wishlist</a></li>
                 <li><a href="#">Saved Searches</a></li>
                 <li><a href="#">Reviews</a></li>
             </ul>

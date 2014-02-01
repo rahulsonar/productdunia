@@ -802,11 +802,17 @@ class Common_model extends CI_Model {
     {
         $wishlist = array();
         if($customerId !=''){
-            $this->db->where('customerId', $customerId);
-            $this->db->select('*');
-            $query = $this->db->get('product_wishlist');
-            foreach ($query->result_array() as $row){
-                    $wishlist[$row['productId']] = $row['productId'];
+            $storeProdStats = $this->getStoreProdStats();
+            $this->db->where('p.status != ', 'Delete');
+            $this->db->where('pw.customerId', $customerId);
+            $this->db->select('p.*');
+            $this->db->from('products as p');
+            $this->db->join('product_wishlist as pw', 'pw.productId = p.productId', 'left');
+            $query = $this->db->get();
+            //$productReviewsList = $query->result();
+            foreach ($query->result_array() as $row) {
+                $row['storeProdStats'] = $storeProdStats[$row['productId']];
+                $wishlist[$row['productId']] = $row;
             }
         }
         return $wishlist;

@@ -1,9 +1,9 @@
 <script type="text/javascript">
 ;(function($) { 
 $(document).ready(function() {
-	$("#frmLogin").validate({
+	$("#frmForgotPass").validate({
 		rules: {
-			email_address: {
+			signupEmail: {
 				required: true,
 				email: true
 			},
@@ -17,7 +17,7 @@ $(document).ready(function() {
 			error.insertAfter(element);
 		},
 		submitHandler: function(){
-			xajax_loginSubmit(xajax.getFormValues('frmLogin'));
+			//xajax_loginSubmit(xajax.getFormValues('frmLogin'));
 		}
 		
 	});	
@@ -33,10 +33,10 @@ $(document).ready(function() {
                 <!-- <h2>Registered Customer</h2>
                 <p>If you already have an account please log in.</p> -->
 
-                <form name="frmLogin" id="frmLogin" method="post">
+                <form name="frmForgotPass" id="frmForgotPass" method="post">
                     <div class="frmholder">
                         <label>Email Address / Mobile Number</label>
-                        <input type="text" name="email_address" id="email_address" class="inplog" />
+                        <input type="text" name="signupEmail" id="signupEmail" class="inplog" />
                     </div>
 
                     <div class="frmholder">

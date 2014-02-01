@@ -3,7 +3,7 @@
 $(document).ready(function() {
 	$("#frmLogin").validate({
 		rules: {
-			email_address: {
+			signupEmail: {
 				required: true,
 				email: true
 			},
@@ -36,7 +36,7 @@ $(document).ready(function() {
                 <form name="frmLogin" id="frmLogin" method="post">
                     <div class="frmholder">
                         <label>Email Address / Mobile Number</label>
-                        <input type="text" name="email_address" id="email_address" class="inplog" />
+                        <input type="text" name="signupEmail" id="signupEmail" class="inplog" />
                     </div>
 
                     <div class="frmholder">

@@ -8,6 +8,7 @@ class Customer extends MY_Controller {
 	function __construct(){
 		parent::__construct();
                 $this->xajax->register(XAJAX_FUNCTION, array('personalInfoSubmit', &$this, 'personalInfoSubmit'));
+                $this->xajax->register(XAJAX_FUNCTION, array('removeFromWishlist', &$this, 'removeFromWishlist'));
                 $this->xajax->processRequest();
 	}
 	
@@ -87,6 +88,20 @@ class Customer extends MY_Controller {
             $customerId = $this->session->userdata('interfaceUserId');
             if ($customerId != '') {
                 switch ($action) {
+                case "wishlist":
+                    //$this->session->set_userdata('redirectTo','customer/account/profile');
+                    /* Breadcrumbs Start */
+                    $this->breadcrumb->append_crumb('Home', site_url());
+                    $this->breadcrumb->append_crumb('My Wishlist', site_url());
+                    /* Breadcrumbs End */
+                    $wishlistData = $this->common_model->getWishlistProds($customerId);
+                    //print_debug($wishlistData, __FILE__, __LINE__, 1);
+                    $data['products'] = $wishlistData;
+                    $data['template'] = "wishlist_view";
+                    $data['home'] = "active";
+                    $temp['data'] = $data;
+                    $this->load->view($this->config->item('themeCode')."/common_view", $temp);
+                    break;
                 case "profile":
                 default:
                     $this->session->set_userdata('redirectTo','customer/account/profile');
@@ -118,6 +133,16 @@ class Customer extends MY_Controller {
             $redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
             $this->session->unset_userdata('redirectTo');
             $objResponse->redirect(site_url($redirectTo));
+            return $objResponse;
+        }
+        
+        public function removeFromWishlist($productId)
+        {
+            $objResponse = new xajaxResponse();
+            $customerId = $this->session->userdata('interfaceUserId');
+            $this->common_model->removeFromWishlist($productId,$customerId);
+            $objResponse->Alert("Wishlist updated succefully.");
+            $objResponse->script("window.location.reload();");
             return $objResponse;
         }
 }

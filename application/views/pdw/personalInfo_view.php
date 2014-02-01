@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$("#frmPersonalInfo").validate({
 		rules: {
 			name: {
-				required: true,
+				required: true
 			},
                         email: {
 				required: true,

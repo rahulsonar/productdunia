@@ -84,6 +84,7 @@ class MY_Controller extends CI_Controller {
         $objResponse = new xajaxResponse();
         $loginData['username'] = $this->input->post('signupEmail');
         $loginData['password'] = $this->input->post('password');
+        
         $response = $this->user_model->login($loginData);
 
         if ($response) {

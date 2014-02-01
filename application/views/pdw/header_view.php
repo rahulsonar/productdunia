@@ -97,7 +97,7 @@ line-height: 1.5;
                 <?php if ($this->session->userdata('interfaceUsername') != '') {
                     $wishlistProds = $this->common_model->getWishlistProds($this->session->userdata('interfaceUserId')); 
                 ?>
-                    <a href="#">My Wishlist <span class="badge"><?php echo count($wishlistProds); ?></span></a> | <a href="#">Product pinger <span class="badge">0</span></a> | <a href="#">Store Pinger <span class="badge">0</span></a>
+                    <a href="<?php echo site_url('customer/account/wishlist'); ?>">My Wishlist <span class="badge"><?php echo count($wishlistProds); ?></span></a> | <a href="#">Product pinger <span class="badge">0</span></a> | <a href="#">Store Pinger <span class="badge">0</span></a>
                 <?php } else { ?>
                     <a href="#signin" class="signin rounded signininline">My Wishlist <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Product pinger <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Store Pinger <span class="badge">0</span></a>
                 <?php } ?>                
