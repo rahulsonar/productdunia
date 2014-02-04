@@ -97,7 +97,7 @@ line-height: 1.5;
                 <?php if ($this->session->userdata('interfaceUsername') != '') {
                     $wishlistProds = $this->common_model->getWishlistProds($this->session->userdata('interfaceUserId')); 
                 ?>
-                    <a href="<?php echo site_url('customer/account/wishlist'); ?>">My Wishlist <span class="badge"><?php echo count($wishlistProds); ?></span></a> | <a href="#">Product pinger <span class="badge">0</span></a> | <a href="#">Store Pinger <span class="badge">0</span></a>
+                    <a href="#">My Wishlist <span class="badge"><?php echo count($wishlistProds); ?></span></a> | <a href="#">Product pinger <span class="badge">0</span></a> | <a href="#">Store Pinger <span class="badge">0</span></a>
                 <?php } else { ?>
                     <a href="#signin" class="signin rounded signininline">My Wishlist <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Product pinger <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Store Pinger <span class="badge">0</span></a>
                 <?php } ?>                
@@ -164,12 +164,26 @@ line-height: 1.5;
                             <h2 class="majoretra">Major Area</h2>
                             <ul>
                                 <?php foreach ($majorAreas as $areaId => $areaName) { ?>
-                                    <li class="majorArealis"><input type="checkbox" class="commencheck" id="<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis" id="major_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span></div>
                         </div>
                     </div>
+					<?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
+					<div class="selsearchholder"><a class="selsearch" href="#"></a>
+                        <div id="multipleareas2">		
+                            
+                            <ul>
+                                <?php foreach ($allAreas as $areaId => $areaName) { ?>
+                                    <li class="majorArealis" id="all_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="all_<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                <?php } ?>
+                            </ul>
+                            <div class="subarea"><span>Included Sub Area</span></div>
+                        </div>
+                    </div>
+					
+					
                     <form name="frmSearchKeyword" id="frmSearchKeyword" method="post" action="<?php echo site_url('product/search'); ?>">
                         <input type="hidden" value="" name="keyword" id="keyword" />
                         <input class="inpsearch rounded" id="topSearchBox" type="text" value="<?php echo $keyword; ?>" placeholder="Enter Product Name you want to search eg. Samsung Galaxy"  />
