@@ -213,8 +213,8 @@ class Store extends CI_Controller {
         $config['upload_path'] = $this->config->item('storeLogoPath');
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '2048';
-        $config['max_width'] = '49';
-        $config['max_height'] = '49';
+        //$config['max_width'] = '49';
+        //$config['max_height'] = '49';
         $config['file_name'] = random_string('unique');
         $this->load->library('upload', $config);
 
