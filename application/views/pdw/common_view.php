@@ -11,6 +11,9 @@
         </div>
     </noscript>    
     <head>
+		<script>
+			var siteurl='<?php echo base_url(); ?>';
+		</script>
         <?php $this->load->view($this->config->item('themeCode')."/meta_view",$data); ?>        
         <?php $this->load->view($this->config->item('themeCode')."/includes_view"); ?>
         <?php $this->xajax->configure("javascript URI", base_url().'assets/js/');?>

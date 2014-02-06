@@ -200,6 +200,7 @@ p.selectareatitle{font-weight:bold; font-size:16px; margin-bottom:10px;}
 .multipleareasitem input{float:left;}
 .multipleareasitem label{float:left; margin:2px 5px;}
 #multipleareas ul li{ display:block; float:left; width:140px; padding:5px 0;}
+#multipleareas2 ul li{ display:block; float:left; width:140px; padding:5px 0;}
 
 #innernavigation{display:none; clear:both; z-index:99; width:960px; font-weight:normal; position:absolute; top:19px; left: -211px; padding: 32px 0 0 0;}
 .innerarrow{position:absolute; width:26px; height:23px; top:12px; left:209px;}
@@ -538,6 +539,13 @@ table.signaddtable td span.green{color:#46b667;}
 #multipleareas .subarea{font-size:12px; overflow:hidden;  padding:10px; clear:both; border-top:1px solid #000;  padding-bottom:5px; display:block;}
 #multipleareas .subarea span{ float:left; display:block;}
 #multipleareas .subarea a.btncommansmall{ float:right; margin:0 5px;}
+
+#multipleareas2 {margin:10px 0 0 0; top:34px; left:41px; width:706px; padding:0px; background:#fff; position:absolute; z-index:99; display: none; border:1px solid #e1e1e1; border-top:0px solid #fff; overflow:hidden; background:#f7f6f6; -moz-box-shadow: 0px 2px 8px 2px #ababab;  -webkit-box-shadow: 0px 2px 8px 2px #ababab;  box-shadow: 0px 2px 8px 2px #ababab;}
+#multipleareas2 ul{clear:both; overflow:hidden; display:block; padding:10px}
+#multipleareas2 .majoretra{color: #046597; font-size:12px; padding:10px; border-bottom:1px solid #000; padding-bottom:5px; display:block;}
+#multipleareas2 .subarea{font-size:12px; overflow:hidden;  padding:10px; clear:both; border-top:1px solid #000;  padding-bottom:5px; display:block;}
+#multipleareas2 .subarea span{ float:left; display:block;}
+#multipleareas2 .subarea a.btncommansmall{ float:right; margin:0 5px;}
 /* 
 #footerslide{display:block; width:960px; clear:both; min-height:200px; border:1px solid #d9d9d9; border-top:0px solid #d9d9d9;}
 #footerslide .slides_container {width:960px; display:none;}

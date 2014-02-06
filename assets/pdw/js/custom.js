@@ -118,7 +118,7 @@ $('.commencheck').click(function(){
 		$('.inpselsearch').focus();
 	}
 	var datastring='final_val='+final_val;
-	$.post('http://localhost/productduniya/index.php/product/savearea',datastring,function(r){ console.log(r); });
+	$.post(siteurl+'index.php/product/savearea',datastring,function(r){ console.log(r); });
 	
 	
 });
