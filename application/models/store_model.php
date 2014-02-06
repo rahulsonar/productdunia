@@ -162,7 +162,7 @@ class Store_model extends CI_Model {
         return ($query->row_array());
     }
 
-    function insert_store() {
+    function insert_store($fileName) {
         $userData['agencyId'] = $this->input->post('agency');
         $userData['countryId'] = $this->input->post('country');
         $userData['cityId'] = $this->input->post('city');
@@ -170,6 +170,18 @@ class Store_model extends CI_Model {
         $userData['storeName'] = $this->input->post('storeName');
         $userData['latitude'] = $this->input->post('latitude');
         $userData['longitude'] = $this->input->post('longitude');
+        $userData['storeLogo'] = $fileName;
+        $userData['address'] = $this->input->post('address');
+        $userData['pincode'] = $this->input->post('pincode');
+        $userData['contactPerson'] = $this->input->post('contactPerson');
+        $userData['mobile'] = $this->input->post('mobile');
+        $userData['phone'] = $this->input->post('phone');
+        $userData['alternatPhone'] = $this->input->post('alternatPhone');        
+        $userData['storeTimings'] = $this->input->post('storeTimings');
+        $userData['isParking'] = $this->input->post('isParking');
+        $userData['paymentMethods'] = implode(",", $this->input->post('paymentMethods'));
+        $userData['storeEmail'] = $this->input->post('storeEmail');
+        
         $userData['status'] = $this->input->post('status');
         $userData['create_date'] = date("Y-m-d H:i:s");
         $userData['create_by'] = $this->session->userdata('sysuser_loggedin_user');
@@ -180,7 +192,7 @@ class Store_model extends CI_Model {
         }
     }
 
-    function update_store() {
+    function update_store($fileName) {
         $storeId = $this->input->post('storeId');
         $userData['agencyId'] = $this->input->post('agency');
         $userData['countryId'] = $this->input->post('country');
@@ -189,12 +201,38 @@ class Store_model extends CI_Model {
         $userData['storeName'] = $this->input->post('storeName');
         $userData['latitude'] = $this->input->post('latitude');
         $userData['longitude'] = $this->input->post('longitude');
+        $userData['storeLogo'] = $fileName;
+        $userData['address'] = $this->input->post('address');
+        $userData['pincode'] = $this->input->post('pincode');
+        $userData['contactPerson'] = $this->input->post('contactPerson');
+        $userData['mobile'] = $this->input->post('mobile');
+        $userData['phone'] = $this->input->post('phone');
+        $userData['alternatPhone'] = $this->input->post('alternatPhone');        
+        $userData['storeTimings'] = $this->input->post('storeTimings');
+        $userData['isParking'] = $this->input->post('isParking');
+        $userData['paymentMethods'] = implode(",", $this->input->post('paymentMethods'));
+        $userData['storeEmail'] = $this->input->post('storeEmail');
+        
         $userData['status'] = $this->input->post('status');
         $userData['modify_date'] = date("Y-m-d H:i:s");
         $userData['modify_by'] = $this->session->userdata('sysuser_loggedin_user');
         $this->db->where('storeId', $storeId);
         $this->db->update('stores', $userData);
         return true;
+    }
+    
+    function deleteStoreLogoImage($storeId, $storeLogoImg) {
+        
+        $file_name = $brandImg;
+        $file_path = getcwd() . $this->config->item('storeLogoPath') . $file_name;
+        @unlink($file_path);
+        
+        $data = array(
+            'storeLogo' => '',
+        );
+        $this->db->where('storeId', $storeId);
+        $this->db->update('stores', $data);
+        return TRUE;
     }
 
     function toggleStoreStatus($storeId, $status) {

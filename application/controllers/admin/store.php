@@ -19,13 +19,15 @@ class Store extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('storeUserProfileSubmit', &$this, 'storeUserProfileSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('assignStoresSubmit', &$this, 'assignStoresSubmit'));
         
+        $this->xajax->register(XAJAX_FUNCTION, array('deleteStoreLogoImage', &$this, 'deleteStoreLogoImage'));
+        
         $this->xajax->register(XAJAX_FUNCTION, array('getAreaBy', &$this, 'getAreaBy'));
         $this->xajax->register(XAJAX_FUNCTION, array('getCityBy', &$this, 'getCityBy'));
         
         
         $this->xajax->processRequest();
     }
-
+    
     function index() {
         $this->storeUsersListShow();
     }
@@ -198,25 +200,68 @@ class Store extends CI_Controller {
         $this->load->view($this->config->item('controlPanel') . "/common_view", $temp);
     }
     
+    public function deleteStoreLogoImage($storeId, $storeLogoImg) {
+        $this->access_control_model->check_access('deleteStoreLogoImage', __CLASS__, __FUNCTION__, 'basic');
+        $objResponse = new xajaxResponse();
+        $statusToUpdate = $this->store_model->deleteStoreLogoImage($storeId, $storeLogoImg);
+        $objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/storeEdit/' . $storeId));
+        return $objResponse;
+    }
+    
+    function _uploadStoreLogo() {
+        $this->load->helper('string');
+        $config['upload_path'] = $this->config->item('storeLogoPath');
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '2048';
+        $config['max_width'] = '49';
+        $config['max_height'] = '49';
+        $config['file_name'] = random_string('unique');
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('storeLogo')) {
+            $uploadStatus = array('error' => $this->upload->display_errors());
+        } else {
+            $uploadStatus = array('upload_data' => $this->upload->data());
+        }
+        return $uploadStatus;
+    }
+    
     public function storeSubmit($formData) {
         $this->access_control_model->check_access('storeSubmit', __CLASS__, __FUNCTION__, 'basic');
         foreach ($formData as $id => $field) {
             $_POST[$id] = $field;
         }
         //print_debug($_POST, __FILE__, __LINE__, 1);
-        $objResponse = new xajaxResponse();
+        //$objResponse = new xajaxResponse();
+        
+        if($_FILES['storeLogo']['name']!=""){
+            $uploadStatus = $this->_uploadStoreLogo();
+            if (isset($uploadStatus['error'])) {
+                $error = $uploadStatus['error'];
+                $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $error . '</div>');
+                redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
+            }
+            $fileName = $uploadStatus['upload_data']['file_name'];
+        }else{
+            $fileName = $this->input->post('storeLogoImg');
+        }
+        
+        
         if ($_POST['storeId'] != '') {
-            $response = $this->store_model->update_store();
+            $response = $this->store_model->update_store($fileName);
         } else {
-            $response = $this->store_model->insert_store();
+            $response = $this->store_model->insert_store($fileName);
         }
         if ($response) {
             $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('storeSuccess') . '</div>');
-            $objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
+            //$objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
+            redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
         } else {
-            $objResponse->Assign("errorMsg", "innerHTML", '<div class="alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
+            //$objResponse->Assign("errorMsg", "innerHTML", '<div class="alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
+            $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
+            redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
         }
-        return $objResponse;
+        //return $objResponse;
     }
     
     public function toggleStoreStatus($storeId, $status) {
@@ -581,6 +626,7 @@ class Store extends CI_Controller {
     public function storeFormElement($storeId = '') {
         $this->access_control_model->check_access('storeFormElement', __CLASS__, __FUNCTION__, 'basic');
         $store = array();
+        $data['paymentMethods'] = array();
         if ($storeId != '') {
             $agencyId = $this->session->userdata('storeAgencyId');
             $store = $this->store_model->getStore($storeId,$agencyId);
@@ -588,8 +634,13 @@ class Store extends CI_Controller {
               redirect($this->config->item('controlPanel') . '/access_deny'); 
             }
             $data['storeId'] = $store['storeId'];
+            $data['storeLogoImg'] = $store['storeLogo'];
+            if($store['paymentMethods']!=''){
+                $data['paymentMethods'] = explode(",", $store['paymentMethods']);
+            }
         } else {
             $data['storeId'] = '';
+            $data['storeLogoImg'] = '';
         }
         
         $countryId = (isset($store['countryId']))?($store['countryId']):('');
@@ -622,6 +673,87 @@ class Store extends CI_Controller {
             'maxlength' => '100',
             'size' => '20',
             'class' => 'input-xlarge focused'
+        );
+        
+        $data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'value' => (isset($store['address'])) ? ($store['address']) : (set_value('address')),
+            'size' => '20',
+            'class' => 'input-xlarge focused',
+            'style' => 'height:75px;'
+        );
+        
+        $data['pincode'] = array(
+            'name' => 'pincode',
+            'id' => 'pincode',
+            'value' => (isset($store['pincode'])) ? ($store['pincode']) : (set_value('pincode')),
+            'maxlength' => '6',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['contactPerson'] = array(
+            'name' => 'contactPerson',
+            'id' => 'contactPerson',
+            'value' => (isset($store['contactPerson'])) ? ($store['contactPerson']) : (set_value('contactPerson')),
+            'maxlength' => '100',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['mobile'] = array(
+            'name' => 'mobile',
+            'id' => 'mobile',
+            'value' => (isset($store['mobile'])) ? ($store['mobile']) : (set_value('mobile')),
+            'maxlength' => '10',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'value' => (isset($store['phone'])) ? ($store['phone']) : (set_value('phone')),
+            'maxlength' => '15',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['alternatPhone'] = array(
+            'name' => 'alternatPhone',
+            'id' => 'alternatPhone',
+            'value' => (isset($store['alternatPhone'])) ? ($store['alternatPhone']) : (set_value('alternatPhone')),
+            'maxlength' => '15',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['storeTimings'] = array(
+            'name' => 'storeTimings',
+            'id' => 'storeTimings',
+            'value' => (isset($store['storeTimings'])) ? ($store['storeTimings']) : (set_value('storeTimings')),
+            'size' => '20',
+            'class' => 'input-xlarge focused',
+            'style' => 'height:75px;'
+        );
+        
+        $data['storeEmail'] = array(
+            'name' => 'storeEmail',
+            'id' => 'storeEmail',
+            'value' => (isset($store['storeEmail'])) ? ($store['storeEmail']) : (set_value('storeEmail')),
+            'maxlength' => '100',
+            'size' => '20',
+            'class' => 'input-xlarge focused'
+        );
+        
+        $data['storeLogo'] = array(
+            'name' => 'storeLogo',
+            'id' => 'storeLogo',
+            'value' => (isset($store['storeLogo'])) ? ($store['storeLogo']) : (set_value('storeLogo')),
+            'maxlength' => '100',
+            'size' => '20',
+            'class' => 'input-file uniform_on focused'
         );
         
         $data['sel_country']['name'] = 'country';
@@ -670,6 +802,14 @@ class Store extends CI_Controller {
                 'readonly' => 'readonly'
             );
         }
+        
+        $data['sel_isParking']['name'] = 'isParking';
+        $data['sel_isParking']['attribute'] = 'id = "isParking" data-rel="chosen"';
+        $data['sel_isParking']['options'] = array(
+            '1' => 'Yes',
+            '0' => 'No'
+        );
+        $data['sel_isParking']['selected_isParking'] = (isset($store['isParking'])) ? ($store['isParking']) : ('0');
 
         $data['sel_status']['name'] = 'status';
         $data['sel_status']['attribute'] = 'id = "status" data-rel="chosen"';

@@ -81,6 +81,21 @@
         
         
         $lang['storeName'] = "Store Name";
+        
+        $lang['pincode'] = "Pincode";
+        $lang['contactPerson'] = "Contact Person Name";
+        $lang['address'] = "Address";
+        $lang['storeEmail'] = "Email";
+        $lang['mobile'] = "Mobile";
+        $lang['phone'] = "Phone";
+        
+        $lang['alternatPhone'] = "Alternat Phone";
+        $lang['storeTimings'] = "Store Timings";
+        $lang['storeLogoImg'] = "Store Logo";
+        $lang['paymentMethods'] = "Payment Methods";
+        $lang['parking'] = "Parking";
+        
+        
         $lang['storeActivated'] = "Store activated successfully.";
         $lang['storeInactivated'] = "Store inactivated successfully.";
         $lang['storeDeleted'] = "Store deleted successfully.";
