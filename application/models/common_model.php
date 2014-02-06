@@ -542,6 +542,19 @@ class Common_model extends CI_Model {
         }
         return $data;
     }
+	function getAllAreas($cityId) {
+        $data = array();
+        $table_name = "areas";
+        $this->db->where('cityId', $cityId);
+        //$this->db->where('isMajor', '1');
+        $this->db->where('status != ', 'Delete');
+        $this->db->select('*')->from($table_name);
+        $query = $this->db->get();
+        foreach ($query->result() as $row){
+             $data[$row->areaId] = $row->areaName;
+        }
+        return $data;
+    }
     
     function getMetaData($metaTarget='',$metaTargetCode='') {
         $data = array();
@@ -802,17 +815,11 @@ class Common_model extends CI_Model {
     {
         $wishlist = array();
         if($customerId !=''){
-            $storeProdStats = $this->getStoreProdStats();
-            $this->db->where('p.status != ', 'Delete');
-            $this->db->where('pw.customerId', $customerId);
-            $this->db->select('p.*');
-            $this->db->from('products as p');
-            $this->db->join('product_wishlist as pw', 'pw.productId = p.productId', 'left');
-            $query = $this->db->get();
-            //$productReviewsList = $query->result();
-            foreach ($query->result_array() as $row) {
-                $row['storeProdStats'] = $storeProdStats[$row['productId']];
-                $wishlist[$row['productId']] = $row;
+            $this->db->where('customerId', $customerId);
+            $this->db->select('*');
+            $query = $this->db->get('product_wishlist');
+            foreach ($query->result_array() as $row){
+                    $wishlist[$row['productId']] = $row['productId'];
             }
         }
         return $wishlist;

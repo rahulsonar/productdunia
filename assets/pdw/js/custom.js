@@ -7,7 +7,15 @@ $(document).ready(function(){
 });
 })(jQuery);
 $(document).ready(function(){
-
+function ArrNoDupe(a) {
+    var temp = {};
+    for (var i = 0; i < a.length; i++)
+        temp[a[i]] = true;
+    var r = [];
+    for (var k in temp)
+        r.push(k);
+    return r;
+}
 
 /* $( "a.selsearch" ).click(function() {
   $(this).next('#multipleareas').css("display", "block").delay(300).fadeIn(300);
@@ -24,7 +32,15 @@ $('.selsearch').click(function(e){
 
 $('.inpselsearch').keyup(function(e){
 	var str=$(this).val().toLowerCase();
-	
+	if(str=='') {
+		$('.commencheck').removeAttr('checked');
+		var datastring='final_val=';
+	$.post('http://localhost/productduniya/index.php/product/savearea',datastring,function(r){ console.log(r); });
+	}
+	var str2=str.split(',');
+	str2=ArrNoDupe(str2);
+	str=str2[(str2.length-1)];
+	str=str.trim();
 	$('#multipleareas2').show();
 	$('#multipleareas').hide();
 	$('#multipleareas2 .majorArealis').hide();
@@ -55,23 +71,54 @@ $('.commencheck').click(function(){
 	//var thisCheck = $(this);
 	var id=$(this).parent().attr('id');
 	var id2=id.split('_');
+	var areaName=$(this).attr('id').replace('all_','');
+	var existing=$('.inpselsearch').val();
+	var existing1=existing.split(',');
+	
+	existing1.splice(-1,1);
+	var ext=existing1.join(',');
+	
+	var final_val=ext;
+	final_val+=(ext=='')?'':', ';
+	final_val+=areaName+', ';
+	
 	if(id.substring(0,4)=='all_') {
 		var id1='major_'+id2[1];
+		
 	}
 	else {
 		var id1='all_'+id2[1];
 	}
 	
+	
 	if ($(this).is(':checked'))
 	{
 		var checked=1;
 		$('#'+id1+' input').attr('checked','checked');
+		if(existing1.indexOf(areaName)<0) {
+		$('.inpselsearch').val(final_val);
+		}
+		$('.inpselsearch').focus();
 	}
 	else
 	{
 		var checked=0;
 		$('#'+id1+' input').removeAttr('checked');
+		var new1=[];
+		console.log(existing1);
+		for(var i=0; i<existing1.length; i++) {
+			if(existing1[i].trim()!=areaName.trim()) {
+				new1.push(existing1[i]);
+			}
+		}
+		var new2=new1.join(',');
+		final_val=new2+(new2!=""?',':'');
+		
+		$('.inpselsearch').val(final_val);
+		$('.inpselsearch').focus();
 	}
+	var datastring='final_val='+final_val;
+	$.post('http://localhost/productduniya/index.php/product/savearea',datastring,function(r){ console.log(r); });
 	
 	
 });
