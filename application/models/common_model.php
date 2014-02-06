@@ -484,12 +484,14 @@ class Common_model extends CI_Model {
         $availableAtStores = array();
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
-        $this->db->select('shp.*,s.*');
+        $this->db->select('shp.*,s.*,a.areaName');
         $this->db->from('stores_has_products as shp');
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
+        $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
         //$this->db->order_by('rand()', 'DESC');
         //$this->db->limit($offset);
-        $query = $this->db->get();        
+		
+        $query = $this->db->get();
         foreach ($query->result_array() as $row) {
             $availableAtStores[$row['storeId']] = $row;
         }

@@ -46,7 +46,7 @@
                 </div>
                 <div class="srow row">
                     <h2><?php echo $storeArr['storeName']; ?></h2>
-                    <p class="locationbor"><span class="locationbox">Viman Nagar ( 2 Km )</span>
+                    <p class="locationbor"><span class="locationbox"><?php echo $storeArr['areaName']; ?> ( 2 Km )</span>
                         <span class="starholder">
                             <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" alt=""></a>
                             <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" alt=""></a>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="frrow row">
                     <span class="inrbox">
-                        INR 3,500
+                        INR <?php echo $storeArr['sellPrice']; ?>
                     </span>
                     <div class="space10"></div>
 
