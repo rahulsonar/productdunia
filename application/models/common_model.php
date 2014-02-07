@@ -542,7 +542,7 @@ class Common_model extends CI_Model {
         }
         return $data;
     }
-    
+
     function getMetaData($metaTarget='',$metaTargetCode='') {
         $data = array();
         $table_name = "meta_data";

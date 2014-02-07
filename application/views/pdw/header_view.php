@@ -170,8 +170,8 @@ line-height: 1.5;
                             <div class="subarea"><span>Included Sub Area</span></div>
                         </div>
                     </div>
-					<?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
-					<div class="selsearchholder"><a class="selsearch" href="#"></a>
+                    <?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
+			<div class="selsearchholder"><a class="selsearch" href="#"></a>
                         <div id="multipleareas2">		
                             
                             <ul>
@@ -181,9 +181,7 @@ line-height: 1.5;
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span></div>
                         </div>
-                    </div>
-					
-					
+                    </div>		
                     <form name="frmSearchKeyword" id="frmSearchKeyword" method="post" action="<?php echo site_url('product/search'); ?>">
                         <input type="hidden" value="" name="keyword" id="keyword" />
                         <input class="inpsearch rounded" id="topSearchBox" type="text" value="<?php echo $keyword; ?>" placeholder="Enter Product Name you want to search eg. Samsung Galaxy"  />
