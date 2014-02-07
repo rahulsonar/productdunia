@@ -60,8 +60,10 @@
                 </div>
                 <div class="trow row">
                     <ul class="listorange">
+						<?php if($storeArr['offerPrice']>0) { ?>
                         <li><a href="#">Offer available</a></li>
-                        <li><a href="#">Last 3 pieces left</a></li>
+						<?php } ?>
+                        <li><a href="#">Last <?php echo $storeArr['qty']; ?> piece<?php if($storeArr['qty']>1) { echo 's'; } ?> left</a></li>
                     </ul>
                 </div>
                 <div class="frrow row">
