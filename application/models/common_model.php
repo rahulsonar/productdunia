@@ -484,12 +484,14 @@ class Common_model extends CI_Model {
         $availableAtStores = array();
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
-        $this->db->select('shp.*,s.*');
+        $this->db->select('shp.*,s.*,a.areaName');
         $this->db->from('stores_has_products as shp');
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
+        $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
         //$this->db->order_by('rand()', 'DESC');
         //$this->db->limit($offset);
-        $query = $this->db->get();        
+		
+        $query = $this->db->get();
         foreach ($query->result_array() as $row) {
             $availableAtStores[$row['storeId']] = $row;
         }
@@ -534,6 +536,19 @@ class Common_model extends CI_Model {
         $table_name = "areas";
         $this->db->where('cityId', $cityId);
         $this->db->where('isMajor', '1');
+        $this->db->where('status != ', 'Delete');
+        $this->db->select('*')->from($table_name);
+        $query = $this->db->get();
+        foreach ($query->result() as $row){
+             $data[$row->areaId] = $row->areaName;
+        }
+        return $data;
+    }
+	function getAllAreas($cityId) {
+        $data = array();
+        $table_name = "areas";
+        $this->db->where('cityId', $cityId);
+        //$this->db->where('isMajor', '1');
         $this->db->where('status != ', 'Delete');
         $this->db->select('*')->from($table_name);
         $query = $this->db->get();
@@ -802,17 +817,11 @@ class Common_model extends CI_Model {
     {
         $wishlist = array();
         if($customerId !=''){
-            $storeProdStats = $this->getStoreProdStats();
-            $this->db->where('p.status != ', 'Delete');
-            $this->db->where('pw.customerId', $customerId);
-            $this->db->select('p.*');
-            $this->db->from('products as p');
-            $this->db->join('product_wishlist as pw', 'pw.productId = p.productId', 'left');
-            $query = $this->db->get();
-            //$productReviewsList = $query->result();
-            foreach ($query->result_array() as $row) {
-                $row['storeProdStats'] = $storeProdStats[$row['productId']];
-                $wishlist[$row['productId']] = $row;
+            $this->db->where('customerId', $customerId);
+            $this->db->select('*');
+            $query = $this->db->get('product_wishlist');
+            foreach ($query->result_array() as $row){
+                    $wishlist[$row['productId']] = $row['productId'];
             }
         }
         return $wishlist;

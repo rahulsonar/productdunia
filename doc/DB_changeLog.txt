@@ -356,3 +356,24 @@ CREATE TABLE `product_wishlist` (
                     PRIMARY KEY (`wishlistId`)                     
                   ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
+-------------------------------------------
+
+Date : 06/Feb/2014
+Changed By : Chaitenya yadav
+Change : 
+
+
+ALTER TABLE `stores` ADD `storeLogo` VARCHAR( 50 ) NOT NULL AFTER `countryId` ,
+ADD `rating` FLOAT( 5, 1 ) NOT NULL DEFAULT '0.0' AFTER `storeLogo` ,
+ADD `address` VARCHAR( 255 ) NOT NULL AFTER `rating` ,
+ADD `pincode` VARCHAR( 10 ) NOT NULL AFTER `address` ,
+ADD `contactPerson` VARCHAR( 255 ) NOT NULL AFTER `pincode` ,
+ADD `mobile` VARCHAR( 10 ) NOT NULL AFTER `contactPerson` ,
+ADD `phone` VARCHAR( 15 ) NOT NULL AFTER `mobile` ,
+ADD `alternatPhone` VARCHAR( 15 ) NOT NULL AFTER `phone` ,
+ADD `storeTimings` VARCHAR( 255 ) NOT NULL AFTER `alternatPhone` ,
+ADD `isParking` ENUM( '0', '1' ) NOT NULL DEFAULT '0' AFTER `storeTimings` ,
+ADD `paymentMethods` VARCHAR( 100 ) NOT NULL AFTER `isParking` ,
+ADD `storeEmail` VARCHAR( 100 ) NOT NULL AFTER `paymentMethods` 
+
+

@@ -83,7 +83,7 @@
         <?php 
             if(count($availableAtStores) > 0){
                 $temp['availableAtStores'] = $availableAtStores;
-                //$this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp); 
+                $this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp); 
             }
         ?>
         <?php 

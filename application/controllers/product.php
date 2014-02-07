@@ -187,6 +187,18 @@ class Product extends MY_Controller {
             $temp['data'] = $data;	
             $this->load->view($this->config->item('themeCode')."/common_view",$temp);
         }
+		
+		public function savearea() {
+			$a=explode(",",$_POST['final_val']);
+			//print_r($a);
+			$final=array();
+			foreach($a as $b) {
+				if(trim($b)!="") 
+				$final[]=trim($b);
+			}
+			$this->session->set_userdata(array('areasSelected'=>$final));
+			print_r($this->session->userdata('areasSelected'));
+		}
         
         public function search($keyword='')
 	{
