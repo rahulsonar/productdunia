@@ -190,14 +190,39 @@ class Product extends MY_Controller {
 		
 		public function savearea() {
 			$a=explode(",",$_POST['final_val']);
-			//print_r($a);
+			$exlude=explode(",",$_POST['sub_ids']);
+			$exlude=array_unique($exlude);
 			$final=array();
 			foreach($a as $b) {
 				if(trim($b)!="") 
 				$final[]=trim($b);
 			}
+			$final=array_unique($final);
 			$this->session->set_userdata(array('areasSelected'=>$final));
-			print_r($this->session->userdata('areasSelected'));
+			if(!empty($final)) {
+			
+			$subAreas=$this->common_model->GetsubAreasByMajorAreas($final,$exlude);
+			if(count($subAreas)>0) {
+			?>
+			<ul>
+			<?php
+			foreach($subAreas as $areaId=>$subarea) {
+				$areaName=$subarea['areaName'];
+				?>
+				<li class="subArealis" id="sub_<?php echo $areaId; ?>"><input type="checkbox" checked="checked" class="commencheck" id="sub_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+				<?php
+			}
+			?>
+			</ul>
+			<?php
+			}
+			}
+			else 
+			{
+				echo "";
+			}
+			
+			//print_r($this->session->userdata('areasSelected'));
 		}
         
         public function search($keyword='')

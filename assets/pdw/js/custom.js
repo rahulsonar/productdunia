@@ -34,6 +34,7 @@ $('.inpselsearch').keyup(function(e){
 	var str=$(this).val().toLowerCase();
 	if(str=='') {
 		$('.commencheck').removeAttr('checked');
+		$('.subareaList').html('');
 		var datastring='final_val=';
 	$.post('http://localhost/productduniya/index.php/product/savearea',datastring,function(r){ console.log(r); });
 	}
@@ -41,6 +42,7 @@ $('.inpselsearch').keyup(function(e){
 	str2=ArrNoDupe(str2);
 	str=str2[(str2.length-1)];
 	str=str.trim();
+	
 	$('#multipleareas2').show();
 	$('#multipleareas').hide();
 	$('#multipleareas2 .majorArealis').hide();
@@ -50,9 +52,9 @@ $('.inpselsearch').keyup(function(e){
 	var count=0;
 		$('#multipleareas2 .commencheck').each(function(index,value){
 			var id1=$(this).attr('id').toLowerCase();
-			id1=id1.replace('all_','');
+			id1=id1.split("_");
 			
-			if(id1.substring(0,str.length)==str) {
+			if(id1[2].substring(0,str.length)==str) {
 				count++;
 				$(this).parent().show();
 			}
@@ -63,17 +65,69 @@ $('.inpselsearch').keyup(function(e){
 	$('#multipleareas2').hide();
 	}
 });
-
-
+var sub_ids=[];
+function checkUncheckFunc(t) {
+	var thisId=t.attr('id');
+	var thisId1=thisId.split("_");
+	
+	if(t.is(':checked')) {
+	
+	$("#majora_"+thisId1[1]+"_"+thisId1[2]).attr('checked','checked');
+	$("#all_"+thisId1[1]+"_"+thisId1[2]).attr('checked','checked');
+	}
+	else
+	{
+		$("#majora_"+thisId1[1]+"_"+thisId1[2]).removeAttr('checked');
+		$("#all_"+thisId1[1]+"_"+thisId1[2]).removeAttr('checked');
+	}
+	var ids_all=[];
+	var all_names=[];
+	
+	$('.commencheck:checked').each(function(){
+		var id=$(this).attr('id');
+		var id1=id.split("_");
+		if(id1[0]=='sub' && thisId1[1]==id1[1]) {
+		sub_ids.push(id1[1]);
+		}
+		else
+		{
+			if(id1[0]!='sub') {
+			ids_all.push(id1[1]);
+			all_names.push(id1[2].trim());
+			var index1=sub_ids.indexOf(id1[1]);
+			if(index1>-1)
+				sub_ids.splice(index1);	
+			}
+		}
+	});
+	
+	ids_all=ArrNoDupe(ids_all);
+	all_names=ArrNoDupe(all_names);
+	$('.inpselsearch').val(all_names.join(',')+(all_names!=""?", ":"")).focus();
+	
+	var datastring='final_val='+ids_all.join(',')+'&sub_ids='+sub_ids.join(',');
+	$.post(siteurl+'index.php/product/savearea',datastring,function(r){ 
+		$('.subareaList').html(r);
+		$('.commencheck').bind('click',function(){
+			checkUncheckFunc($(this));
+		});
+	});
+}
 
 $('.commencheck').click(function(){
 	
+	//var thisId=$(this).attr('id');
+	checkUncheckFunc($(this));
+	
+	
+	/*
 	//var thisCheck = $(this);
 	var id=$(this).parent().attr('id');
 	var id2=id.split('_');
 	var areaName=$(this).attr('id').replace('all_','');
 	var existing=$('.inpselsearch').val();
 	var existing1=existing.split(',');
+	
 	
 	existing1.splice(-1,1);
 	var ext=existing1.join(',');
@@ -91,6 +145,14 @@ $('.commencheck').click(function(){
 	}
 	
 	
+	
+	// get ids of all major areas 
+	var ids_all=[];
+	$('.commencheck:checked').each(function(index){
+		ids_all.push($(this).val());
+	});
+	console.log(ids_all);
+	
 	if ($(this).is(':checked'))
 	{
 		var checked=1;
@@ -98,6 +160,14 @@ $('.commencheck').click(function(){
 		if(existing1.indexOf(areaName)<0) {
 		$('.inpselsearch').val(final_val);
 		}
+		$('.chkSAreas').each(function(index){
+			var idSArea=$(this).attr('id');
+			idS2=idSArea.split("_");
+			if(idS2[2]==id2[1]) {
+				$(this).attr('checked','checked');
+				$(this).parent().show();
+			}
+		});
 		$('.inpselsearch').focus();
 	}
 	else
@@ -105,7 +175,7 @@ $('.commencheck').click(function(){
 		var checked=0;
 		$('#'+id1+' input').removeAttr('checked');
 		var new1=[];
-		console.log(existing1);
+		
 		for(var i=0; i<existing1.length; i++) {
 			if(existing1[i].trim()!=areaName.trim()) {
 				new1.push(existing1[i]);
@@ -119,7 +189,7 @@ $('.commencheck').click(function(){
 	}
 	var datastring='final_val='+final_val;
 	$.post(siteurl+'index.php/product/savearea',datastring,function(r){ console.log(r); });
-	
+	*/
 	
 });
 

@@ -557,7 +557,21 @@ class Common_model extends CI_Model {
         }
         return $data;
     }
-
+	function getSubAreas($cityId) {
+         $data = array();
+        $table_name = "area_has_subareas as ahs";
+        $this->db->where('cityId', $cityId);
+        //$this->db->where('isMajor', '1');
+        $this->db->where('status != ', 'Delete');
+        $this->db->join('areas a','ahs.subAreaId=a.areaId','left');
+        $this->db->select('ahs.*, a.areaName')->from($table_name);
+        $query = $this->db->get();
+        foreach ($query->result() as $row){
+             $data[] = $row;
+        }
+        return $data;
+    }
+    
     function getMetaData($metaTarget='',$metaTargetCode='') {
         $data = array();
         $table_name = "meta_data";
@@ -704,7 +718,7 @@ class Common_model extends CI_Model {
         
         $refinedDataArr = $refinedArr;
         //print_debug($refinedDataArr,__FILE__,__LINE__,1);
-        return $refinedDataArr;        
+        return $refinedDataArr;
     }
     
     function getCategoryReverseChain($categoryId, &$prodCategoryData) {
@@ -860,6 +874,35 @@ class Common_model extends CI_Model {
             $this->db->delete('product_wishlist');
         }
     }
+	
+	public function GetsubAreasByMajorAreas($ids,$exclude='') {
+		
+		$data=array();
+		/*
+		$this->db->from('area_has_subareas as ahs');
+		$this->db->join('areas a','a.areaId=ahs.subAreaId');
+		$this->db->where_in('ahs.areaId',$ids);
+		$this->db->where_not_in('ahs.subAreaId',$exclude);
+		*/
+		$exclude_array=array();
+		foreach($exclude as $exclude1) {
+			if(!empty($exclude1)) 
+			$exclude_array[]=$exclude1;
+		}
+		$sql="select * from area_has_subareas as ahs LEFT JOIN areas a ON (ahs.subAreaId=a.areaId) WHERE 
+			(ahs.areaId IN (".implode(",",$ids).") OR ahs.subAreaId IN (".implode(",",$ids).") ) ";
+			if(!empty($exclude_array)) {
+			$sql.=" and ahs.subAreaId NOT IN (".implode(",",$exclude_array).")";
+			}
+			
+		
+		
+		$query = $this->db->query($sql);
+        foreach ($query->result_array() as $row) {
+            $data[$row['subAreaId']] = $row;
+        }
+		return $data;
+	}
 }
 
 

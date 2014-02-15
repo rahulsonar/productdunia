@@ -164,24 +164,38 @@ line-height: 1.5;
                             <h2 class="majoretra">Major Area</h2>
                             <ul>
                                 <?php foreach ($majorAreas as $areaId => $areaName) { ?>
-                                    <li class="majorArealis" id="major_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis" id="major_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
-                            <div class="subarea"><span>Included Sub Area</span></div>
+                            <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
+							<?php /* ?>
+							<?php
+								$subAreas = $this->common_model->getSubAreas($this->session->userdata('citySelected')); ?>
+							<ul>
+								<?php
+								foreach($subAreas as $sArea) {
+									?>
+									<li class="subAreasLi" style="display:none;" id="sareaLi_<?php echo $sArea->subAreaId; ?>_<?php echo $sArea->areaId; ?>"><input class="chkSAreas" type="checkbox" id="chkSArea_<?php echo $sArea->subAreaId; ?>_<?php echo $sArea->areaId; ?>" /><label for="chkSArea_<?php echo $sArea->subAreaId; ?>_<?php echo $sArea->areaId; ?>"><?php echo $sArea->areaName; ?></a></li>
+									<?php
+								}
+							?>
+							</ul> <?php  <?php */ ?>
                         </div>
                     </div>
-                    <?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
-			<div class="selsearchholder"><a class="selsearch" href="#"></a>
+					<?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
+					<div class="selsearchholder"><a class="selsearch" href="#"></a>
                         <div id="multipleareas2">		
                             
                             <ul>
                                 <?php foreach ($allAreas as $areaId => $areaName) { ?>
-                                    <li class="majorArealis" id="all_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="all_<?php echo $areaName; ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis" id="all_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="all_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
-                            <div class="subarea"><span>Included Sub Area</span></div>
+                            <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
                         </div>
-                    </div>		
+                    </div>
+					
+					
                     <form name="frmSearchKeyword" id="frmSearchKeyword" method="post" action="<?php echo site_url('product/search'); ?>">
                         <input type="hidden" value="" name="keyword" id="keyword" />
                         <input class="inpsearch rounded" id="topSearchBox" type="text" value="<?php echo $keyword; ?>" placeholder="Enter Product Name you want to search eg. Samsung Galaxy"  />
