@@ -36,7 +36,7 @@ $('.inpselsearch').keyup(function(e){
 		$('.commencheck').removeAttr('checked');
 		$('.subareaList').html('');
 		var datastring='final_val=';
-	$.post('http://localhost/productduniya/index.php/product/savearea',datastring,function(r){ console.log(r); });
+	$.post(siteurl+'index.php/product/savearea',datastring,function(r){ console.log(r); });
 	}
 	var str2=str.split(',');
 	str2=ArrNoDupe(str2);
