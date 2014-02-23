@@ -21,7 +21,7 @@ class MY_Controller extends CI_Controller {
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
         //$this->_googleLoginUrl();
-        //$this->_facebookLoginUrl();
+        $this->_facebookLoginUrl();
     }
     
     public function changeCity($cityId='')
@@ -117,15 +117,32 @@ class MY_Controller extends CI_Controller {
     function _facebookLoginUrl(){
         if($this->session->userdata('interfaceUsername')==''){
             /* facebook login */
+			try {
             $user = $this->facebook->getUser();
+			}
+			catch(Exception $e) {
+			}
+			if(!$user) {
             $params = array(
                 'scope' => 'email,publish_actions',
                 'redirect_uri' => site_url('customer/loginFacebookSubmit'),
             );
             $facebookLoginUrl = $this->facebook->getLoginUrl($params);
+			
             /* */
             $session_data['facebookLoginUrl'] = $facebookLoginUrl;
             $this->session->set_userdata($session_data);
+			}
+			else
+			{
+				$params = array('next' => site_url('customer/logout'));
+                $logoutUrl = $this->facebook->getLogoutUrl($params);
+				$session_data['logoutUrl'] = $logoutUrl;
+                $this->session->set_userdata($session_data);
+
+                $user_profile = $this->facebook->api('/me');
+                $response = $this->user_model->signupFacebookUser($user_profile);
+			}
         }
     }
     

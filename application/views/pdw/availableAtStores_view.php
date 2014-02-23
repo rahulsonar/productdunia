@@ -3,9 +3,15 @@
 ?>
 <div id="pdavil" class="subheadingholder prodheadingholder">
     <h2>AVAILABLE AT STORES (<?php echo count($availableAtStores); ?>):</h2>
+	<?php
+	$availableAtStoresIds=array();
+	foreach($availableAtStores as $store) {
+		$availableAtStoresIds[]=$store['storeId'];
+	}
+	?>
     <span class="right"> 
-        <a href="#" class="savepdf">Save PDF</a>
-        <a href="#" class="savesearch">Save Search</a>
+        <a href="#" class="savepdf" onclick="SavePDF(<?php echo $product['productId']; ?>); return false;">Save PDF</a>
+        <a href="#" class="savesearch" onclick="xajax_savesearch('<?php echo $product['productName']; ?>',<?php echo $product['productId']; ?>,<?php echo implode(',',$availableAtStoresIds); ?>); return false;">Save Search</a>
     </span>
 </div>
 <div class="prodsubbox">
@@ -168,3 +174,8 @@
     <?php } ?>
 </div>
 <div class="space15"></div>
+<script>
+	function SavePDF(product_id) {
+		window.open();
+	}
+</script>

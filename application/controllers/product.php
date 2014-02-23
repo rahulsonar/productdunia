@@ -16,6 +16,7 @@ class Product extends MY_Controller {
                 $this->xajax->register(XAJAX_FUNCTION, array('setRefineCriteria', &$this, 'setRefineCriteria'));
                 $this->xajax->register(XAJAX_FUNCTION, array('loadMoreResult', &$this, 'loadMoreResult'));
                 $this->xajax->register(XAJAX_FUNCTION, array('toggleToWishlist', &$this, 'toggleToWishlist'));
+                $this->xajax->register(XAJAX_FUNCTION, array('savesearch', &$this, 'savesearch'));
                 
                 
                 $this->xajax->processRequest();
@@ -433,6 +434,14 @@ class Product extends MY_Controller {
             $objResponse->script("window.location.reload();");
             return $objResponse;
         }
+		public function savesearch($prodoct_name,$product_id,$availableAtStoresIds) {
+		$objResponse = new xajaxResponse();
+			$availableAtStoresIds=explode(",",$availableAtStoresIds);			
+			$this->common_model->Savesaved_search($prodoct_name,$product_id,$availableAtStoresIds,$this->session->userdata('areasSelected'));
+			
+			//$objResponse->Alert($ret);
+			return $objResponse;	
+		}
         
 }
 

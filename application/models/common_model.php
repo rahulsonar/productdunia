@@ -484,6 +484,10 @@ class Common_model extends CI_Model {
         $availableAtStores = array();
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
+		$areasSelected=$this->session->userdata('areasSelected');
+		if(!empty($areasSelected)) {
+			$this->db->where_in('a.areaId ', $areasSelected);
+		}
         $this->db->select('shp.*,s.*,a.areaName');
         $this->db->from('stores_has_products as shp');
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
@@ -902,6 +906,27 @@ class Common_model extends CI_Model {
             $data[$row['subAreaId']] = $row;
         }
 		return $data;
+	}
+	public function Savesaved_search($prodoct_name, $product_id,$availableAtStoresIds, $areasSelected) {
+		sort($areasSelected,SORT_NUMERIC);
+		
+		sort($availableAtStoresIds,SORT_NUMERIC);
+		
+		//
+		$area_ids=(implode(",",$areasSelected)!="")?implode(",",$areasSelected):"";
+		$store_ids=(implode(",",$availableAtStoresIds)!="")?implode(",",$availableAtStoresIds):"";
+		$sql="select * from saved_search WHERE product_id=".$product_id." AND area_ids='".$area_ids."' AND store_ids='".$store_ids."'";
+		$query = $this->db->query($sql);
+		if($query->num_rows==0) {
+			$data=array(
+			'name'=>str_replace(" ","",substr($prodoct_name,0,10)),
+			'product_id'=>$product_id,
+			'area_ids'=>implode(",",$areasSelected),
+			'store_ids'=>implode(",",$availableAtStoresIds));
+			
+		$this->db->insert('saved_search',$data);
+		}
+		
 	}
 }
 
