@@ -442,6 +442,64 @@ class Product extends MY_Controller {
 			//$objResponse->Alert($ret);
 			return $objResponse;	
 		}
+		
+		public function pdf($productId) {
+			$session_data['productId'] = $productId;
+                $session_data['orderBy'] = 'usefull';
+                $this->session->set_userdata($session_data);
+                $customerId = $this->session->userdata('interfaceUserId');
+                
+                $offset = (empty($offset))?(0):($offset);
+                $prodRating = '0';                
+		$data['product'] = $this->common_model->getProductDetail($productId);
+                if(count($data['product']) == 0){
+                    redirect(site_url());
+                }
+                
+                $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
+                $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
+                $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId);
+                //print_r($data['availableAtStores']);exit;
+                //$productReviews = $this->common_model->getProductReviews($productId);
+                
+                $this->common_model->setRecentViewProd($productId);
+                
+                $reviewCnt = count($productReviews);
+                if($reviewCnt > 0){
+                    $rating = '0';
+                    foreach ($productReviews as $key => $review) {
+                        $rating += $review['rating'];
+                    }
+                    $prodRating = ($rating/$reviewCnt);
+                }
+
+                $data['reviewCnt'] = $reviewCnt;
+                $data['prodRating'] = $prodRating;
+                $data['prodGallery'] = $this->common_model->getProductImages($productId);
+                $data['storeProdStats'] = $this->common_model->getStoreProdStats();
+                
+                
+                $this->configReviewPag($reviewCnt);
+                $data['productReviews'] = array_slice($productReviews,$offset,$this->customReviewConfig["per_page"],true);
+                $data["reviewPaginate"] = $this->xajax_pagination->create_links($offset);
+                
+                //print_debug($data['product'], __FILE__, __LINE__, 0);
+                
+                $data['metaTarget'] = "Product";
+                $data['metaTargetCode'] = $productId;
+                
+                //$d = $this->common_model->getBreadcrumbCategoryChain($productId);
+                //print_debug($d, __FILE__, __LINE__, 1);
+                /* Breadcrumb Start */
+                $this->breadcrumb->append_crumb('Home', site_url());
+                $this->breadcrumb->append_crumb($data['product']['productName'], site_url('/product/detail/').$productId);
+                /* Breadcrumb End */
+
+                $data['template'] = "productDetail_pdf";
+		$data['activePage'] = "prodDetail";
+		$temp['data'] = $data;
+		$this->load->view($this->config->item('themeCode')."/common_pdf",$temp);
+		}
         
 }
 

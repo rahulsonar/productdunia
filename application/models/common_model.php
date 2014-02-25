@@ -928,6 +928,23 @@ class Common_model extends CI_Model {
 		}
 		
 	}
+	
+	public function getSelectedAreaNames($selectedAreas) {
+		if(empty($selectedAreas)) {
+		$names='';
+		return $names;
+		}
+		$this->db->where_in('areaId', $selectedAreas);
+            
+            $this->db->select('areaName');
+            $query = $this->db->get('areas');
+            foreach ($query->result_array() as $row){
+                    
+                    $data[]=$row['areaName'];
+            }
+			$names=implode(",",$data);
+			return $names;
+	}
 }
 
 

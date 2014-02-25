@@ -176,6 +176,6 @@
 <div class="space15"></div>
 <script>
 	function SavePDF(product_id) {
-		window.open();
+		window.open('<?php echo site_url('product/pdf/'); ?>/'+product_id);
 	}
 </script>

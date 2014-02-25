@@ -20,5 +20,5 @@
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/scrollbar.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slides.jquery.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.colorbox.js" ></script>
-<script language="javascript" type="text/javascript"src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/custom.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/custom.js"></script>
 <!-- JS Ends -->

@@ -157,14 +157,19 @@ line-height: 1.5;
                     </div>
                 </div>
                 <div id="search">
-                    <?php $majorAreas = $this->common_model->getMajorAreas($this->session->userdata('citySelected')); ?>
-                    <input type="text" class="inpselsearch" placeholder="Type Your Areas" />
+                    <?php $majorAreas = $this->common_model->getMajorAreas($this->session->userdata('citySelected'));
+					$areaNames=$this->common_model->getSelectedAreaNames($this->session->userdata('areasSelected'));
+					
+					?>
+                    <input value="<?php echo $areaNames.(($areaNames!="")?", ":""); ?>" type="text" class="inpselsearch" placeholder="Type Your Areas" />
                     <div class="selsearchholder"><a class="selsearch" href="#"></a>
                         <div id="multipleareas">		
                             <h2 class="majoretra">Major Area</h2>
+							
                             <ul>
                                 <?php foreach ($majorAreas as $areaId => $areaName) { ?>
-                                    <li class="majorArealis" id="major_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis" id="major_<?php echo $areaId; ?>">
+									<input <?php if(in_array($areaId,$this->session->userdata('areasSelected'))) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
@@ -188,7 +193,8 @@ line-height: 1.5;
                             
                             <ul>
                                 <?php foreach ($allAreas as $areaId => $areaName) { ?>
-                                    <li class="majorArealis" id="all_<?php echo $areaId; ?>"><input type="checkbox" class="commencheck" id="all_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+                                    <li class="majorArealis" id="all_<?php echo $areaId; ?>">
+									<input <?php if(in_array($areaId,$this->session->userdata('areasSelected'))) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="all_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
