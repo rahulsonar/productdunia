@@ -463,7 +463,7 @@ class Product extends MY_Controller {
                 //$productReviews = $this->common_model->getProductReviews($productId);
                 
                 $this->common_model->setRecentViewProd($productId);
-                
+                /*
                 $reviewCnt = count($productReviews);
                 if($reviewCnt > 0){
                     $rating = '0';
@@ -471,17 +471,17 @@ class Product extends MY_Controller {
                         $rating += $review['rating'];
                     }
                     $prodRating = ($rating/$reviewCnt);
-                }
+                }*/
 
-                $data['reviewCnt'] = $reviewCnt;
-                $data['prodRating'] = $prodRating;
-                $data['prodGallery'] = $this->common_model->getProductImages($productId);
+                //$data['reviewCnt'] = $reviewCnt;
+                //$data['prodRating'] = $prodRating;
+                //$data['prodGallery'] = $this->common_model->getProductImages($productId);
                 $data['storeProdStats'] = $this->common_model->getStoreProdStats();
                 
                 
-                $this->configReviewPag($reviewCnt);
-                $data['productReviews'] = array_slice($productReviews,$offset,$this->customReviewConfig["per_page"],true);
-                $data["reviewPaginate"] = $this->xajax_pagination->create_links($offset);
+                //$this->configReviewPag($reviewCnt);
+                //$data['productReviews'] = array_slice($productReviews,$offset,$this->customReviewConfig["per_page"],true);
+                //$data["reviewPaginate"] = $this->xajax_pagination->create_links($offset);
                 
                 //print_debug($data['product'], __FILE__, __LINE__, 0);
                 
@@ -491,14 +491,30 @@ class Product extends MY_Controller {
                 //$d = $this->common_model->getBreadcrumbCategoryChain($productId);
                 //print_debug($d, __FILE__, __LINE__, 1);
                 /* Breadcrumb Start */
-                $this->breadcrumb->append_crumb('Home', site_url());
-                $this->breadcrumb->append_crumb($data['product']['productName'], site_url('/product/detail/').$productId);
+                //$this->breadcrumb->append_crumb('Home', site_url());
+                //$this->breadcrumb->append_crumb($data['product']['productName'], site_url('/product/detail/').$productId);
                 /* Breadcrumb End */
 
                 $data['template'] = "productDetail_pdf";
 		$data['activePage'] = "prodDetail";
 		$temp['data'] = $data;
+		
+		// include pdf files
+		
+		//require_once(FCPATH.'/application/html2pdf/html2pdf.class.php');
+		require_once(FCPATH.'/application/dompdf/dompdf_config.inc.php');
+		ob_start();
+     
 		$this->load->view($this->config->item('themeCode')."/common_pdf",$temp);
+		$content = ob_get_clean();
+		
+		//echo $content;
+		$dompdf = new DOMPDF();
+		  $dompdf->load_html($content);
+		//  $dompdf->set_paper($_POST["paper"], $_POST["orientation"]);
+		  $dompdf->render();
+
+		  $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
 		}
         
 }

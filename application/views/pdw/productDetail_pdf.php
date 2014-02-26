@@ -2,20 +2,14 @@
 <div id="main">
     <div class="mainholder">
         <div class="space10"></div>
-        <?php $this->load->view($this->config->item('themeCode') . "/breadcrumbs_view"); ?>
+        <?php //$this->load->view($this->config->item('themeCode') . "/breadcrumbs_view"); ?>
         <div class="proddetailsleft">
             <div class="prodimg">
-                <a href="<?php echo base_url().$this->config->item('productImgPath') . $product['productImg']?>" class="jqzoom" rel='gal1'  title="<?php echo $product['productName']?>" >
+                
                     <img src="<?php echo base_url().$this->config->item('productLargeImgPath') . $product['productImg']?>" alt="<?php echo $product['productName']?>" title="<?php echo $product['productName']?>"/>    
-                </a>
+                
             </div>
-            <?php if(count($prodGallery) > 0) { ?>
-            <ul id="thumblist" class="clearfix" >
-                <?php foreach ($prodGallery as $galleryKey => $galleryVal) { ?>
-                    <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo base_url().$this->config->item('productLargeImgPath') . $galleryVal['imgName']?>',largeimage: '<?php echo base_url().$this->config->item('productImgPath') . $galleryVal['imgName']?>'}"><img src='<?php echo base_url().$this->config->item('productStampImgPath') . $galleryVal['imgName']?>'></a></li>
-                <?php } ?>
-            </ul>
-            <?php } ?>
+            
         </div>
 
         <div class="proddetailsright">
@@ -23,7 +17,7 @@
                 <h1><?php echo $product['productName']; ?> <?php if($product['productColor']!=''){ echo '('.$product['productColor'].')';} ?></h1>
                 <div class="ratingbox">
                     <div class="prodRaty"></div>
-                    <a href="#pdreview">Rate This Product</a>
+                    <!--<a href="#pdreview">Rate This Product</a>-->
                 </div>
             </div>
             <?php if($product['productDesc']!=''){ ?>
@@ -62,7 +56,7 @@
                         <?php } ?>                        
                     </td>
                     <td class="avilbox3">
-                        <label><input type="checkbox" />Add to Compare</label>
+                        <!--<label><input type="checkbox" />Add to Compare</label>-->
                         <?php if ($this->session->userdata('interfaceUsername') != '') { ?>
                         <label><input type="checkbox" onClick="xajax_toggleToWishlist('<?php echo $product['productId']; ?>');" <?php if($isInWishlist){ ?>checked <?php } ?>/>Add to Wishlist</label>
                         <label><input type="checkbox" />Add to PRODUCT PINGER</label>
@@ -72,18 +66,13 @@
             </table>
             <!--<p class="offer">*Offer available in 5 stores</p>-->
             <div class="space20"></div>
-            <div id="pdtabs">
-                <a href="#pdavil"></a>
-                <a href="#pdspication"></a>
-                <a href="#pdreview"></a>
-            </div>
 
         </div>
         <div class="space10"></div>
         <?php 
             if(count($availableAtStores) > 0){
                 $temp['availableAtStores'] = $availableAtStores;
-                $this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp); 
+                $this->load->view($this->config->item('themeCode') . "/availableAtStores_pdf",$temp); 
             }
         ?>
         <?php 
