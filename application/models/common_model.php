@@ -478,7 +478,7 @@ class Common_model extends CI_Model {
         }
     }
     
-    public function getAvailableAtStores($productId)
+    public function getAvailableAtStores($productId,$offset=0, $limit=0)
     {
         //$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
         $availableAtStores = array();
@@ -493,13 +493,34 @@ class Common_model extends CI_Model {
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
         $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
         //$this->db->order_by('rand()', 'DESC');
-        //$this->db->limit($offset);
+		if($limit) 
+        $this->db->limit($limit,$offset);
 		
         $query = $this->db->get();
+		
         foreach ($query->result_array() as $row) {
             $availableAtStores[$row['storeId']] = $row;
         }
         return $availableAtStores;
+    }
+	public function getAvailableAtStoresTotal($productId)
+    {
+        //$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
+        $availableAtStores = array();
+        $this->db->where('s.status', 'Active');
+        $this->db->where('shp.productId', $productId);
+		$areasSelected=$this->session->userdata('areasSelected');
+		if(!empty($areasSelected)) {
+			$this->db->where_in('a.areaId ', $areasSelected);
+		}
+        $this->db->select('shp.*,s.*,a.areaName');
+        $this->db->from('stores_has_products as shp');
+        $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
+        $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
+        
+        $query = $this->db->get();
+		$num_rows=$query->num_rows();
+		return $num_rows;
     }
     
     public function getProductReviews($productId)

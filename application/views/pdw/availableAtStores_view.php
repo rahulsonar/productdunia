@@ -1,6 +1,7 @@
 <?php
 //print_debug($availableAtStores, __FILE__, __LINE__, 0);
 ?>
+<div id="storeList">
 <div id="pdavil" class="subheadingholder prodheadingholder">
     <h2>AVAILABLE AT STORES (<?php echo count($availableAtStores); ?>):</h2>
 	<?php
@@ -172,10 +173,20 @@
 
         </div>
     <?php } ?>
+	<?php if($showloadMore) { ?>
+	<div id='loadMoreItems'>
+                <a href="javascript:void(0);" class="loadmore loadMoreItems">Load More Stores</a>
+            </div>
+		<?php } ?>
 </div>
 <div class="space15"></div>
 <script>
 	function SavePDF(product_id) {
 		window.open('<?php echo site_url('product/pdf/'); ?>/'+product_id);
 	}
+	
+	$('.loadMoreItems').click(function(){
+		xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>);
+	});
 </script>
+</div>
