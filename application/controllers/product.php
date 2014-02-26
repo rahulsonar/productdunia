@@ -317,7 +317,10 @@ class Product extends MY_Controller {
                 $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
                 $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
+<<<<<<< HEAD
                 $data['availableAtStoresTotal'] = $this->common_model->getAvailableAtStoresTotal($productId);
+=======
+>>>>>>> c63f3adb2dc95adbad5059812e5c1c4bc06ae4e8
                 //print_r($data['availableAtStores']);exit;
                 $productReviews = $this->common_model->getProductReviews($productId);
                 

@@ -6,8 +6,8 @@
  * 
  */
 
-$config['appId']	= '596697813718026';
-$config['secret']	= '1ffd6e831051bf7ea5867d9cc3ed5c65';
+$config['appId']	= '786597498021404';
+$config['secret']	= '97b5ab9588baf2d126fe9d1c96fe9cde';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
