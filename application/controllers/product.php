@@ -315,7 +315,7 @@ class Product extends MY_Controller {
                 
                 $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
-                $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId);
+                $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
                 //print_r($data['availableAtStores']);exit;
                 $productReviews = $this->common_model->getProductReviews($productId);
                 
