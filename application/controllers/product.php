@@ -17,6 +17,7 @@ class Product extends MY_Controller {
                 $this->xajax->register(XAJAX_FUNCTION, array('loadMoreResult', &$this, 'loadMoreResult'));
                 $this->xajax->register(XAJAX_FUNCTION, array('toggleToWishlist', &$this, 'toggleToWishlist'));
                 $this->xajax->register(XAJAX_FUNCTION, array('savesearch', &$this, 'savesearch'));
+                $this->xajax->register(XAJAX_FUNCTION, array('loadmorestores', &$this, 'loadmorestores'));
                 
                 
                 $this->xajax->processRequest();
@@ -315,7 +316,8 @@ class Product extends MY_Controller {
                 
                 $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
-                $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId);
+                $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
+                $data['availableAtStoresTotal'] = $this->common_model->getAvailableAtStoresTotal($productId);
                 //print_r($data['availableAtStores']);exit;
                 $productReviews = $this->common_model->getProductReviews($productId);
                 
@@ -524,6 +526,18 @@ class Product extends MY_Controller {
 		  window.close();
 		  </script>
 		  <?php
+		}
+		public function loadmorestores($productId,$totalStores) {
+			$objResponse = new xajaxResponse();
+			
+			$temp['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,$totalStores);
+			$temp['showloadMore'] = false;
+			$temp['product'] = array('productId'=>$productId);
+			
+			$ret=$this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp,true);
+			$objResponse->assign("storeList","innerHTML", $ret);
+			
+			return $objResponse;
 		}
         
 }
