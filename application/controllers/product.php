@@ -511,10 +511,19 @@ class Product extends MY_Controller {
 		//echo $content;
 		$dompdf = new DOMPDF();
 		  $dompdf->load_html($content);
-		//  $dompdf->set_paper($_POST["paper"], $_POST["orientation"]);
+		  $dompdf->set_option('enable_remote', TRUE);
+
+		//$dompdf->set_option('enable_css_float', true);
+
+		$dompdf->set_paper('letter', 'landscape');
 		  $dompdf->render();
 
-		  $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+		  $dompdf->stream($data['product']['productName'].".pdf", array("Attachment" => true));
+		  ?>
+		  <script>
+		  window.close();
+		  </script>
+		  <?php
 		}
         
 }
