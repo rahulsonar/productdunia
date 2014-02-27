@@ -29,10 +29,11 @@ class Customer extends MY_Controller {
         public function logout() {
             //$this->cart->destroy();
             $this->user_model->logout();
+			//var_dump($this->session->userdata('interfaceUsername'));
             redirect(site_url());
         }
         
-        public function loginGoogleSubmit()
+        public function loginGoogleSubmit($profile)
         {
             try {
                 $user = $this->openid->getAttributes();
@@ -57,7 +58,12 @@ class Customer extends MY_Controller {
                 redirect(site_url($redirectTo));
             }
         }
-        
+        public function loginGoogleUserAjax() {
+			print_r($_POST['profile']);
+		}
+		public function connectgoogleserver() {
+			//var_dump($_POST);
+		}
         public function loginFacebookSubmit()
         {
             try {

@@ -20,8 +20,8 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('isUsernameAvailable', &$this, 'isUsernameAvailable'));
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
-        //$this->_googleLoginUrl();
-        $this->_facebookLoginUrl();
+        $this->_googleLoginUrl();
+        //$this->_facebookLoginUrl();
     }
     
     public function changeCity($cityId='')

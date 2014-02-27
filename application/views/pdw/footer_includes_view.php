@@ -49,3 +49,4 @@ $(function(){
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.validate.js" ></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.raty.min.js"></script>
 <!-- JS Ends -->
+<!-- Google plus script starts here -->

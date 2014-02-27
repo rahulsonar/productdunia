@@ -437,6 +437,7 @@ class User_model extends CI_Model {
     public function logout() {
         $array_items = array('interfaceUserId' => '', 'interfaceUsername' => '', 'interfaceName' => '', 'interfaceEmail' => '', 'interfaceUserIp' => '', 'logoutUrl' => '', 'redirectTo' => '');
         $this->session->unset_userdata($array_items);
+        $this->session->unset_userdata('interfaceUsername');
         return true;
     }
     

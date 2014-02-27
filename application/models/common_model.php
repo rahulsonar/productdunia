@@ -479,7 +479,7 @@ class Common_model extends CI_Model {
     }
     
 
-    public function getAvailableAtStores($productId,$offset=0, $limit=0)
+
 
     public function getAvailableAtStores($productId,$offset=0,$limit=0)
 
@@ -500,13 +500,6 @@ class Common_model extends CI_Model {
 
 		if($limit) 
         $this->db->limit($limit,$offset);
-
-       // $this->db->limit($offset);
-
-		
-        if($limit) {
-        	$this->db->limit($limit,$offset);
-        }
         
         $query = $this->db->get();
 		
