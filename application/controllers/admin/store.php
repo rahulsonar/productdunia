@@ -9,6 +9,7 @@ class Store extends CI_Controller {
         parent::__construct();
         $this->load->model('store_model');
         $this->xajax->register(XAJAX_FUNCTION, array('toggle_status', &$this, 'toggle_status'));
+        $this->xajax->register(XAJAX_FUNCTION, array('toggle_statusBanner', &$this, 'toggle_statusBanner'));
         $this->xajax->register(XAJAX_FUNCTION, array('toggleStoreStatus', &$this, 'toggleStoreStatus'));
         $this->xajax->register(XAJAX_FUNCTION, array('toggleStoreProfileStatus', &$this, 'toggleStoreProfileStatus'));
         
@@ -20,9 +21,12 @@ class Store extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('assignStoresSubmit', &$this, 'assignStoresSubmit'));
         
         $this->xajax->register(XAJAX_FUNCTION, array('deleteStoreLogoImage', &$this, 'deleteStoreLogoImage'));
+        $this->xajax->register(XAJAX_FUNCTION, array('deleteBannerImage', &$this, 'deleteBannerImage'));
         
         $this->xajax->register(XAJAX_FUNCTION, array('getAreaBy', &$this, 'getAreaBy'));
         $this->xajax->register(XAJAX_FUNCTION, array('getCityBy', &$this, 'getCityBy'));
+        
+        $this->xajax->register(XAJAX_FUNCTION, array('bannerAddSubmit', &$this, 'bannerAddSubmit'));
         
         
         $this->xajax->processRequest();
@@ -110,6 +114,16 @@ class Store extends CI_Controller {
         $objResponse = new xajaxResponse();
         $objResponse->redirect(site_url($this->config->item('controlPanel') . '/store'));
         return $objResponse;
+    }
+    
+    public function toggle_statusBanner($id, $status) {
+    	$this->access_control_model->check_access('toggle_status', __CLASS__, __FUNCTION__, 'basic');
+    	$statusToUpdate = $this->store_model->toggle_statusBanner($id, $status);
+    	$statusMsg = ($status == 'Active') ? ($this->lang->line('BannerInactivated')) : ($this->lang->line('BannerActivated'));
+    	$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $statusMsg . '</div>');
+    	$objResponse = new xajaxResponse();
+    	$objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/banners'));
+    	return $objResponse;
     }
 
     public function storeUserDelete($userId) {
@@ -207,10 +221,18 @@ class Store extends CI_Controller {
         $objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/storeEdit/' . $storeId));
         return $objResponse;
     }
+    public function deleteBannerImage($bannerId,$imageName) {
+    	$this->access_control_model->check_access('deleteBannerImage', __CLASS__, __FUNCTION__, 'basic');
+    	$objResponse = new xajaxResponse();
+    	$statusToUpdate = $this->store_model->deleteBannerImage($bannerId, $imageName);
+    	$objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/bannerEdit/' . $bannerId));
+    	return $objResponse;
+    }
     
     function _uploadStoreLogo() {
         $this->load->helper('string');
-        $config['upload_path'] = $this->config->item('storeLogoPath');
+        
+        $config['upload_path'] = FCPATH.$this->config->item('storeLogoPath');
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '2048';
         $config['max_width'] = '49';
@@ -941,8 +963,150 @@ class Store extends CI_Controller {
                 $data['storeAssigned'] = $storeAssigned;
                 return $data;
 	}
+	
+	
 
     /* Form Element End */
+	
+	public function banners() {
+		$this->access_control_model->check_access('Banners', __CLASS__, __FUNCTION__, 'functional');
+		/* Breadcrumb Start */
+		$this->breadcrumb->append_crumb('Dashboard', site_url($this->config->item('controlPanel') . '/dashboard'));
+		$this->breadcrumb->append_crumb('Banners', site_url($this->config->item('controlPanel') . '/store'));
+		/* Breadcrumb End */
+		$agencyId = $this->session->userdata('storeAgencyId');
+		$bannersList = $this->store_model->getBannerList();
+		$data['bannersList'] = $bannersList;
+		$data['template'] = $this->config->item('controlPanel') . "/banners_view";
+		$data['page_title'] = 'Banners';
+		$temp['data'] = $data;
+		$this->load->view($this->config->item('controlPanel') . "/common_view", $temp);
+	}
+	public function bannerAdd(){
+		$this->access_control_model->check_access('Add Banner', __CLASS__, __FUNCTION__, 'functional');
+		/* Breadcrumb Start */
+		$this->breadcrumb->append_crumb('Dashboard', site_url($this->config->item('controlPanel') . '/dashboard'));
+		$this->breadcrumb->append_crumb('Banners', site_url($this->config->item('controlPanel') . '/store/banners'));
+		$this->breadcrumb->append_crumb('Add Banner', site_url($this->config->item('controlPanel') . '/store/bannerAdd'));
+		/* Breadcrumb End */
+		$positions['name'] = 'position';
+		$positions['attribute'] = 'id = "position" data-rel="chosen" onChange="callChangPosition();"';
+		$positions['options'] = $this->config->item('bannerPositions');
+		$positions['selectedBanner'] = ('');
+		
+		$data['image_field'] = array(
+				'name' => 'image',
+				'id' => 'image',
+				'class' => 'input-xlarge focused',
+				'type'=>'file'
+		);
+		$data['url_field'] = array(
+				'name' => 'url',
+				'id' => 'url',
+				'maxlength' => '100',
+				'size' => '20',
+				'class' => 'input-xlarge focused'
+		);
+		
+		$data['positions']=$positions;
+		$data['action'] = site_url($this->config->item('controlPanel') . '/store/bannerAddSubmit');
+		$data['attributes'] = array('name' => 'frmbannerAdd', 'id' => 'frmbannerAdd', 'class' => 'form-horizontal');
+		$data['template'] = $this->config->item('controlPanel') . "/bannerAdd";
+		$data['page_title'] = 'Add Banner';
+		$temp['data'] = $data;
+		$this->load->view($this->config->item('controlPanel') . "/common_view", $temp);
+	}
+	
+	public function bannerEdit($id){
+		$this->access_control_model->check_access('Add Banner', __CLASS__, __FUNCTION__, 'functional');
+		/* Breadcrumb Start */
+		$this->breadcrumb->append_crumb('Dashboard', site_url($this->config->item('controlPanel') . '/dashboard'));
+		$this->breadcrumb->append_crumb('Banners', site_url($this->config->item('controlPanel') . '/store/banners'));
+		$this->breadcrumb->append_crumb('Add Banner', site_url($this->config->item('controlPanel') . '/store/bannerAdd'));
+		/* Breadcrumb End */
+		
+		$banner=$this->store_model->getBanner($id);
+		
+		
+		$positions['name'] = 'position';
+		$positions['attribute'] = 'id = "position" data-rel="chosen" onChange="callChangPosition();"';
+		$positions['options'] = $this->config->item('bannerPositions');
+		$positions['selectedPosition'] = ($banner->position);
+	
+		$data['image_field'] = array(
+				'name' => 'image',
+				'id' => 'image',
+				'class' => 'input-xlarge focused',
+				'type'=>'file'
+		);
+		$data['url_field'] = array(
+				'name' => 'url',
+				'id' => 'url',
+				'maxlength' => '100',
+				'size' => '20',
+				'class' => 'input-xlarge focused',
+				'value'=>$banner->url
+		);
+		
+		
+		$data['image']=$banner->image;
+		$data['bannerId']=$banner->id;
+		$data['url']=$banner->url;
+		$data['position']=$banner->position;
+		$data['status']=$banner->status;
+		
+		$data['positions']=$positions;
+		$data['action'] = site_url($this->config->item('controlPanel') . '/store/bannerAddSubmit');
+		$data['attributes'] = array('name' => 'frmbannerAdd', 'id' => 'frmbannerAdd', 'class' => 'form-horizontal');
+		$data['template'] = $this->config->item('controlPanel') . "/bannerAdd";
+		$data['page_title'] = 'Add Banner';
+		$temp['data'] = $data;
+		$this->load->view($this->config->item('controlPanel') . "/common_view", $temp);
+	}
+	
+	public function _uploadBannerImg() {
+		$this->load->helper('string');
+		
+		$config['upload_path'] = FCPATH.$this->config->item('bannerUploadPath');
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['file_name'] = random_string('unique');
+		$this->load->library('upload', $config);
+		
+		if (!$this->upload->do_upload('image')) {
+			$uploadStatus = array('error' => $this->upload->display_errors());
+		} else {
+			$uploadStatus = array('upload_data' => $this->upload->data());
+		}
+		return $uploadStatus;
+	}
+	public function bannerAddSubmit($formData) {
+			    
+         
+	if($_FILES['image']['name']!=""){
+            $uploadStatus = $this->_uploadBannerImg();
+            if (isset($uploadStatus['error'])) {
+                $error = $uploadStatus['error'];
+                $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $error . '</div>');
+                redirect(site_url($this->config->item('controlPanel') . '/store/banners'));
+            }
+            $fileName = $uploadStatus['upload_data']['file_name'];
+        }else{
+            $fileName = $this->input->post('imageFile');
+        }
+        
+        
+        if(!empty($_POST['url'])) {
+        	$statusMsg=$this->store_model->saveBanner($fileName);
+        	if(isset($statusMsg['error'])) {
+        		$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line($statusMsg['error']) . '</div>');
+        	}
+        	else {
+        		$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('bannersAddedSuccess') . '</div>');
+        	}
+        	redirect(site_url($this->config->item('controlPanel')."/store/banners"));
+        }
+        
+	}
 }
 
 ?>

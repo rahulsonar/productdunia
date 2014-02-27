@@ -35,6 +35,17 @@ class Store_model extends CI_Model {
         $this->db->update('system_users', $data);
         return $statusToUpdate;
     }
+    function toggle_statusBanner($id, $status) {
+    	$statusToUpdate = ($status == 'Active') ? ('Inactive') : ('Active');
+    	$data = array(
+    			'status' => $statusToUpdate,
+    			'modify_date' => date("Y-m-d H:i:s"),
+    			'modify_by' => $this->session->userdata('sysuser_loggedin_user')
+    	);
+    	$this->db->where('id', $id);
+    	$this->db->update('banners', $data);
+    	return $statusToUpdate;
+    }
 
     function deleteStoreUser($userid) {
         $data = array(
@@ -233,6 +244,19 @@ class Store_model extends CI_Model {
         $this->db->where('storeId', $storeId);
         $this->db->update('stores', $data);
         return TRUE;
+    }
+    function deleteBannerImage($bannerId, $imageName) {
+    
+    	$file_name = $imageName;
+    	$file_path = getcwd() . $this->config->item('bannerUploadPath') . $file_name;
+    	@unlink($file_path);
+    
+    	$data = array(
+    			'image' => '',
+    	);
+    	$this->db->where('id', $bannerId);
+    	$this->db->update('banners', $data);
+    	return TRUE;
     }
 
     function toggleStoreStatus($storeId, $status) {
@@ -515,6 +539,76 @@ class Store_model extends CI_Model {
                     $this->db->insert('user_has_stores', $userStoreData);
             }
             return true;
+    }
+    
+    public function getBannerList() {
+    	$data = array();
+    	$this->db->select('b.*');
+    	$this->db->where('b.status != ', 'Delete');
+    	$this->db->from('banners b');
+    	$query = $this->db->get();
+    	foreach ($query->result() as $row){
+    		$data[$row->id] = $row;
+    	}
+    	return $data;
+    }
+    public function getBanner($id) {
+    	$data = array();
+    	$this->db->select('b.*');
+    	$this->db->where('b.status != ', 'Delete');
+    	$this->db->where('b.id  ', $id);
+    	$this->db->from('banners b');
+    	$query = $this->db->get();
+    	foreach ($query->result() as $row){
+    		$data = $row;
+    	}
+    	return $data;
+    }
+    
+    public function chkUniquePosition($position,$bannerId=0) {
+    		$sql="select * from banners where 1 AND position='".$position."' AND status='Active' ";
+    		if(!empty($bannerId))
+    			$sql.=" AND id!=".$bannerId;
+    		
+    	$query= $this->db->query($sql);
+    	if ($query->num_rows() > 0) {
+    		$chk=false;
+    	}
+    	else {
+    		$chk=true;
+    	}
+    	return $chk;
+    }
+    
+    public function saveBanner($filename='') {
+    	
+    	
+    	$bannerId=$this->input->post('bannerId');
+    	
+    	if($filename!='')
+    	$data['image']=$filename;
+    
+    	$data['url']=$this->input->post('url');
+    	$data['position']=$this->input->post('position');
+    	$data['status']='Active';
+    	$data['modify_date']=date('Y-m-d H:i:s');
+    	$data['modify_by']=$this->session->userdata('sysuser_loggedin_user');
+    	
+    	// check unique active position
+    	$chk=$this->chkUniquePosition($data['position'],$bannerId);
+    	if(!$chk) {
+    			
+    		return array('error'=>'banner_already_exists');
+    	}
+    	if(!empty($bannerId)) {
+    			$this->db->where('id',$bannerId);
+    		$this->db->update('banners',$data);
+    		
+    	}
+    	else 
+    	$this->db->insert('banners',$data);
+    	
+    	return array('msg'=>'Banner Added Successfully');
     }
 
 }

@@ -208,6 +208,14 @@
         $lang['productReviewActivated'] = "Product review activated successfully.";
         $lang['productReviewInactivated'] = "Product review inactivated successfully.";
         $lang['productReviewDeleted'] = "Product review deleted successfully.";
+        
+        $lang['bannerPosition']='Position';
+        $lang['bannerImage']='Banner Image';
+        $lang['bannerUrl']='URL';
+        $lang['bannersAddedSuccess']='Banner Added Successfully';
+        $lang['BannerInactivated'] = "Banner inactivated successfully.";
+        $lang['BannerActivated'] = "Banner activated successfully.";
+        $lang['banner_already_exists']='Banner already exists at this position';
         /* Product End */
 
 

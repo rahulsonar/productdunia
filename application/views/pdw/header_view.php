@@ -167,9 +167,10 @@ line-height: 1.5;
                             <h2 class="majoretra">Major Area</h2>
 							
                             <ul>
+                            <?php $areasSelected=$this->session->userdata('areasSelected'); ?>
                                 <?php foreach ($majorAreas as $areaId => $areaName) { ?>
                                     <li class="majorArealis" id="major_<?php echo $areaId; ?>">
-									<input <?php if(in_array($areaId,$this->session->userdata('areasSelected'))) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+									<input <?php if(!empty($areasSelected) && in_array($areaId,$areasSelected)) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
@@ -194,7 +195,7 @@ line-height: 1.5;
                             <ul>
                                 <?php foreach ($allAreas as $areaId => $areaName) { ?>
                                     <li class="majorArealis" id="all_<?php echo $areaId; ?>">
-									<input <?php if(in_array($areaId,$this->session->userdata('areasSelected'))) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="all_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
+									<input <?php if(!empty($areasSelected) && in_array($areaId,$areasSelected)) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="all_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
                             <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
@@ -204,7 +205,7 @@ line-height: 1.5;
 					
                     <form name="frmSearchKeyword" id="frmSearchKeyword" method="post" action="<?php echo site_url('product/search'); ?>">
                         <input type="hidden" value="" name="keyword" id="keyword" />
-                        <input class="inpsearch rounded" id="topSearchBox" type="text" value="<?php echo $keyword; ?>" placeholder="Enter Product Name you want to search eg. Samsung Galaxy"  />
+                        <input class="inpsearch rounded" id="topSearchBox" type="text" value="<?php echo (!empty($keyword)?$keyword:""); ?>" placeholder="Enter Product Name you want to search eg. Samsung Galaxy"  />
                         <input type="submit" class="btnsearch rounded" value="search" />
                     </form>
                     <a href="#" class="advsearch">WINDOW SHOPPING</a>

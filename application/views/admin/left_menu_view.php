@@ -20,6 +20,7 @@
             <li><a class="ajax-link" href="<?php echo site_url($this->config->item('controlPanel').'/store'); ?>"><i class="icon-user"></i><span class="hidden-tablet"> Store User</span></a></li>
             <li><a class="ajax-link" href="<?php echo site_url($this->config->item('controlPanel').'/store/storeProfiles'); ?>"><i class="icon-briefcase"></i><span class="hidden-tablet"> Store Profile</span></a></li>
             <li><a class="ajax-link" href="javascript:void(0);" id="addStoreProduct"><i class="icon-briefcase"></i><span class="hidden-tablet"> Add Store Products</span></a></li>
+            <li><a class="ajax-link" href="<?php echo site_url($this->config->item('controlPanel').'/store/banners'); ?>"><i class="icon-briefcase"></i><span class="hidden-tablet"> Add Banners</span></a></li>
             
             <li class="nav-header hidden-tablet">System</li>
             <li><a class="ajax-link" href="<?php echo site_url($this->config->item('controlPanel').'/system'); ?>"><i class="icon-user"></i><span class="hidden-tablet"> System User</span></a></li>

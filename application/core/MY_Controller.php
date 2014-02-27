@@ -108,7 +108,12 @@ class MY_Controller extends CI_Controller {
               'contact/email',
             );
             $this->openid->returnUrl = site_url('customer/loginGoogleSubmit');
+            try {
             $googleLoginUrl = $this->openid->authUrl();
+            }
+            catch(Exception $e) {
+            	
+            }
             $session_data['googleLoginUrl'] = $googleLoginUrl;
             $this->session->set_userdata($session_data);
         }

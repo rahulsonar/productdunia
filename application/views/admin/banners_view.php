@@ -1,5 +1,5 @@
 <!-- content starts -->
-	<a class="btn btn-large" href="<?php echo site_url($this->config->item('controlPanel') . '/store/storeUserSignup') ?>"><i class="icon-plus"></i> Add Store User</a>
+	<a class="btn btn-large" href="<?php echo site_url($this->config->item('controlPanel') . '/store/bannerAdd') ?>"><i class="icon-plus"></i> Add New Banner</a>
 	<div class="row-fluid sortable">
 		<div class="box span12">
 			<div class="box-header well" data-original-title>
@@ -14,20 +14,29 @@
 								  <th>Position</th>
 								  <th>Image</th>
 								  <th>URL</th>
+                                                              				  
 								  <th>Status</th>
-								  
+								  <th>Actions</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
-							<?php foreach ($bannersList as  $bannerId=> $banner) { ?>
+						  
+							<?php foreach ($bannersList as $id => $banner) { ?>
 							<tr>
 								<td><?php echo $banner->position; ?></td>
-								<td><?php echo $banner->image; ?></td>
+								<td>
+								<?php
+								if(!is_dir(FCPATH.$this->config->item('bannerUploadPath') ."/". $banner->image) && file_exists(FCPATH.$this->config->item('bannerUploadPath') ."/". $banner->image)) {?>
+								<a href="#" onclick="window.open('<?php echo base_url() . $this->config->item('bannerUploadPath') ."/". $banner->image; ?>','BannerImg'); return false;">
+                                    <img alt="BannerImg" width="50" src="<?php echo base_url() . $this->config->item('bannerUploadPath') ."/". $banner->image; ?>">
+                                </a>
+                                <?php } ?>
+                                </td>
 								<td><?php echo $banner->url; ?></td>
-                                                    
+                                                         
 								
 								<td class="center">
-									<a href="javascript:void(0)" onClick="xajax_toggle_status('<?php echo $user->id; ?>','<?php echo $user->status; ?>');"><span class="label <?php if($user->status=='Active'){?>label-success<?php } ?>"><?php echo $user->status?></span></a>
+									<a href="javascript:void(0)" onClick="xajax_toggle_statusBanner('<?php echo $banner->id; ?>','<?php echo $banner->status; ?>');"><span class="label <?php if($banner->status=='Active'){?>label-success<?php } ?>"><?php echo $banner->status?></span></a>
 								</td>
 								<td class="center">
 									<a class="btn btn-info" href="<?php echo site_url($this->config->item('controlPanel') . '/store/bannerEdit/'.$banner->id);?>">
