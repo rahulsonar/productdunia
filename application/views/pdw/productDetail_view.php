@@ -168,6 +168,7 @@ ul#thumblist li a.zoomThumbActive{
 
 <script type="text/javascript">
 
+        
     $(document).ready(function () {
         
         $('.prodRaty').raty({

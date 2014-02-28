@@ -136,7 +136,16 @@
                     <table class="storebox">
                         <tr>
                             <td>
-                                <a href="#" class="btncomman rounded btnshadow">BUY NOW</a> <a href="#" class="btncomman rounded btnshadow">BARGAIN</a>
+                            <?php if ($this->session->userdata('interfaceUsername') == '') {
+                            	$buyNowfunc="shortLogin('buyNow','".$storeId."');";
+                            	$targetBox='#shortLogin';
+                            } 
+                            else {
+								$buyNowfunc='buyNow('.$storeId.');';
+								$targetBox='#buyNowBox';
+							}
+							?>
+                                <a href="<?php echo $targetBox; ?>" id="buyNow_<?php echo $storeId; ?>" class="btncomman rounded btnshadow">BUY NOW</a> <a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow">BARGAIN</a>
                             </td>
                         </tr>
                         <tr>

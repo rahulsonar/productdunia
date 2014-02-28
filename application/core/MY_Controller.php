@@ -17,6 +17,7 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('changeCity', &$this, 'changeCity'));
         $this->xajax->register(XAJAX_FUNCTION, array('signupSubmit', &$this, 'signupSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('loginSubmit', &$this, 'loginSubmit'));
+        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit1'));
         $this->xajax->register(XAJAX_FUNCTION, array('isUsernameAvailable', &$this, 'isUsernameAvailable'));
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
@@ -95,6 +96,10 @@ class MY_Controller extends CI_Controller {
             $objResponse->Alert("Invalid login credentials.");
         }
         return $objResponse;
+    }
+    
+    public function shortLoginSubmit($formData) {
+    	
     }
     
     function _googleLoginUrl(){

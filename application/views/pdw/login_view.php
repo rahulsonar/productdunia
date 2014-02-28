@@ -65,4 +65,6 @@ $(document).ready(function() {
             <a href="#signup" class="btnft signupinline">Sign Up Now</a>
         </div>
     </div>
+    
+   
 </div>

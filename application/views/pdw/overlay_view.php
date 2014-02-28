@@ -1,6 +1,7 @@
 <?php $this->load->view($this->config->item('themeCode')."/login_view"); ?>
 <?php $this->load->view($this->config->item('themeCode')."/forgotPassword_view"); ?>
 <?php $this->load->view($this->config->item('themeCode')."/signup_view"); ?>
+<?php $this->load->view($this->config->item('themeCode')."/shortLogin_view"); ?>
 <!-- shot login -->
 <div style="display:none">
     <div id="shotlogin"> 

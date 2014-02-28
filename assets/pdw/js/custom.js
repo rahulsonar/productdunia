@@ -253,6 +253,11 @@ $('.signininline').colorbox({ inline:true,
        $(this).colorbox.resize(); 
     }    
 });
+$('.btncomman').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
 
 $('.signupinline').colorbox({ inline:true, 
     onComplete : function() { 
