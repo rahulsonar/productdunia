@@ -17,7 +17,8 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('changeCity', &$this, 'changeCity'));
         $this->xajax->register(XAJAX_FUNCTION, array('signupSubmit', &$this, 'signupSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('loginSubmit', &$this, 'loginSubmit'));
-        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit1'));
+        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit'));
+        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginConfirmSubmit', &$this, 'shortLoginConfirmSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('isUsernameAvailable', &$this, 'isUsernameAvailable'));
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
@@ -99,7 +100,43 @@ class MY_Controller extends CI_Controller {
     }
     
     public function shortLoginSubmit($formData) {
+    	foreach ($formData as $id => $field) {
+    		$_POST[$id] = $field;
+    	}
+    	$objResponse = new xajaxResponse();
+    	$loginData['key']=$this->input->post('signupEmail');
+    	if (filter_var($email_a, FILTER_VALIDATE_EMAIL)) {
+    		$loginData['type']='email';
+    	}
+    	else {
+    		$loginData['type']='mobile';
+    	}
+    	$response = $this->user_model->shortlogin($loginData);
     	
+    	if ($response) {
+    		$objResponse->script('showConfirmShortLogin();');
+    	} else {
+    		$objResponse->Alert("Invalid login credentials.");
+    	}
+    	return $objResponse;
+    }
+    
+    public function shortLoginConfirmSubmit($formData) {
+    	foreach ($formData as $id => $field) {
+    		$_POST[$id] = $field;
+    	}
+    	$objResponse = new xajaxResponse();
+    	$password=$this->input->post('signupPass');
+    	$userTmpPass=$this->session->userdata('userTmpPass');
+    	if($password==$userTmpPass) {
+    		$this->user_model->shortloginConfirm();
+    		$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+            $this->session->unset_userdata('redirectTo');
+            $objResponse->redirect(site_url($redirectTo));
+    	}
+    	else {
+    		$objResponse->Alert("Invalid login Password.");
+    	}
     }
     
     function _googleLoginUrl(){

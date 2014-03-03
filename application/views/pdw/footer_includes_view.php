@@ -42,6 +42,11 @@ $(function(){
 	});
 	})
 })(jQuery);
+
+
+function showConfirmShortLogin() {
+	 $.colorbox({inline:true, href:'#confirmShortLogin'});
+}
 </script>
 
 <!-- JS Start -->

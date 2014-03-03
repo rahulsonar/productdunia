@@ -465,6 +465,56 @@ class User_model extends CI_Model {
             return false;
         }
     }
+    
+    public function shortlogin($data) {
+    	// check if user exists
+    	$table_name='customers';
+    	$ret=array();
+    	$this->db->where($data['type'],$data['key']);
+    	$this->db->select('*')->from($table_name);
+    	$query=$this->db->get();
+    	if($query->num_rows() > 0) {
+    		$customerData=$query->row_array();
+    		$customerData['password']=$this->encrypt->decode($customerData['password']);
+    	}
+    	else {
+    		$newCustomer=array();
+    		
+    		$newPass=rand(100000,999999);
+    		$customerData[$data['type']]=$data['key'];
+    		$customerData['status']='Active';
+    		$customerData['username']=$data['key'];
+    		$customerData['create_date']=date("Y-m-d H:i:s");
+    		$customerData['create_by']='self';
+    		$customerData['password']=$this->encrypt->encode($newPass);
+    		$this->db->insert($table_name,$customerData);
+    		$customerData['customerId']=$this->db->insert_id();
+    		$customerData['password']=$newPass;
+    	}
+    	
+    	$tmpData=array('userTmpPass'=>$customerData['password'],
+    			'customerdata'=>$customerData,'data1'=>$data);
+    	$this->session->set_userdata($tmpData);
+    	return $customerData; 
+		
+    	// set session
+    	/*
+    	*/
+    
+    }
+    public function shortloginConfirm() {
+    		$customerData=$this->session->userdata('customerdata');
+    		$data=$this->session->userdata('data1');
+    	$session_data['interfaceUserId'] = $customerData['customerId'];
+    	$session_data['interfaceUsername'] = $data['key'];
+    	$session_data['interfaceName'] = '';
+    	$session_data['interfaceEmail'] = $data['key'];
+    	$session_data['interfaceUserIp'] = $this->input->ip_address();
+    	$session_data['interfaceUserMobile'] =$data['key'];
+    	$session_data['interfaceUserPassword'] =$customerData['password'];
+    	$this->session->set_userdata($session_data);
+    	return true;
+    }
 
 }
 
