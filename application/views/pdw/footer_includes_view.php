@@ -45,10 +45,13 @@ $(function(){
 
 
 function showConfirmShortLogin() {
-	 $.colorbox({inline:true, href:'#confirmShortLogin'});
+	 $.colorbox({inline:true, href:'#verification'});
+}
+function setBuyNowId(storeId) {
+	$("#BuyNowStoreId").val(storeId);
 }
 </script>
-
+<input type="hidden" name="BuyNowStoreId" id="BuyNowStoreId" value="" />
 <!-- JS Start -->
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.watermark.min.js" ></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.validate.js" ></script>

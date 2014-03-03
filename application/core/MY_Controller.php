@@ -104,17 +104,24 @@ class MY_Controller extends CI_Controller {
     		$_POST[$id] = $field;
     	}
     	$objResponse = new xajaxResponse();
-    	$loginData['key']=$this->input->post('signupEmail');
-    	if (filter_var($email_a, FILTER_VALIDATE_EMAIL)) {
+    	$email=$this->input->post('shortLoginEmail');
+    	$mobile=$this->input->post('shortLoginMobile');
+    	
+    	
+    	
+    	if (!empty($email)) {
     		$loginData['type']='email';
+    		$loginData['key']=$email;
     	}
     	else {
     		$loginData['type']='mobile';
+    		$loginData['key']=$mobile;
     	}
+    	
     	$response = $this->user_model->shortlogin($loginData);
     	
     	if ($response) {
-    		$objResponse->script('showConfirmShortLogin();');
+    		$objResponse->script('showConfirmShortLogin(); console.log("'.$this->session->userdata('userTmpPass').'");');
     	} else {
     		$objResponse->Alert("Invalid login credentials.");
     	}
@@ -132,11 +139,12 @@ class MY_Controller extends CI_Controller {
     		$this->user_model->shortloginConfirm();
     		$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
             $this->session->unset_userdata('redirectTo');
-            $objResponse->redirect(site_url($redirectTo));
+            $objResponse->script('window.location.reload();');
     	}
     	else {
     		$objResponse->Alert("Invalid login Password.");
     	}
+    	return $objResponse;
     }
     
     function _googleLoginUrl(){
@@ -154,7 +162,7 @@ class MY_Controller extends CI_Controller {
             $googleLoginUrl = $this->openid->authUrl();
             }
             catch(Exception $e) {
-            	
+            	$googleLoginUrl='';
             }
             $session_data['googleLoginUrl'] = $googleLoginUrl;
             $this->session->set_userdata($session_data);

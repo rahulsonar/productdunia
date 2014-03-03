@@ -1,10 +1,73 @@
 <?php $this->load->view($this->config->item('themeCode')."/login_view"); ?>
 <?php $this->load->view($this->config->item('themeCode')."/forgotPassword_view"); ?>
 <?php $this->load->view($this->config->item('themeCode')."/signup_view"); ?>
-<?php $this->load->view($this->config->item('themeCode')."/shortLogin_view"); ?>
+<?php //$this->load->view($this->config->item('themeCode')."/shortLogin_view"); ?>
+
+<script type="text/javascript">
+;(function($) { 
+$(document).ready(function() {
+	$("#frmShortLogin").validate({
+		rules: {
+			signupEmail: {
+				required: true
+			}
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_shortLoginSubmit(xajax.getFormValues('frmShortLogin'));
+		}
+		
+	});	
+
+	$("#shortLoginEmail").keyup(function(){
+		var str=$(this).val();
+		if(str!='') {
+			$("#shortLoginMobile").val('');
+			$("#shortLoginMobile").attr('disabled','disabled');
+		}
+		else {
+			$("#shortLoginMobile").removeAttr('disabled');
+		}
+		});
+
+	$("#shortLoginMobile").keyup(function(){
+		var str=$(this).val();
+		if(str!='') {
+			$("#shortLoginEmail").val('');
+			$("#shortLoginEmail").attr('disabled','disabled');
+		}
+		else {
+			$("#shortLoginEmail").removeAttr('disabled');
+		}
+		});
+
+	$("#frmShortConfirm").validate({
+		rules: {
+			signupPass: {
+				required: true,
+				number:true
+			}
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_shortLoginConfirmSubmit(xajax.getFormValues('frmShortConfirm'));
+		}
+		
+	});	
+})
+})(jQuery); 
+</script>
 <!-- shot login -->
 <div style="display:none">
-    <div id="shotlogin"> 
+    <div id="shotlogin">
         <div class="hearderholder">New Customer <span class="smalltextbox">(Short Log In)</span></div>
         <div class="signaddbox">
             <table class="signaddtable">
@@ -45,19 +108,19 @@
                     <!-- <h2>NEW CUSTOMER</h2>
                     <p>If you dont thave an accont but want to login quickly.</p> -->
 
-                    <form>
+                    <form id="frmShortLogin" name="frmShortLogin">
                         <div class="frmholder">
                             <label>Email Address</label>
-                            <input type="text" class="inplog"  />
+                            <input type="text" name="shortLoginEmail" id="shortLoginEmail" class="inplog"  />
                         </div>
 
                         <div class="frmholder">
                             <label>Mobile Number</label>
-                            <input type="text" class="inplog"  />
+                            <input type="text" name="shortLoginMobile" id="shortLoginMobile" class="inplog"  />
                         </div>
 
                         <div class="btnholder">
-                            <input type="button" class="btnprced" value="PROCEED"  />
+                            <input type="submit" class="btnprced" value="PROCEED"  />
                         </div>
 
                     </form>
@@ -99,16 +162,16 @@ Product Duniya. </p>
                 you are not a robot! </p>
             <p><a href="#" class="und">Click here to change your mobile number</a></p>
 
-            <form>
+            <form id="frmShortConfirm" name="frmShortConfirm">
                 <div class="frmholder">
                     <label>Verification Code</label>
-                    <input type="text" class="inplog"  />
+                    <input type="text" name="signupPass" id="signupPass" class="inplog"  />
                 </div>
 
 
 
                 <div class="btnholder">
-                    <input type="button" class="btnprced" value="Submit"  />
+                    <input type="submit" class="btnprced" value="Submit"  />
                 </div>
 
             </form>             

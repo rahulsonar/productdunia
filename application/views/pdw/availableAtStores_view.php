@@ -138,7 +138,7 @@
                             <td>
                             <?php if ($this->session->userdata('interfaceUsername') == '') {
                             	$buyNowfunc="shortLogin('buyNow','".$storeId."');";
-                            	$targetBox='#shortLogin';
+                            	$targetBox='#shotlogin';
                             } 
                             else {
 								$buyNowfunc='buyNow('.$storeId.');';
