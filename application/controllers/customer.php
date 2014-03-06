@@ -146,6 +146,90 @@ class Customer extends MY_Controller {
             $objResponse->script("window.location.reload();");
             return $objResponse;
         }
+        
+		public function twitterLogin() {
+			$twitter_data=$this->session->userdata('twitter');
+			if (empty($twitter_data['access_token']) || empty($twitter_data['access_token']['oauth_token']) || empty($twitter_data['access_token']['oauth_token_secret'])) {
+				redirect(site_url('customer/twitterRedirect'));
+			}
+			else {
+				redirect(site_url('customer/twitterLoginSite'));
+			}
+			
+		}
+		public function twitterRedirect() {
+			
+			$config=array();
+			$config['consumer_key']=$this->config->item('twitter_api_key');
+			$config['consumer_secret']=$this->config->item('twitter_secret');
+			
+			$this->load->library('TwitterOAuth',$config);
+			 
+			/* Get temporary credentials. */
+			$request_token = $this->twitteroauth->getRequestToken(site_url($this->config->item('twitter_oauth_callback')));
+var_dump($request_token);
+			/* Save temporary credentials to session. */
+			$twitter_data['oauth_token'] = $token = $request_token['oauth_token'];
+			$twitter_data['oauth_token_secret'] = $request_token['oauth_token_secret'];
+			$this->session->set_userdata(array('twitter'=>$twitter_data));
+			if(200==$this->twitteroauth->http_code) {
+				$url = $this->twitteroauth->getAuthorizeURL($token);
+				redirect($url);
+				//echo $url;
+			}
+			
+			
+		}
+        public function twitteroauthcallback() {
+						
+			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
+			$twitter_data=$this->session->userdata('twitter');
+			var_dump($twitter_data);
+			$config=array();
+			$config['consumer_key']=$this->config->item('twitter_api_key');
+			$config['consumer_secret']=$this->config->item('twitter_secret');
+			$config['oauth_token']=$twitter_data['oauth_token'];
+			$config['oauth_token_secret']=$twitter_data['oauth_token_secret'];
+			
+			$this->load->library('TwitterOAuth',$config);
+			/* Request access tokens from twitter */
+			$access_token = $this->twitteroauth->getAccessToken($_REQUEST['oauth_verifier']);
+
+			/* Save the access tokens. Normally these would be saved in a database for future use. */
+			$twitter_data['access_token'] = $access_token;
+
+			/* Remove no longer needed request tokens */
+			$this->session->set_userdata(array('twitter'=>$twitter_data));
+
+			/* If HTTP response is 200 continue otherwise send to connect page to retry */
+			if (200 == $this->twitteroauth->http_code) {
+			  /* The user has been verified and the access tokens can be saved for future use */
+			  
+			  redirect(site_url('customer/twitterLoginSite'));
+			} else {
+			  /* Save HTTP status for error dialog on connnect page.*/
+			  redirect(site_url('customer/twitterRedirect'));
+			}
+        }
+		public function twitterLoginSite() {
+		$twitter_data=$this->session->userdata('twitter');
+        	$access_token = $twitter_data['access_token'];
+			$config=array();
+			$config['consumer_key']=$this->config->item('twitter_api_key');
+			$config['consumer_secret']=$this->config->item('twitter_secret');
+			$config['oauth_token']=$access_token['oauth_token'];
+			$config['oauth_token_secret']=$access_token['oauth_token_secret'];
+			
+			$this->load->library('TwitterOAuth',$config);
+			$content = $this->twitteroauth->get('account/verify_credentials');
+			$this->user_model->signupTwitterUser($content);
+			?>
+			<script>
+			window.opener.location.reload();
+			window.close();
+			</script>
+			<?php
+		}
 }
 
 /* End of file welcome.php */

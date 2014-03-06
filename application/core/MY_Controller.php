@@ -9,6 +9,9 @@ class MY_Controller extends CI_Controller {
             'appId' => $this->config->item('appId'),
             'secret' => $this->config->item('secret')
         );
+        
+       
+        
         $this->load->library('facebook', $fb_config);
         
         $google_config = array('host' => base_url());
@@ -23,6 +26,7 @@ class MY_Controller extends CI_Controller {
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
         $this->_googleLoginUrl();
+        $this->twitterLoginUrl();
         //$this->_facebookLoginUrl();
     }
     
@@ -199,6 +203,9 @@ class MY_Controller extends CI_Controller {
                 $response = $this->user_model->signupFacebookUser($user_profile);
 			}
         }
+    }
+    public function twitterLoginUrl() {
+		
     }
     
 }

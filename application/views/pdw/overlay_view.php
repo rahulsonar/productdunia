@@ -23,8 +23,9 @@ $(document).ready(function() {
 		
 	});	
 
-	$("#shortLoginEmail").keyup(function(){
+	$("#shortLoginEmail").change(function(){
 		var str=$(this).val();
+		
 		if(str!='') {
 			$("#shortLoginMobile").val('');
 			$("#shortLoginMobile").attr('disabled','disabled');
@@ -34,7 +35,7 @@ $(document).ready(function() {
 		}
 		});
 
-	$("#shortLoginMobile").keyup(function(){
+	$("#shortLoginMobile").change(function(){
 		var str=$(this).val();
 		if(str!='') {
 			$("#shortLoginEmail").val('');

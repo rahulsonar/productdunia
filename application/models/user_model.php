@@ -402,6 +402,45 @@ class User_model extends CI_Model {
             return false;
         }
     }
+	
+	function signupTwitterUser($userFbData) {
+	
+        $userFbData=(array)$userFbData;
+		$firstName = $userFbData['name'];
+		
+        $email = (!empty($userFbData['email'])) ? ($userFbData['email']) : ($userFbData['id']);
+        $fb_id = $userFbData['id'];
+        
+        $email = $email;        
+        $username = $email;
+        $status = 'Active';
+        $create_date = date("Y-m-d H:i:s");
+        $create_by = 'self';
+        $login = FALSE;
+
+        $data['username'] = $username;
+        $queryUser = $this->db->get_where('customers', $data);
+        if ($queryUser->num_rows > 0) {
+            $userData['fbId'] = $fb_id;
+            $userData['name'] = $firstName;
+            $this->db->where('username', $username);
+            $this->db->update('customers', $userData);
+            $login = true;
+        } else {
+            $sql = "INSERT INTO customers (fbId, name, email, username, status, create_date, create_by) VALUES (" . $this->db->escape($fb_id) . ", " . $this->db->escape($firstName) . ", " . $this->db->escape($email) . ", " . $this->db->escape($username) . ", " . $this->db->escape($status) . ", " . $this->db->escape($create_date) . ", " . $this->db->escape($create_by) . ") ON DUPLICATE KEY UPDATE fbId=" . $this->db->escape($fb_id);
+            $this->db->query($sql);
+            $login = true;
+        }
+            
+        if ($login) {
+            $loginData['username'] = $username;
+            $skipPass = '1';
+            $response = $this->login($loginData, $skipPass);
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public function login($loginData, $skipPass = "0") {
         $table_name = "customers as mc";
