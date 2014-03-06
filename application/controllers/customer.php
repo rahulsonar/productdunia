@@ -167,7 +167,7 @@ class Customer extends MY_Controller {
 			 
 			/* Get temporary credentials. */
 			$request_token = $this->twitteroauth->getRequestToken(site_url($this->config->item('twitter_oauth_callback')));
-var_dump($request_token);
+
 			/* Save temporary credentials to session. */
 			$twitter_data['oauth_token'] = $token = $request_token['oauth_token'];
 			$twitter_data['oauth_token_secret'] = $request_token['oauth_token_secret'];
@@ -184,7 +184,7 @@ var_dump($request_token);
 						
 			/* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
 			$twitter_data=$this->session->userdata('twitter');
-			var_dump($twitter_data);
+			
 			$config=array();
 			$config['consumer_key']=$this->config->item('twitter_api_key');
 			$config['consumer_secret']=$this->config->item('twitter_secret');
