@@ -29,20 +29,30 @@
             Sort By: 
             <select>
                 <option>Availability</option>
+				<option>Price Low-High</option>
+				<option>Price High-Low</option>
             </select>
         </div>
         <div class="sortright">
             Filter Area: 
-            <select>
-                <option>All Areas</option>
+			<?php
+			$areaNames=$this->common_model->getSelectedAreaNames2($this->session->userdata('areasSelected'));
+			?>
+            <select id="areaFilter" name="areaFilter" onchange="javascript:sortAreas(this.value);">
+                <option value="">All Areas</option>
+				<?php
+				foreach($areaNames as $areaId=>$aName) { ?>
+				<option <?php if($filters['areaId']==$areaId) { ?>selected="selected" <?php } ?> value="<?php echo $areaId; ?>"><?php echo $aName; ?></option>
+				<?php }
+				?>
             </select>
         </div>
-        <div class="sortright">
+       <!-- <div class="sortright">
             Sort By: 
             <select>
                 <option>Price Low-High</option>
             </select>
-        </div>
+        </div>-->
     </div>
 
     <?php foreach ($availableAtStores as $storeId => $storeArr) { ?>
@@ -193,9 +203,15 @@
 	function SavePDF(product_id) {
 		window.open('<?php echo site_url('product/pdf/'); ?>/'+product_id);
 	}
+	 function sortAreas(sortVal){
+        xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>,sortVal);
+    }
+	$(function(){
 	
 	$('.loadMoreItems').click(function(){
 		xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>);
 	});
+	});
+	
 </script>
 </div>
