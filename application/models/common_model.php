@@ -483,7 +483,7 @@ class Common_model extends CI_Model {
 
     public function getAvailableAtStores($productId,$offset=0,$limit=0,$filters=array(),$sorting=array())
     {
-        //$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
+		//$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
         $availableAtStores = array();
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
@@ -498,7 +498,12 @@ class Common_model extends CI_Model {
         $this->db->from('stores_has_products as shp');
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
         $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
-        //$this->db->order_by('rand()', 'DESC');
+		if(!empty($sorting['availability'])) {
+			$this->db->order_by('shp.qty', 'DESC');
+		}
+		else if(!empty($sorting['price'])) {
+		$this->db->order_by('shp.sellPrice', $sorting['price']);
+		}
 
 		if($limit) 
         $this->db->limit($limit,$offset);
