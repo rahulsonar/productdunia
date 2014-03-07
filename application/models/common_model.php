@@ -993,6 +993,22 @@ class Common_model extends CI_Model {
 			//$names=implode(",",$data);
 			return $data;
 	}
+	public function getBannersByPosition($position) {
+		$tableName='banners';
+		if(is_array($position)) 
+		$this->db->where_in('position',$position);
+		else 
+		$this->db->where('position',$position);
+		
+		$this->db->select('*');
+		$this->db->from($tableName);
+		$query=$this->db->get();
+		$data=array();
+		foreach($query->result() as $row) {
+			$data[$row->position]=$row;
+		}
+		return $data;
+	}
 }
 
 
