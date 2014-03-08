@@ -4,7 +4,7 @@
 <!-- Banner -->  
 <div id="banner">
     <div class="mainholder">                                                                             
-        <div id="navigation">
+        <div id="navigation" style="margin-top:0px;">
             <ul class="sf-menu" id="menu">
                 <?php foreach ($productCategories as $firstLevelKey => $firstLevelVal) { ?>
                 <li class="maincat"><a href="<?php echo site_url('product/cat/'.$firstLevelVal['categoryId'].'/'.url_title(strtolower($firstLevelVal['name']))); ?>"><?php echo $firstLevelVal['name']; ?></a>

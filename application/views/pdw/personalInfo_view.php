@@ -38,7 +38,7 @@ $(document).ready(function() {
         <!-- Right Warp -->  
         <div class="rightwarp">
             <?php $this->load->view($this->config->item('themeCode') . "/breadcrumbs_view"); ?>
-            <div class="subheadingholder prodheadingholder">
+            <div class="subheadingholder">
                 <h2>My Account</h2>
             </div>
             <div class="subheadingholder">
@@ -48,8 +48,12 @@ $(document).ready(function() {
             <div class="form_holder">
                 <div class="left_row">
                     <div class="cell_input">
-                        <label class="label">Name</label> 
+                        <label class="label">First Name</label> 
                         <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
+                    </div>
+                    <div class="cell_input">
+                        <label class="label">Mobile Number</label> 
+                        <input type="text" value="<?php echo $customerData['mobile']; ?>" name="mobile" id="mobile" class="input"/> 
                     </div>
                     <div class="cell_input">
                         <label class="label">Gender</label> 
@@ -61,13 +65,14 @@ $(document).ready(function() {
                 </div> 
                 <div class="right_row">
                     <div class="cell_input">
+                        <label class="label">Last Name</label> 
+                        <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
+                    </div>
+                    <div class="cell_input">
                         <label class="label">Email ID</label> 
                         <input type="text" value="<?php echo $customerData['email']; ?>" name="email" id="email" class="input"> 
                     </div>                    
-                    <div class="cell_input">
-                        <label class="label">Mobile Number</label> 
-                        <input type="text" value="<?php echo $customerData['mobile']; ?>" name="mobile" id="mobile" class="input"/> 
-                    </div>                    
+                                        
                     <div class="right">
                         <input type="submit" name="save" id="save" value="Save" class="btncomman rounded" /></div>	 
                 </div>

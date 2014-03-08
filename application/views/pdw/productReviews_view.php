@@ -1,4 +1,5 @@
-<div id="pdreview" class="subheadingholder prodheadingholder">
+
+<div id="pdreview" class="subheadingholder">
     <h2>PRODUCT REVIEWS <?php if($reviewCnt > 0) { ?> (<?php echo $reviewCnt; ?>) <?php } ?>:</h2>
 </div>
 <div class="prodsubbox"> 
@@ -7,15 +8,15 @@
     <h2 class="seftitlesmall" id="reviewTlt">How do you rate this product ?</h2>
     <div id="reviewMsg">
         <?php if($this->session->userdata('interfaceEmail')==''){ ?>
-        <div class="reviewfrmholder">
+<!--        <div class="reviewfrmholder">
             <label>Email</label>
             <input type="text" name='custEmail' id='custEmail' value="" />
-        </div>
+        </div>-->
         <?php }else{ ?>
-        <div class="reviewfrmholder">
+<!--        <div class="reviewfrmholder">
             <label>Email</label>
             <input type="text" name='custEmail' id='custEmail' value="<?php echo $this->session->userdata('interfaceEmail'); ?>" readonly/>
-        </div>            
+        </div>            -->
         <?php } ?>
         <div class="reviewfrmholder">
             <label>Review Title</label>

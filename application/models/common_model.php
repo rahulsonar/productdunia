@@ -481,29 +481,22 @@ class Common_model extends CI_Model {
 
 
 
-    public function getAvailableAtStores($productId,$offset=0,$limit=0,$filters=array(),$sorting=array())
+    public function getAvailableAtStores($productId,$offset=0,$limit=0)
+
     {
-		//$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
+        //$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
         $availableAtStores = array();
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
 		$areasSelected=$this->session->userdata('areasSelected');
-		if(!empty($filters['areaId'])) {
-			$this->db->where_in('a.areaId ', $filters['areaId']);
-		}
-		else if(!empty($areasSelected)) {
+		if(!empty($areasSelected)) {
 			$this->db->where_in('a.areaId ', $areasSelected);
 		}
         $this->db->select('shp.*,s.*,a.areaName');
         $this->db->from('stores_has_products as shp');
         $this->db->join('stores as s', 's.storeId = shp.storeId', 'left');
         $this->db->join('areas as a', 's.areaId = a.areaId', 'left');
-		if(!empty($sorting['availability'])) {
-			$this->db->order_by('shp.qty', 'DESC');
-		}
-		else if(!empty($sorting['price'])) {
-		$this->db->order_by('shp.sellPrice', $sorting['price']);
-		}
+        //$this->db->order_by('rand()', 'DESC');
 
 		if($limit) 
         $this->db->limit($limit,$offset);
@@ -977,37 +970,6 @@ class Common_model extends CI_Model {
             }
 			$names=implode(",",$data);
 			return $names;
-	}
-	public function getSelectedAreaNames2($selectedAreas) {
-		if(empty($selectedAreas)) {
-		$data=array();
-		return $data;
-		}
-		
-		$this->db->where_in('areaId', $selectedAreas);
-            $this->db->select('areaName,areaId');
-            $query = $this->db->get('areas');
-            foreach ($query->result_array() as $row){
-                    $data[$row['areaId']]=$row['areaName'];
-            }
-			//$names=implode(",",$data);
-			return $data;
-	}
-	public function getBannersByPosition($position) {
-		$tableName='banners';
-		if(is_array($position)) 
-		$this->db->where_in('position',$position);
-		else 
-		$this->db->where('position',$position);
-		
-		$this->db->select('*');
-		$this->db->from($tableName);
-		$query=$this->db->get();
-		$data=array();
-		foreach($query->result() as $row) {
-			$data[$row->position]=$row;
-		}
-		return $data;
 	}
 }
 

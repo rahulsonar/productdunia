@@ -28,6 +28,48 @@ $(document).ready(function() {
 })(jQuery); 
 </script>
 <!-- Code Sign Up -->
+<!--<div style="display:none">
+    <div id="signup">
+        <div class="hearderholder">SIGN UP</div>
+        <div class="lightboxcontent">
+            <div class="lightboxcontentleft">
+                <form>
+                    <div class="frmholder">
+                        <label>Mobile Number / Email Address </label>
+                        <input type="text" class="inplog"  />
+                    </div>
+                    <div class="frmholder">
+                        <label>Password</label>
+                        <input type="password" class="inplog"  />
+                    </div>
+                    <div class="frmholder">
+                        <label>Retype Password</label>
+                        <input type="password" class="inplog"  />
+                    </div>
+                    <div class="cell_input">
+                        <input type="checkbox" class="inplog"/>
+                        I have read the <a href="#" style="color: #0000EE">Terms & Conditions </a>and agree to them.
+                    </div>
+                    <div class="btnholder">
+                        <input type="button" class="btnprced" value="Sign UP"  />
+                    </div>
+                </form>
+            </div>
+            <div class="lightboxcontentmid" style="margin-left: 10px;height:200px;"></div>
+            <div class="lightboxcontentright" id="sociallogin" style="padding-top:50px;margin-left: 10px;">
+                <label>Login Using</label>
+                <a href="<?php echo $this->session->userdata('facebookLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
+                <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
+                <a href="<?php echo $this->session->userdata('googleLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btgo.jpg" alt=""  /></a>
+            </div>
+        </div>
+        <div class="lightboxfooter">
+            Already have an account? 
+            <a  href="#signin"  class="btnft inline signupinline">Sign IN</a>
+        </div>
+    </div>
+</div>-->
+
 <div style="display:none">
     <div id="signup"> 
         <div class="hearderholder">SIGN UP</div>
@@ -35,25 +77,29 @@ $(document).ready(function() {
             <div class="lightboxcontentleft">
                 <form name="frmRegister" id="frmRegister">
                     <div class="frmholder">
-                        <label>Email Address</label>
-                        <input type="text" name="signupEmail" id="signupEmail" class="inplog" onblur="xajax_isUsernameAvailable(this.value)"/>
+                        <label>Mobile Number / Email Address</label>
+                        <input type="text" name="signupEmail" id="signupEmail" required class="inplog" onblur="xajax_isUsernameAvailable(this.value)"/>
                     </div>
                     <div class="frmholder">
                         <label>Password</label>
-                        <input type="password" name="signupPassword" id="signupPassword" class="inplog" value="" />
+                        <input type="password" name="signupPassword" id="signupPassword" class="inplog" value="" required/>
                     </div>
 
                     <div class="frmholder">
                         <label>Retype Password</label>
-                        <input type="password" name="signupCnf_password" id="signupCnf_password" class="inplog" value="" />
+                        <input type="password" name="signupCnf_password" id="signupCnf_password" class="inplog" value="" required/>
+                    </div>
+                    <div class="cell_input">
+                        <input type="checkbox" class="inplog"/>
+                        I have read the <a href="#" style="color: #0000EE">Terms & Conditions </a>and agree to them.
                     </div>
                     <div class="btnholder">
                         <input type="submit" name="register" id="register" value="REGISTER" class="btnprced" />
                     </div>
                 </form>
             </div>
-            <div class="lightboxcontentmid" style="height:220px;"></div>
-            <div class="lightboxcontentright" id="sociallogin" style="padding-top:50px;">
+            <div class="lightboxcontentmid" style="margin-left: 10px;height:200px;"></div>
+            <div class="lightboxcontentright" id="sociallogin" style="padding-top:50px;margin-left: 10px;">
                 <label>Login Using</label>
                 <a href="<?php echo $this->session->userdata('facebookLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
                 <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>

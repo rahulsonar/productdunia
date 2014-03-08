@@ -6,7 +6,7 @@
  * 
  */
 $config['site_title']					= 'Product Duniya Control Panel';
-$config['copyright']                                    = '&copy; Copyrights Product Duniya '.date("Y");
+$config['copyright']                                    = 'Copyrights '.date("Y").' @ Product Duniya';
 $config['controlPanelCopyright']                        = 'Garigy, all rights reserved.';
 $config['controlPanel']					= 'admin';
 $config['controlPanelTitle']				= 'Product Duniya';

@@ -8,7 +8,6 @@
 
 $config['twitter_api_key']	= '3xSnKL1MHMgAhrXAYx3HA';
 $config['twitter_secret']	= 'k2vBtKFvwDds9VzTVpwpIdQXivUUcHJhyTN9pk5KHHg';
-$config['twitter_oauth_callback']	= 'customer/twitteroauthcallback';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

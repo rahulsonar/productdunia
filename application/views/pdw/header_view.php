@@ -55,8 +55,8 @@ line-height: 1.5;
 <style>    
 #back-top {
 	position: fixed;
-	bottom: 50px;
-        right: 30px;
+	bottom: 30px;
+        right: 10px;
         border: 2px solid olive;
         padding: 8px;
         cursor: n-resize;        
@@ -65,6 +65,7 @@ line-height: 1.5;
         box-shadow: 2px 2px 5px 0px #808080;
         border-radius: 5px;
         background-color: #A59611;
+        z-index: 999;
 }
 </style>
 <!-- Header -->
@@ -99,11 +100,14 @@ line-height: 1.5;
                 ?>
                     <a href="#">My Wishlist <span class="badge"><?php echo count($wishlistProds); ?></span></a> | <a href="#">Product pinger <span class="badge">0</span></a> | <a href="#">Store Pinger <span class="badge">0</span></a>
                 <?php } else { ?>
-                    <a href="#signin" class="signin rounded signininline">My Wishlist <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Product pinger <span class="badge">0</span></a> | <a href="#signin" class="signin rounded signininline">Store Pinger <span class="badge">0</span></a>
+                    <a href="#shotlogin" class="savedsearch">Saved Searches <span class="badge">0</span></a>
+              |<a href="#shotlogin" class="wishlist">My Wishlist <span class="badge">0</span></a> 
+              | <a href="#shotlogin" class="prodpinger">Product pinger <span class="badge">0</span></a> 
+              | <a href="#shotlogin" class="storepinger">Store Pinger <span class="badge">0</span></a>  
                 <?php } ?>                
             </div>
             <div class="right">
-                <a href="#shotlogin" class="shotlogininline">Track Order</a > | 
+                <a href="#trackorder" class="shotlogininline">Track Order</a > | 
                 <?php if ($this->session->userdata('interfaceUsername') == '') { ?>
                     <a href="#signin" class="verificationinline">Create Store</a>          
                 <?php } else { ?>
@@ -132,7 +136,7 @@ line-height: 1.5;
                     $this->load->view($this->config->item('themeCode') . "/categoryNavigation_view", $data);
                  } ?>
                 <a href="<?php echo site_url(); ?>" class="logo">
-                    <span class="logotagline">Search, Bargain n Shop</span>
+                    <span class="logotagline">Search, Bargain & Shop</span>
                 </a>
                 <div class="cartholder">
                     <a href="#" class="cart"><span>0</span> Products Added</a><span class="cartdivder"></span>
@@ -173,7 +177,11 @@ line-height: 1.5;
 									<input <?php if(!empty($areasSelected) && in_array($areaId,$areasSelected)) { ?>checked<?php } ?> type="checkbox" class="commencheck" id="majora_<?php echo $areaId; ?>_<?php echo str_replace(" ","",$areaName); ?>" value="<?php echo $areaId; ?>" /><label for="<?php echo $areaName; ?>"><?php echo $areaName; ?></label></li>
                                 <?php } ?>
                             </ul>
-                            <div class="subarea"><span>Included Sub Area</span><div class="subareaList"></div></div>
+                            <div class="subarea">
+                                <span>Included Sub Area</span>
+                                <div class="subareaList"></div>
+                                
+                            </div>
 							<?php /* ?>
 							<?php
 								$subAreas = $this->common_model->getSubAreas($this->session->userdata('citySelected')); ?>
@@ -190,7 +198,7 @@ line-height: 1.5;
                     </div>
 					<?php $allAreas = $this->common_model->getAllAreas($this->session->userdata('citySelected')); ?>
 					<div class="selsearchholder"><a class="selsearch" href="#"></a>
-                        <div id="multipleareas2">		
+                      <div id="multipleareas2">		
                             
                             <ul>
                                 <?php foreach ($allAreas as $areaId => $areaName) { ?>

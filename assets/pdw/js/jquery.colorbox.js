@@ -325,6 +325,7 @@
 				opacity: parseFloat(settings.opacity),
 				cursor: settings.overlayClose ? "pointer" : "auto",
 				visibility: 'visible'
+                               
 			}).show();
 			
 
@@ -664,6 +665,7 @@
 				settings.h = $loaded.height();
 			}
 			$loaded.css({height: settings.h});
+
 			
 			publicMethod.position(settings.transition === "none" ? 0 : settings.speed);
 		}

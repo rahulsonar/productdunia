@@ -9,9 +9,6 @@ class MY_Controller extends CI_Controller {
             'appId' => $this->config->item('appId'),
             'secret' => $this->config->item('secret')
         );
-        
-       
-        
         $this->load->library('facebook', $fb_config);
         
         $google_config = array('host' => base_url());
@@ -20,13 +17,11 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('changeCity', &$this, 'changeCity'));
         $this->xajax->register(XAJAX_FUNCTION, array('signupSubmit', &$this, 'signupSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('loginSubmit', &$this, 'loginSubmit'));
-        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit'));
-        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginConfirmSubmit', &$this, 'shortLoginConfirmSubmit'));
+        $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit1'));
         $this->xajax->register(XAJAX_FUNCTION, array('isUsernameAvailable', &$this, 'isUsernameAvailable'));
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
         $this->_googleLoginUrl();
-        $this->twitterLoginUrl();
         //$this->_facebookLoginUrl();
     }
     
@@ -104,51 +99,7 @@ class MY_Controller extends CI_Controller {
     }
     
     public function shortLoginSubmit($formData) {
-    	foreach ($formData as $id => $field) {
-    		$_POST[$id] = $field;
-    	}
-    	$objResponse = new xajaxResponse();
-    	$email=$this->input->post('shortLoginEmail');
-    	$mobile=$this->input->post('shortLoginMobile');
     	
-    	
-    	
-    	if (!empty($email)) {
-    		$loginData['type']='email';
-    		$loginData['key']=$email;
-    	}
-    	else {
-    		$loginData['type']='mobile';
-    		$loginData['key']=$mobile;
-    	}
-    	
-    	$response = $this->user_model->shortlogin($loginData);
-    	
-    	if ($response) {
-    		$objResponse->script('showConfirmShortLogin(); console.log("'.$this->session->userdata('userTmpPass').'");');
-    	} else {
-    		$objResponse->Alert("Invalid login credentials.");
-    	}
-    	return $objResponse;
-    }
-    
-    public function shortLoginConfirmSubmit($formData) {
-    	foreach ($formData as $id => $field) {
-    		$_POST[$id] = $field;
-    	}
-    	$objResponse = new xajaxResponse();
-    	$password=$this->input->post('signupPass');
-    	$userTmpPass=$this->session->userdata('userTmpPass');
-    	if($password==$userTmpPass) {
-    		$this->user_model->shortloginConfirm();
-    		$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
-            $this->session->unset_userdata('redirectTo');
-            $objResponse->script('window.location.reload();');
-    	}
-    	else {
-    		$objResponse->Alert("Invalid login Password.");
-    	}
-    	return $objResponse;
     }
     
     function _googleLoginUrl(){
@@ -166,7 +117,7 @@ class MY_Controller extends CI_Controller {
             $googleLoginUrl = $this->openid->authUrl();
             }
             catch(Exception $e) {
-            	$googleLoginUrl='';
+            	
             }
             $session_data['googleLoginUrl'] = $googleLoginUrl;
             $this->session->set_userdata($session_data);
@@ -203,9 +154,6 @@ class MY_Controller extends CI_Controller {
                 $response = $this->user_model->signupFacebookUser($user_profile);
 			}
         }
-    }
-    public function twitterLoginUrl() {
-		
     }
     
 }

@@ -7,6 +7,8 @@ $(document).ready(function(){
 });
 })(jQuery);
 $(document).ready(function(){
+$('#multipleareas2').hide();
+
 function ArrNoDupe(a) {
     var temp = {};
     for (var i = 0; i < a.length; i++)
@@ -16,13 +18,6 @@ function ArrNoDupe(a) {
         r.push(k);
     return r;
 }
-
-/* $( "a.selsearch" ).click(function() {
-  $(this).next('#multipleareas').css("display", "block").delay(300).fadeIn(300);
-}, function() {
-   $(this).next('#multipleareas').css("display", "none").fadeOut(10);
-}); */
- 
 $('.selsearch').click(function(e){
   e.preventDefault(); //to prevent default action of link tag
   $('#multipleareas').slideToggle(100);
@@ -113,101 +108,13 @@ function checkUncheckFunc(t) {
 		});
 	});
 }
-
 $('.commencheck').click(function(){
 	
 	//var thisId=$(this).attr('id');
 	checkUncheckFunc($(this));
 	
-	
-	/*
-	//var thisCheck = $(this);
-	var id=$(this).parent().attr('id');
-	var id2=id.split('_');
-	var areaName=$(this).attr('id').replace('all_','');
-	var existing=$('.inpselsearch').val();
-	var existing1=existing.split(',');
-	
-	
-	existing1.splice(-1,1);
-	var ext=existing1.join(',');
-	
-	var final_val=ext;
-	final_val+=(ext=='')?'':', ';
-	final_val+=areaName+', ';
-	
-	if(id.substring(0,4)=='all_') {
-		var id1='major_'+id2[1];
-		
-	}
-	else {
-		var id1='all_'+id2[1];
-	}
-	
-	
-	
-	// get ids of all major areas 
-	var ids_all=[];
-	$('.commencheck:checked').each(function(index){
-		ids_all.push($(this).val());
-	});
-	console.log(ids_all);
-	
-	if ($(this).is(':checked'))
-	{
-		var checked=1;
-		$('#'+id1+' input').attr('checked','checked');
-		if(existing1.indexOf(areaName)<0) {
-		$('.inpselsearch').val(final_val);
-		}
-		$('.chkSAreas').each(function(index){
-			var idSArea=$(this).attr('id');
-			idS2=idSArea.split("_");
-			if(idS2[2]==id2[1]) {
-				$(this).attr('checked','checked');
-				$(this).parent().show();
-			}
-		});
-		$('.inpselsearch').focus();
-	}
-	else
-	{
-		var checked=0;
-		$('#'+id1+' input').removeAttr('checked');
-		var new1=[];
-		
-		for(var i=0; i<existing1.length; i++) {
-			if(existing1[i].trim()!=areaName.trim()) {
-				new1.push(existing1[i]);
-			}
-		}
-		var new2=new1.join(',');
-		final_val=new2+(new2!=""?',':'');
-		
-		$('.inpselsearch').val(final_val);
-		$('.inpselsearch').focus();
-	}
-	var datastring='final_val='+final_val;
-	$.post(siteurl+'index.php/product/savearea',datastring,function(r){ console.log(r); });
-	*/
-	
 });
 
-
-/* $( "div.selsearchholder" ).hover(function() {
-  $(this).find('#multipleareas').delay(300).fadeIn(300);
-}, function() {
-   $(this).find('#multipleareas').fadeOut(10);
-});
-*/
-
-
-/*$( ".maincat" ).hover(function() {
-  $(this).children('div.submenu').delay(300).fadeIn(300);
-}, function() {
-  $(this).children('div.submenu').fadeOut(10);
-});
-*/
 $("a.advsearch").click(function(){
 	$("#advancesearchbox").slideToggle("fast");
 	//$(this).toggleClass("active"); return false;
@@ -234,14 +141,51 @@ $( "#stickfooteritem li" ).hover(function() {
 $( "a.stickitemclose" ).click(function() {
   $(this).parent('.stickitem').hide('slow');
 });
+$(document).on("click", "#multiclosebox", function(e) {
+	$("#multipleareas:has(div)").hide(100);
+	$(this).hide(10);
+return false;
+});
+
+$(document).delegate("a.city", "click", function(e) {
+$(this).next('#cities').show(100);
+	$("body").append("<div id='citiesclosebox'></div>");
+	return false;
+});
+
+$(document).on("click", "#citiesclosebox", function(e) {
+	$("#cities:has(div)").hide(100);
+	$(this).hide(10);
+return false;
+});
+
 
 //Lightbox
-/* $(".signininline").colorbox({inline:true,});
-$(".signupinline").colorbox({inline:true,});
-$(".verificationinline").colorbox({inline:true,}); */
-
-//$(".shotlogininline").colorbox({inline:true, maxWidth: '75%', width:"auto"});
-
+$('.trackorderline').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+});
+$('.savedsearch').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
+$('.wishlist').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
+$('.prodpinger').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
+$('.storepinger').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
 $('.shotlogininline').colorbox({ inline:true, 
     onComplete : function() { 
        $(this).colorbox.resize(); 
@@ -274,7 +218,8 @@ $('.verificationinline').colorbox({ inline:true,
 
 
 //Tabs
-$(function() { $( "#pinger" ).tabs(); }); });
+$(function() { $( "#pinger" ).tabs(); }); 
+});
 
 
 $(function(){
@@ -335,18 +280,20 @@ $(function(){
 	$(window).scroll(function(){
 		if ($(this).scrollTop() > 20) {
 			$('.default').addClass("fixed").fadeIn();
+                        $('#stickfooter').show();
 			// $(this).find('#multipleareas').delay(400).fadeIn(10);
 		} else {
 			$('.default').removeClass("fixed");
+                        $('#stickfooter').hide();
 		}
 	});
-
+        
 
 $( "div.mainnavdropholder" ).hover(function() {
-  $(this).find('#innernavigation').delay(300).fadeIn(300);
+  $(this).find('#innernavigation').show(500);
   $( "body" ).append( "<div id='boxoverlay'></div>" );
 }, function() {
-   $(this).find('#innernavigation').fadeOut(10);
+   $(this).find('#innernavigation').hide();
    $( "#boxoverlay" ).remove();
    return false;
 });
@@ -374,11 +321,190 @@ $("a.prodsubarrowd").click(function() {
 	$(this).next().css("display", 'block');
 });
 
-/////
 	
 // Inner pages left menu
 $("#leftaccordion h3.sorttitle").click(function () {
 	$(this).next(".sortbox").toggle();
-	$(this).addClass("sorttitlehide");
+	$(this).toggleClass("sorttitlehide");
+});
+
+
+
+});
+
+$(document).ready(function() {
+    var $divView = $('div.mapview');
+    var innerHeight = $divView.removeClass('mapview').height();
+    $divView.addClass('mapview');
+	 $('div.mapslide').removeClass("mapslideactive");
+    $('div.mapslide').click(function() {
+		$('div.mapview').animate({
+          height: (($divView.height() === 10)? innerHeight  : "10px")		  
+        }, 500);
+		$(this).toggleClass("mapslideup");
+        return false;
+    });
+});
+$(document).ready(function (){
+    $('#compare').change(function (){
+        if($('#compare').is(":checked"))
+        {
+            $("#compare_label").text('Remove to Product Compare'); 
+            $("#compare_label").css('color','red');
+        }
+        else
+        {
+            $("#compare_label").text('Add to Product Compare'); 
+            $("#compare_label").css('color','black');
+        }
+       
+    });
+    $('#sto_compare').change(function (){
+        if($('#sto_compare').is(":checked"))
+        {
+            $("#sto_compare_label").text('Remove To Store Compare'); 
+            $("#sto_compare_label").css('color','red');
+        }
+        else
+        {
+            $("#sto_compare_label").text('Add To Store Compare'); 
+            $("#sto_compare_label").css('color','black');
+        }
+       
+    });
+    $('#wishlist').change(function (){
+        if($('#wishlist').is(":checked"))
+        {
+            $("#wishlist_label").text('Remove to Wishlist'); 
+            $("#wishlist_label").css('color','red');
+        }
+        else
+        {
+            $("#wishlist_label").text('Add to Wishlist'); 
+            $("#wishlist_label").css('color','black');
+        }
+       
+    });
+    $('#propinger').change(function (){
+        if($('#propinger').is(":checked"))
+        {
+            $("#propinger_label").text('Remove to Product Pinger'); 
+            $("#propinger_label").css('color','red');
+        }
+        else
+        {
+            $("#propinger_label").text('Add to Product Pinger'); 
+            $("#propinger_label").css('color','black');
+        }
+       
+    });
+    $('#email_no').click(function (){
+            /*$("#email_text").fadeIn(300); 
+            $("#id_text").fadeOut(300);*/
+            $("#email_text1").slideDown(500); 
+            $("#id_text1").slideUp(500);
+    });
+    $('#order_id').click(function (){
+            /*$("#id_text").fadeIn(300); 
+            $("#email_text").fadeOut(300);*/ 
+            $("#id_text1").slideDown(500); 
+            $("#email_text1").slideUp(500); 
+    });
+    
+});
+$(document).ready(function (){
+   var string=$('#review_line').text();
+   var line="";
+   if(string.length>250)
+       {
+           line=string.slice(0,250);
+           $('#review_line').text(line+"...");
+       }
+       else{
+            $('#review_line').text(string);
+       }
+       //alert(string+"1234567890"+line);
+     
+     $('#fullreview').click(function (){
+            $('#review_line').text(string);
+         $('#fullreview').hide();
+     });
+});
+$(document).ready(function (){
+   $('.remove_cof').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+}); 
+$('.update_lk').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+}); 
+$('.review_or').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+}); 
+$('.deleteproreview').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+}); 
+$('.editproreview').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+});
+$('.bargain_req').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
 });
 });
+$(document).ready(function (){
+    $('li#savelist1').hover(function (){
+        $(this).children('a#removewishlist1').slideDown(90); 
+    },function (){
+       $(this).children('a#removewishlist1').slideUp(90);
+        return false;
+    });
+    $('div#productlisting1').hover(function (){
+        $(this).children('a#removewishlist1').slideDown(90); 
+    },function (){
+       $(this).children('a#removewishlist1').slideUp(90);
+        return false;
+    });
+});
+$(function() {
+		$( "#from" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#to" ).datepicker( "option", "minDate", selectedDate );
+			}
+		});
+		$( "#to" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onClose: function( selectedDate ) {
+				$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+			}
+		});
+});
+$(function() {
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 100000,
+			values: [ 5000, 10000 ],
+			slide: function( event, ui ) {
+				$( "#amount_f" ).text( "Rs " + ui.values[ 0 ]);
+                                $( "#amount_t" ).text("Rs " + ui.values[ 1 ] );
+			}
+		});
+		$( "#amount_f" ).text( "Rs " + $( "#slider-range" ).slider( "values", 0 ));
+		$( "#amount_t" ).text("Rs" + $( "#slider-range" ).slider( "values", 1 ) );
+	});

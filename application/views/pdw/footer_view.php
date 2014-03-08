@@ -1,5 +1,7 @@
-<!-- Footer -->
+<!-- Footer -->  
 <div id="footer">
+    <div class="space20"></div>
+    <div class="space15"></div>
     <div class="mainholder">
         <div class="othersavicesbox">
             <div class="othersavicesboxicons">
@@ -116,11 +118,18 @@
             </div>
             <div class="box2">
                 <h3>RETURN POLICY</h3>
-                <p>Once products delivered, they are not returned
-                    or exchanged. However, if the product is
-                    damaged during the handling, we will be responsible
-                    for any such act and we will replace your product.            
-                </p>
+                <p>Once products delivered, they are not returned or exchanged. However, if the product is damaged during the handling, we will be responsible for any such act and we will replace your product.</p>
+                <p>Once products delivered, they are not returned or exchanged. However, if the product is damaged during the handling, we will be responsible for any such act and we will replace your product.</p>
+                <p>Once products delivered, they are not returned or exchanged. However, if the product is </p>
+                
+            </div>
+            <div class="box3">
+                <h3>Subscribe Newsletter</h3>
+                <p>Subscribe to our newsletter to know about offers, sale and new products.</p>
+                <form name="frmNewsletterSubscription" id="newsletter">
+                    <input type="text" name="newsEmail" id="newsEmail" class="inpnewsletter rounded"/>
+                    <input type="submit" class="btnorang rounded" value="GO" />
+                </form>
                 <div id="sociallinks">
                     <a href="<?php echo $this->config->item('pd_gplus');?>" class="go" target="_blank"></a>
                     <a href="<?php echo $this->config->item('pd_youtube');?>" class="you" target="_blank"></a>
@@ -130,24 +139,16 @@
                     <a href="<?php echo $this->config->item('pd_fb');?>" class="fb" target="_blank"></a>
                 </div>
             </div>
-            <div class="box3">
-                <h3>Subscribe Newsletter</h3>
-                <p>Subscribe to our newsletter to know about offers, sale and new products.</p>
-                <form name="frmNewsletterSubscription" id="newsletter">
-                    <input type="text" name="newsEmail" id="newsEmail" class="inpnewsletter rounded"/>
-                    <input type="submit" class="btnorang rounded" value="GO" />
-                </form>
-            </div>
             <div class="space10"></div>
             <div id="footermenu">
-                <a href="<?php echo site_url('sales-purchase'); ?>">Sales and Purchase</a> | <a href="<?php echo site_url('terms-conditions'); ?>">Terms and Conditions</a> | <a href="<?php echo site_url('return-policy'); ?>">Return Policy</a> | <a href="<?php echo site_url('faq'); ?>">FAQ</a> | <a href="<?php echo site_url('contact-us'); ?>">Contact Form</a> | <a href="<?php echo site_url('privacy-policy'); ?>">Privacy Policy </a> | <a href="<?php echo site_url('about-us'); ?>">About Us</a>
+                <a style="font-weight: bold;font-size: 11px"><?php echo $this->config->item('copyright'); ?></a><a href="<?php echo site_url('sales-purchase'); ?>">Sales and Purchase</a> | <a href="<?php echo site_url('terms-conditions'); ?>">Terms and Conditions</a> | <a href="<?php echo site_url('return-policy'); ?>">Return Policy</a> | <a href="<?php echo site_url('faq'); ?>">FAQ</a> | <a href="<?php echo site_url('privacy-policy'); ?>">Privacy Policy </a> | <a href="<?php echo site_url('about-us'); ?>">About Us</a>
+                <!--<a style="font-weight: bold;font-size: 11px">Copyrights 2014 @ Product Duniya</a><a href="#">Sales and Purchase</a> | <a href="#">Terms and Conditions</a> | <a href="#">Return Policy</a> | <a href="#">FAQ</a>  | <a href="#">Privacy Policy </a> | <a href="#">About Us</a>-->
             </div>
-            <p><?php echo $this->config->item('copyright'); ?></p>
         </div>
     </div>
 </div>
 
-<div id="stickfooter">
+<!--<div id="stickfooter">
 	<div class="mainholder">
 		<ul id="stickfooteritem" class="tabs">
 			<li><a href="#scomparer">Store Comparer </a><span class="badge">5</span>
@@ -203,7 +204,7 @@
 		</ul>
 		
 	</div>
-</div>
+</div>-->
 
 
 

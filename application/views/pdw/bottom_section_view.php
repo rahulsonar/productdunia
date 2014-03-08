@@ -46,7 +46,7 @@ $recentlyViewedProds = $this->common_model->getRecentViewProducts();
         </div>
 
 <div class="rightwide">
-            <div class="subheadingholder prodheadingholder">
+            <div class="subheadingholder">
                 <h2>PRODUCTS ON SALE</h2>
                 <a href="#">View All <span>&raquo;</span></a>
             </div>

@@ -402,45 +402,6 @@ class User_model extends CI_Model {
             return false;
         }
     }
-	
-	function signupTwitterUser($userFbData) {
-	
-        $userFbData=(array)$userFbData;
-		$firstName = $userFbData['name'];
-		
-        $email = (!empty($userFbData['email'])) ? ($userFbData['email']) : ($userFbData['id']);
-        $fb_id = $userFbData['id'];
-        
-        $email = $email;        
-        $username = $email;
-        $status = 'Active';
-        $create_date = date("Y-m-d H:i:s");
-        $create_by = 'self';
-        $login = FALSE;
-
-        $data['username'] = $username;
-        $queryUser = $this->db->get_where('customers', $data);
-        if ($queryUser->num_rows > 0) {
-            $userData['fbId'] = $fb_id;
-            $userData['name'] = $firstName;
-            $this->db->where('username', $username);
-            $this->db->update('customers', $userData);
-            $login = true;
-        } else {
-            $sql = "INSERT INTO customers (fbId, name, email, username, status, create_date, create_by) VALUES (" . $this->db->escape($fb_id) . ", " . $this->db->escape($firstName) . ", " . $this->db->escape($email) . ", " . $this->db->escape($username) . ", " . $this->db->escape($status) . ", " . $this->db->escape($create_date) . ", " . $this->db->escape($create_by) . ") ON DUPLICATE KEY UPDATE fbId=" . $this->db->escape($fb_id);
-            $this->db->query($sql);
-            $login = true;
-        }
-            
-        if ($login) {
-            $loginData['username'] = $username;
-            $skipPass = '1';
-            $response = $this->login($loginData, $skipPass);
-            return true;
-        } else {
-            return false;
-        }
-    }
     
     public function login($loginData, $skipPass = "0") {
         $table_name = "customers as mc";
@@ -503,56 +464,6 @@ class User_model extends CI_Model {
         } else {
             return false;
         }
-    }
-    
-    public function shortlogin($data) {
-    	// check if user exists
-    	$table_name='customers';
-    	$ret=array();
-    	$this->db->where($data['type'],$data['key']);
-    	$this->db->select('*')->from($table_name);
-    	$query=$this->db->get();
-    	if($query->num_rows() > 0) {
-    		$customerData=$query->row_array();
-    		$customerData['password']=$this->encrypt->decode($customerData['password']);
-    	}
-    	else {
-    		$newCustomer=array();
-    		
-    		$newPass=rand(100000,999999);
-    		$customerData[$data['type']]=$data['key'];
-    		$customerData['status']='Active';
-    		$customerData['username']=$data['key'];
-    		$customerData['create_date']=date("Y-m-d H:i:s");
-    		$customerData['create_by']='self';
-    		$customerData['password']=$this->encrypt->encode($newPass);
-    		$this->db->insert($table_name,$customerData);
-    		$customerData['customerId']=$this->db->insert_id();
-    		$customerData['password']=$newPass;
-    	}
-    	
-    	$tmpData=array('userTmpPass'=>$customerData['password'],
-    			'customerdata'=>$customerData,'data1'=>$data);
-    	$this->session->set_userdata($tmpData);
-    	return $customerData; 
-		
-    	// set session
-    	/*
-    	*/
-    
-    }
-    public function shortloginConfirm() {
-    		$customerData=$this->session->userdata('customerdata');
-    		$data=$this->session->userdata('data1');
-    	$session_data['interfaceUserId'] = $customerData['customerId'];
-    	$session_data['interfaceUsername'] = $data['key'];
-    	$session_data['interfaceName'] = '';
-    	$session_data['interfaceEmail'] = $data['key'];
-    	$session_data['interfaceUserIp'] = $this->input->ip_address();
-    	$session_data['interfaceUserMobile'] =$data['key'];
-    	$session_data['interfaceUserPassword'] =$customerData['password'];
-    	$this->session->set_userdata($session_data);
-    	return true;
     }
 
 }

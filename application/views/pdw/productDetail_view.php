@@ -1,3 +1,8 @@
+<div class="mapview shadow">
+
+<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.in/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Pune,+Maharashtra&amp;aq=0&amp;oq=pune&amp;sll=18.815426,76.775144&amp;sspn=14.17265,24.98291&amp;ie=UTF8&amp;hq=&amp;hnear=Pune,+Maharashtra&amp;t=m&amp;z=11&amp;ll=18.52043,73.856744&amp;output=embed"></iframe>
+<div class="mapslide"></div>
+</div>
 <!-- Main -->  
 <div id="main">
     <div class="mainholder">
@@ -9,13 +14,16 @@
                     <img src="<?php echo base_url().$this->config->item('productLargeImgPath') . $product['productImg']?>" alt="<?php echo $product['productName']?>" title="<?php echo $product['productName']?>"/>    
                 </a>
             </div>
+            <div class="proddbox imgthum">
             <?php if(count($prodGallery) > 0) { ?>
+            
             <ul id="thumblist" class="clearfix" >
                 <?php foreach ($prodGallery as $galleryKey => $galleryVal) { ?>
                     <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo base_url().$this->config->item('productLargeImgPath') . $galleryVal['imgName']?>',largeimage: '<?php echo base_url().$this->config->item('productImgPath') . $galleryVal['imgName']?>'}"><img src='<?php echo base_url().$this->config->item('productStampImgPath') . $galleryVal['imgName']?>'></a></li>
                 <?php } ?>
             </ul>
             <?php } ?>
+            </div>
         </div>
 
         <div class="proddetailsright">
@@ -62,10 +70,11 @@
                         <?php } ?>                        
                     </td>
                     <td class="avilbox3">
-                        <label><input type="checkbox" />Add to Compare</label>
+                       
+                        <label ><input type="checkbox" id="compare"/><span id="compare_label">Add to Product Compare</span></label>
                         <?php if ($this->session->userdata('interfaceUsername') != '') { ?>
                         <label><input type="checkbox" onClick="xajax_toggleToWishlist('<?php echo $product['productId']; ?>');" <?php if($isInWishlist){ ?>checked <?php } ?>/>Add to Wishlist</label>
-                        <label><input type="checkbox" />Add to PRODUCT PINGER</label>
+                        <label><input type="checkbox" />Add to Product Pinger</label>
                         <?php } ?>
                     </td>
                 </tr>
@@ -100,7 +109,7 @@
             $this->load->view($this->config->item('themeCode') . "/productReviews_view", $temp); 
         ?>
         
-        <div class="subheadingholder prodheadingholder">
+        <div class="subheadingholder">
             <h2>PRODUCT RECOMMENDED FOR YOU</h2>
         </div>
         <div class="prodsubbox prodsubboxbor"> 
@@ -150,7 +159,7 @@
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.jqzoom-core.js" ></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/css/jquery.jqzoom.css"/>
 
-<style type"text/css">
+<style type="text/css">
 .clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden;}
 .clearfix{display:block;zoom:1}
 

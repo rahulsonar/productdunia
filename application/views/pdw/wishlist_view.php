@@ -38,7 +38,7 @@
         <!-- Right Warp -->  
         <div class="rightwarp">
             <?php $this->load->view($this->config->item('themeCode') . "/breadcrumbs_view"); ?>
-            <div class="subheadingholder prodheadingholder">
+            <div class="subheadingholder">
                 <h2>My Wishlist</h2>
             </div>
             <div class="prodsubbox"> 

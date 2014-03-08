@@ -1,7 +1,7 @@
 <?php
     //print_debug($productSpecification, __FILE__, __LINE__, 0);
 ?>
-<div id="pdspication" class="subheadingholder prodheadingholder">
+<div id="pdspication" class="subheadingholder">
     <h2>PRODUCT SPECIFICATION:</h2>
 </div>
 <div class="prodsubbox">
