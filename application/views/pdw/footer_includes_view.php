@@ -42,6 +42,15 @@ $(function(){
 	});
 	})
 })(jQuery);
+
+function showConfirmShortLogin() {
+	 $.colorbox({inline:true, href:'#verification'});
+}
+function setBuyNowId(storeId) {
+	$("#BuyNowStoreId").val(storeId);
+}
+</script>
+<input type="hidden" name="BuyNowStoreId" id="BuyNowStoreId" value="" />
 </script>
 
 <!-- JS Start -->
