@@ -1297,6 +1297,7 @@ class Product_model extends CI_Model {
             $brand['category'] = 'brand';
             $brand['id'] = $row->brandId;
             $brand['label'] = highlight_phrase($row->brandName, $keyword, '<span style="color:#FAA323">', '</span>');
+            //$brand['label'] = $row->brandName;
             $brand['value'] = $row->brandName;
             $brand['url'] = site_url('product/brand/'.$row->brandId.'/'.url_title(strtolower($row->brandName)));;
             $suggestions[$i] = $brand;

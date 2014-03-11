@@ -1,23 +1,40 @@
 <script type="text/javascript">
     ;(function($) { 
-        
+    	 function split( val ) {
+    	      return val.split( /,\s*/ );
+    	    }
+    	    function extractLast( term ) {
+    	      return split( term ).pop();
+    	    }
+    	    
         $.widget("custom.catcomplete", $.ui.autocomplete, {
         _renderMenu: function (ul, items) {
             var self = this,
                 currentCategory = "";
                 $.each(items, function (index, item) {
+                	
                     if (item.category != currentCategory) {
-                        ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+                        ul.append($("<li class='ui-autocomplete-category'>" + item.category + "</li>").data("item.autocomplete", {}));
                         currentCategory = item.category;
                     }
                     self._renderItem(ul, item);
                 });
-            }
+            },
+        _renderItem : function( ul, item ) {
+            return $( "<li>" )
+            .append( '<a href="'+item.url+'">' + item.label + "</a>" )
+            .appendTo( ul );
+        }
+           
         });
     
         $(document).ready(function() {
-            $( "#topSearchBox" ).autocomplete({            	
-                source: '<?php echo site_url("product/getTopSearchAutoComplete"); ?>',
+            $( "#topSearchBox" ).catcomplete({            	
+                source: function(request, response){
+                	 $.getJSON( "<?php echo site_url("product/getTopSearchAutoComplete"); ?>", {
+     		            term: extractLast( request.term )
+     		          }, response );
+                    },
                 minLength: 1,
                 select: function( event, ui ) {            		
                     var keyword = $('#topSearchBox').val();
@@ -34,11 +51,7 @@
                     $("#frmSearchKeyword").attr("action", action);
                 }
             })
-            .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-                return $( "<li>" )
-                .append( "<a>" + item.label + "</a>" )
-                .appendTo( ul );
-            };
+            
         })
     })(jQuery); 
 </script>

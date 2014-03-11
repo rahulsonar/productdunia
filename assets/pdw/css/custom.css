@@ -33,3 +33,13 @@ textarea.input input.error {
 #mostview ul.tablist li{margin-bottom: 5px; padding: 5px 0;}
 #mostview ul.tablist li .imgbox{ width: 42px; height: 42px; text-align: center;}
 #mostview ul.tablist li .price{float: right; display: block; text-align: right; min-width: 115px;}
+
+
+.ui-autocomplete {
+	background: #fff;
+	margin-top:20px;
+	z-index:99;
+}
+.ui-helper-hidden-accessible {
+	display:none;
+}
