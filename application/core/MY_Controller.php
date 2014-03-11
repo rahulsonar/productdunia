@@ -27,7 +27,7 @@ class MY_Controller extends CI_Controller {
         $this->_setDefaultCity();
         $this->_googleLoginUrl();
         $this->twitterLoginUrl();
-        //$this->_facebookLoginUrl();
+        $this->_facebookLoginUrl();
     }
     
     public function changeCity($cityId='')
