@@ -2,7 +2,7 @@
 //print_debug($availableAtStores, __FILE__, __LINE__, 0);
 ?>
 <div id="storeList">
-<div id="pdavil" class="subheadingholder prodheadingholder">
+<div id="pdavil" class="subheadingholder">
     <h2>AVAILABLE AT STORES (<?php echo count($availableAtStores); ?>):</h2>
 	<?php
 	$availableAtStoresIds=array();
@@ -72,10 +72,35 @@
                             <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" alt=""></a>
                         </span>
                     </p>
-
+                            <label>
+                                    <span class="left check">
+                                        <input type="checkbox" id="sto_compare"/>
+                                    </span>
+                                    <span class="left lab" id="sto_compare_label">
+                                        Add To Store Compare
+                                    </span>
+                                </label>
 
                 </div>
                 <div class="trow row">
+                    <span class="inrbox">
+                        INR <?php echo $storeArr['sellPrice']; ?>
+                    </span>
+                    <div class="space10"></div>
+
+                </div>
+                <div class="frrow row">
+                    <?php if ($this->session->userdata('interfaceUsername') == '') {
+                            	$buyNowfunc="shortLogin('buyNow','".$storeId."');";
+                            	$targetBox='#shortLogin';
+                            } 
+                            else {
+								$buyNowfunc='buyNow('.$storeId.');';
+								$targetBox='#buyNowBox';
+							}
+							?>
+                                <a href="<?php echo $targetBox; ?>" id="buyNow_<?php echo $storeId; ?>" class="btncomman rounded btnshadow">BUY NOW</a> <a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow">BARGAIN</a>
+                    <!--<a href="#" class="btncomman rounded btnshadow">BUY NOW</a> <a href="#bargainreq" class="btncomman rounded btnshadow bargain_req inline">BARGAIN</a>-->
                     <ul class="listorange">
 						<?php if($storeArr['offerPrice']>0) { ?>
                         <li><a href="#">Offer available</a></li>
@@ -83,14 +108,8 @@
                         <li><a href="#">Last <?php echo $storeArr['qty']; ?> piece<?php if($storeArr['qty']>1) { echo 's'; } ?> left</a></li>
                     </ul>
                 </div>
-                <div class="frrow row">
-                    <span class="inrbox">
-                        INR <?php echo $storeArr['sellPrice']; ?>
-                    </span>
-                    <div class="space10"></div>
 
                 </div>
-            </div>
 
             <a href="javascript:void(0)" class="prodsubarrowd"></a>
             <a href="javascript:void(0)" class="prodsubarrow"></a>
@@ -135,35 +154,21 @@
                     </table>
 
                 </div>
-                <div class="trow row">
+<!--                <div class="trow row">
                     <ul class="listorange">
                         <li><a href="#">12 Store Reviews</a></li>
                     </ul>
-                </div>
-                <div class="frrow row">
+                </div>-->
+            <!--<div class="frrow row">-->
 
-                    <div class="space10"></div>
-                    <table class="storebox">
+                    <table class="storereviewtable">
                         <tr>
+					<td></td>
                             <td>
-                            <?php if ($this->session->userdata('interfaceUsername') == '') {
-                            	$buyNowfunc="shortLogin('buyNow','".$storeId."');";
-                            	$targetBox='#shotlogin';
-                            } 
-                            else {
-								$buyNowfunc='buyNow('.$storeId.');';
-								$targetBox='#buyNowBox';
-							}
-							?>
-                                <a href="<?php echo $targetBox; ?>" id="buyNow_<?php echo $storeId; ?>" class="btncomman rounded btnshadow">BUY NOW</a> <a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow">BARGAIN</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="storeboxtd">
-                                <label><input type="checkbox" /> Add to STORE COMPARE</label> 
-                                <label><input type="checkbox" /> Add to STORE COMPARE</label>
-                            </td>
-                        </tr>
+                    <table class="storebox">
+<!--                        <tr>
+                            
+                        </tr>-->
                         <tr>
                             <td>
                                 <div class="giftbox">
@@ -187,8 +192,24 @@
                             </td>
                         </tr>
                     </table>
+                    </td>
+				</tr>
+				<tr>
+					<td colspan="2">
+                                            <div class="space50"></div>
+                                            <span class="left"><h2>Store Review</h2></span>	
+                                                <span class="right"><a href="#" class="showalllink ">Show All Review</a></span>
+                                          
+						<div class="space10"></div>
+                                                <p><strong>Amit Jain:</strong> <span id="review_line">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the</span></p>	
+						<a href="javascript:click()" id='fullreview' class="reviewlink">Read Full Review</a>	
+						<!--<a href="#" class="showalllink">Show All Review</a>-->			
+					</td>
+				</tr>
+			</table>
+			
+<!--                </div>-->
                 </div>
-            </div>
 
         </div>
     <?php } ?>
