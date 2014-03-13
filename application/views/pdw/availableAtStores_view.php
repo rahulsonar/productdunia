@@ -39,7 +39,7 @@
 			$areaNames=$this->common_model->getSelectedAreaNames2($this->session->userdata('areasSelected'));
 			?>
             <select id="areaFilter" name="areaFilter" onchange="javascript:sortAreas();">
-                <option value="">All Areas</option>
+                <option value="all">All Areas</option>
 				<?php
 				foreach($areaNames as $areaId=>$aName) { ?>
 				<option <?php if($filters['areaId']==$areaId) { ?>selected="selected" <?php } ?> value="<?php echo $areaId; ?>"><?php echo $aName; ?></option>

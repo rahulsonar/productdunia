@@ -533,14 +533,21 @@ class Product extends MY_Controller {
 		public function loadmorestores($productId,$totalStores,$areaId="",$sorting) {
 		
 			$objResponse = new xajaxResponse();
+			$filters=array();
 			if(!empty($areaId)) {
 				$filters['areaId']=$areaId;
 			}
+			
 			$sorting1=explode("~",$sorting);
 			
 			$sortingData[$sorting1[0]]=$sorting1[1];
+			$limit=$totalStores;
+			if(!empty($filters) || !empty($sortingData)) {
+				$limit='';
+				}
+
 			
-			$temp['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,$totalStores,$filters,$sortingData);
+			$temp['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,$limit,$filters,$sortingData);
 			$temp['showloadMore'] = false;
 			$temp['product'] = array('productId'=>$productId);
 			$temp['filters']=$filters;

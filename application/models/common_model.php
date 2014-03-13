@@ -488,11 +488,13 @@ class Common_model extends CI_Model {
         $this->db->where('s.status', 'Active');
         $this->db->where('shp.productId', $productId);
 		$areasSelected=$this->session->userdata('areasSelected');
+		if($filters['areaId']!='all') {
 		if(!empty($filters['areaId'])) {
 			$this->db->where_in('a.areaId ', $filters['areaId']);
 		}
 		else if(!empty($areasSelected)) {
 			$this->db->where_in('a.areaId ', $areasSelected);
+		}
 		}
         $this->db->select('shp.*,s.*,a.areaName');
         $this->db->from('stores_has_products as shp');
