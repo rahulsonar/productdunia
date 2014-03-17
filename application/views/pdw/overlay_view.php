@@ -23,29 +23,6 @@ $(document).ready(function() {
 		
 	});	
 
-	$("#shortLoginEmail").change(function(){
-		var str=$(this).val();
-		
-		if(str!='') {
-			$("#shortLoginMobile").val('');
-			$("#shortLoginMobile").attr('disabled','disabled');
-		}
-		else {
-			$("#shortLoginMobile").removeAttr('disabled');
-		}
-		});
-
-	$("#shortLoginMobile").change(function(){
-		var str=$(this).val();
-		if(str!='') {
-			$("#shortLoginEmail").val('');
-			$("#shortLoginEmail").attr('disabled','disabled');
-		}
-		else {
-			$("#shortLoginEmail").removeAttr('disabled');
-		}
-		});
-
 	$("#frmShortConfirm").validate({
 		rules: {
 			signupPass: {
@@ -90,13 +67,13 @@ $(document).ready(function() {
 
                 
 
-                <form>
+                <form id="frmShortLogin" name="frmShortLogin">
 
                 	<div class="frmholder">
 
                 	<label>Mobile Number / Email Address</label>
 
-                    <input type="text" class="inplog"  placeholder="Please provide you Email or Mobile number."/>
+                    <input id="signupEmail" type="text" class="inplog"  />
 
                     </div>
  <p class="italic">
@@ -107,7 +84,7 @@ This information may be passed to Store to serve you better</p>
 <div class="space10"></div>
                     <div class="btnholder">
 
-                    	<input type="button" class="btnprced" value="PROCEED"  />
+                    	<input type="submit" class="btnprced" value="PROCEED"  />
 
                     </div>
 
@@ -123,9 +100,9 @@ This information may be passed to Store to serve you better</p>
 
 			 	<label>Login Using</label>
 
-             <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
-                    <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
-                    <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btgo.jpg" alt=""  /></a>
+				<a href="<?php echo $this->session->userdata('facebookLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
+                <a href="#" onclick="window.open('<?php echo site_url('customer/twitterLogin'); ?>','twitterLogin','width=500,height=700'); return false;"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
+                <a href="<?php echo $this->session->userdata('googleLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btgo.jpg" alt=""  /></a>
 
              </div>
 
@@ -149,7 +126,32 @@ This information may be passed to Store to serve you better</p>
    </div>
 
 </div>
+<div style="display:none;">
+<div id="confirmShortLogin"> 
+        <div class="hearderholder">CONFIRM</div>
+        <div class="lightboxcontent">
+            <div class="lightboxcontentleft">
+                <!-- <h2>Registered Customer</h2>
+                <p>If you already have an account please log in.</p> -->
 
+                <form name="frmShortConfirm" id="frmShortConfirm" method="post">
+                    <div class="frmholder">
+                        <label>Password</label>
+                        <input type="text" name="signupPass" id="signupPass" class="inplog" />
+                    </div>
+                    <div class="btnholder">
+                        <input type="submit" style="float:left;" class="btnprced" value="PROCEED"  />
+                        <a href="#forgotpass" class="forgetpassword forgetpassinline">Forget Password?</a>
+                    </div>
+
+                </form>
+            </div>
+            
+           
+        </div>
+       
+    </div>
+</div>  
 <!--Track order-->
 <div style="display:none">
 
@@ -476,10 +478,10 @@ you are not a robot! </p>
                         <div class="cell_textaria">
                             <label>Rating </label>
                        <p> <span class="productstarholder">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
                            </span></p>
                         </div>
                         <div class="cell_textaria">
@@ -512,10 +514,10 @@ you are not a robot! </p>
                         <div class="cell_textaria">
                             <label>Rating </label>
                        <p> <span class="productstarholder">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
                            </span></p>
                         </div>
                         <div class="cell_textaria">
@@ -540,7 +542,7 @@ you are not a robot! </p>
                         <ul>
                             <li><span class="imgbox">
                                      <a href="#">
-                                         <img alt="" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
+                                         <img alt="" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/thumb2.jpg" style="border: 2px solid #bfbfbf" />
                                      </a>
                                 </span>
                             </li>

@@ -174,7 +174,15 @@ class MY_Controller extends CI_Controller {
     }
     
     function _facebookLoginUrl(){
+		try {
+				$access_token=$this->facebook->getAccessToken();
+			}
+			catch(FacebookApiException $e) {
+				//print_r($e);
+			}
         if($this->session->userdata('interfaceUsername')==''){
+		
+			
             /* facebook login */
 			try {
             $user = $this->facebook->getUser();

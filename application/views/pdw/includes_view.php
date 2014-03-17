@@ -29,15 +29,11 @@
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.ui.datepicker.js" ></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.ui.mouse.js" ></script>
 <script language="javascript" type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/jquery.ui.slider.js" ></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/jshashtable-2.1_src.js"></script>
+<?php /* ?><script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/jshashtable-2.1_src.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/jquery.numberformatter-1.2.3.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/tmpl.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/jquery.dependClass-0.1.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/draggable-0.1.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/js/slider/jquery.slider.js"></script>
-	
+<?php */ ?>	
 <!-- JS Ends -->
-
-
-
-

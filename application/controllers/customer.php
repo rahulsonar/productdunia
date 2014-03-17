@@ -61,9 +61,12 @@ class Customer extends MY_Controller {
         
         public function loginFacebookSubmit()
         {
+		
+			
             try {
                 $user = $this->facebook->getUser();
             } catch (FacebookApiException $e) {
+				//print_r($e);
                 $user = '0';
             }
 
@@ -77,6 +80,7 @@ class Customer extends MY_Controller {
                 $this->session->set_userdata($session_data);
 
                 $user_profile = $this->facebook->api('/me');
+				
                 $response = $this->user_model->signupFacebookUser($user_profile);
 
                 $redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
