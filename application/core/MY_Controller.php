@@ -39,6 +39,7 @@ class MY_Controller extends CI_Controller {
         $session_data['citySelected'] = $cityId;
         $session_data['citySelectedName'] = $cityData['cityName'];        
         $this->session->set_userdata($session_data);
+        $this->session->unset_userdata(array('areasSelected'=>''));
         $objResponse = new xajaxResponse();        
         $objResponse->script("$('#inpselsearch').val('');");        
         $objResponse->Assign("topCity", "innerHTML", $cityData['cityName']);

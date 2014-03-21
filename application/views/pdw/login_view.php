@@ -5,7 +5,7 @@ $(document).ready(function() {
 		rules: {
 			signupEmail: {
 				required: true,
-				email: true
+				emailPhone: true
 			},
 			password: {
 				required: true
@@ -21,6 +21,18 @@ $(document).ready(function() {
 		}
 		
 	});	
+	$.validator.addMethod("emailPhone", function(value, element) {
+	     if (this.optional(element)) // return true on optional element
+	         return true;
+	     valid = true;
+
+	     if (value.indexOf("@") > 0) {
+	         valid = valid && $.validator.methods.email.call(this, value, element);
+	     } else {
+	         valid = valid && $.validator.methods.number.call(this, value, element);
+	     }
+	     return valid;
+	 }, 'Please provide a valid email or mobile');
 })
 })(jQuery); 
 </script>
