@@ -63,13 +63,22 @@ class Customer extends MY_Controller {
         {
 		
 			
+        	try {
+        		$access_token=$this->facebook->getAccessToken();
+        	}
+        	catch(Exception $e)
+        	{
+        		$access_token="";
+        	}
+        	
             try {
                 $user = $this->facebook->getUser();
             } catch (FacebookApiException $e) {
 				//print_r($e);
                 $user = '0';
             }
-
+            
+            
             if ($user == '0') {
                 redirect(site_url('/'));
             } else {                

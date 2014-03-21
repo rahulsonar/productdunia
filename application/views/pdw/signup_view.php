@@ -93,7 +93,7 @@ if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
             <div class="lightboxcontentright" id="sociallogin" style="padding-top:50px;margin-left: 10px;">
                 <label>Login Using</label>
                 <a href="<?php echo $this->session->userdata('facebookLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
-                <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
+                <a href="#" onclick="window.open('<?php echo site_url('customer/twitterLogin'); ?>','twitterLogin','width=500,height=700'); return false;"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
                 <a href="<?php echo $this->session->userdata('googleLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btgo.jpg" alt=""  /></a>
             </div>
         </div>
@@ -136,7 +136,7 @@ if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
             <div class="lightboxcontentright" id="sociallogin" style="padding-top:50px;margin-left: 10px;">
                 <label>Login Using</label>
                 <a href="<?php echo $this->session->userdata('facebookLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btfb.jpg" alt=""  /></a>
-                <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
+                <a href="#" onclick="window.open('<?php echo site_url('customer/twitterLogin'); ?>','twitterLogin','width=500,height=700'); return false;"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/bttw.jpg" alt=""  /></a>
                 <a href="<?php echo $this->session->userdata('googleLoginUrl'); ?>"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/btgo.jpg" alt=""  /></a>
             </div>
         </div>

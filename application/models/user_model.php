@@ -393,10 +393,12 @@ class User_model extends CI_Model {
             $login = true;
         }
             
+            
         if ($login) {
             $loginData['username'] = $username;
             $skipPass = '1';
             $response = $this->login($loginData, $skipPass);
+            
             return true;
         } else {
             return false;
@@ -448,7 +450,8 @@ class User_model extends CI_Model {
         $this->db->where('mc.status', 'Active');
         $this->db->select('mc.*')->from($table_name);
         $query = $this->db->get();
-        if ($query->num_rows != 1) {
+        
+        if ($query->num_rows ==0) {
             return FALSE;
         } else {
             $row = $query->row();

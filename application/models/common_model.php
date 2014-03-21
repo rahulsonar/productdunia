@@ -640,7 +640,7 @@ class Common_model extends CI_Model {
         
         $strWhere = " WHERE p.status = 'Active' ";
         if($filterOption['refineSearch']['keyword']!=''){
-            $strWhere .= " AND p.productName like '%".$filterOption['refineSearch']['keyword']."%' ";
+            $strWhere .= " AND ( p.productName like '%".$filterOption['refineSearch']['keyword']."%' OR pc.categoryId IN (select categoryId from categories where categoryName LIKE '%".$filterOption['refineSearch']['keyword']."%'))";
         }
         
         if($filterOption['refineSearch']['brandId']!=''){
@@ -648,8 +648,12 @@ class Common_model extends CI_Model {
         }
         
         $latestProducts = array();
-        if($filterOption['refineSearch']['filterCategories']!=''){
+        //if($filterOption['refineSearch']['filterCategories']!='')
+        	if(1)
+        {
+        	if($filterOption['refineSearch']['filterCategories']!="") {
             $strWhere .= " AND pc.categoryId=".$filterOption['refineSearch']['filterCategories'];
+        	}
             $sql = "SELECT p.productMRP as '0', p.* FROM (products as p) LEFT JOIN product_category as pc ON pc.productId=p.productId " . $strWhere;    
         }else{
             $sql = "SELECT p.productMRP as '0', p.* FROM (products as p) " . $strWhere;

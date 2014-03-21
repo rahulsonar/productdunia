@@ -180,6 +180,7 @@ class MY_Controller extends CI_Controller {
 			catch(FacebookApiException $e) {
 				//print_r($e);
 			}
+			
         if($this->session->userdata('interfaceUsername')==''){
 		
 			
@@ -202,13 +203,13 @@ class MY_Controller extends CI_Controller {
 			}
 			else
 			{
-				$params = array('next' => site_url('customer/logout'));
+				/*$params = array('next' => site_url('customer/logout'));
                 $logoutUrl = $this->facebook->getLogoutUrl($params);
 				$session_data['logoutUrl'] = $logoutUrl;
                 $this->session->set_userdata($session_data);
 
                 $user_profile = $this->facebook->api('/me');
-                $response = $this->user_model->signupFacebookUser($user_profile);
+                $response = $this->user_model->signupFacebookUser($user_profile);*/
 			}
         }
     }
