@@ -9,6 +9,7 @@ class Customer extends MY_Controller {
 		parent::__construct();
                 $this->xajax->register(XAJAX_FUNCTION, array('personalInfoSubmit', &$this, 'personalInfoSubmit'));
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromWishlist', &$this, 'removeFromWishlist'));
+                $this->xajax->register(XAJAX_FUNCTION, array('removeFromSavedSearch', &$this, 'removeFromSavedSearch'));
                 $this->xajax->processRequest();
 	}
 	
@@ -17,6 +18,13 @@ class Customer extends MY_Controller {
 		//$this->home();
 	}
 	
+	public function removeFromSavedSearch($productId) {
+		$objResponse = new xajaxResponse();
+		
+		$this->product_model->removeSavedSearch($productId);
+		$objResponse->redirect(site_url('customer/savedsearch'));
+		return $objResponse;
+	}
 	public function subscribe(){
             $msg = "Operation failed. Please try again later.";
             $result = $this->common_model->newsletter_subscription();
@@ -32,7 +40,13 @@ class Customer extends MY_Controller {
 			//var_dump($this->session->userdata('interfaceUsername'));
             redirect(site_url());
         }
-        
+		public function login() {
+			$data['template'] = "loginPage_view";
+			$data['login_flag'] = true;
+                    
+                    $temp['data'] = $data;
+                    $this->load->view($this->config->item('themeCode')."/common_view", $temp);
+		}
         public function loginGoogleSubmit($profile)
         {
             try {
@@ -140,6 +154,8 @@ class Customer extends MY_Controller {
         	
         	$products=$this->product_model->getSavedSearch();
         	$data['template']='customer_savedsearch';
+			
+			$data['products']=$products;
         	$temp['data'] = $data;
         	$this->load->view($this->config->item('themeCode')."/common_view", $temp);
         }

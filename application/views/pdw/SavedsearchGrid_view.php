@@ -1,12 +1,15 @@
 <?php 
+//var_dump($products);
 if(count($products) > 0){ ?>
     <?php foreach ($products as $proKey => $product) { ?>
+	
 <div class="productlisting" id="productlisting1">
-     <a href="#javascript:void(0)" class="btntopcomman removewishlist" id="removewishlist1" title="Remove From Save Searches" onClick="xajax_removeFromWishlist('<?php echo $product['productId'];?>');">
-         Remove From Wishlist
+     <a href="#javascript:void(0)" class="btntopcomman removewishlist" id="removewishlist1" title="Remove From Save Searches" onClick="xajax_removeFromSavedSearch('<?php echo $product['productId'];?>'); return false;">
+         Remove From Saved Search
      </a>
     <div class="prodlistimg">
         <span class="imgbox">
+		
             <a href="<?php echo site_url('product/detail/'.$product['productId'].'/'.url_title($product['productName']))?>"  title="<?php echo $product['productName']; ?>" alt="<?php echo $product['productName']; ?>"><img src="<?php echo base_url().$this->config->item('productThumbImgPath') . $product['productImg']?>" alt="<?php echo $product['productName']?>" title="<?php echo $product['productName']?>" alt="<?php echo $product['productName']?>" /></a>
         </span>
         <!--<span class="title"><a href="javascript:void(0)" onClick="xajax_removeFromWishlist('<?php echo $product['productId'];?>');">Remove From Wishlist</a></span>-->

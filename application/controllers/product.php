@@ -456,8 +456,13 @@ class Product extends MY_Controller {
         }
 		public function savesearch($prodoct_name,$product_id,$availableAtStoresIds) {
 		$objResponse = new xajaxResponse();
+		$customerId = $this->session->userdata('interfaceUserId');
+	if(empty($customerId)) {
+			$objResponse->script("$.colorbox({inline:true, href:'#signin'});");
+			return $objResponse;	
+	}
 			$availableAtStoresIds=explode(",",$availableAtStoresIds);			
-			$this->common_model->Savesaved_search($prodoct_name,$product_id,$availableAtStoresIds,$this->session->userdata('areasSelected'));
+			$this->common_model->Savesaved_search($prodoct_name,$product_id,$availableAtStoresIds,$this->session->userdata('areasSelected'),$customerId);
 			
 			//$objResponse->Alert($ret);
 			return $objResponse;	

@@ -1852,7 +1852,30 @@ class Product_model extends CI_Model {
     	 
     }
     
-
+    public function getSavedSearch() {
+			$customerId = $this->session->userdata('interfaceUserId');
+			 $table_name = "products p";
+        $this->db->join('saved_search ss', 'ss.product_id=productId','left');
+        $this->db->where('ss.customerId', $customerId);
+        
+        $this->db->select('p.*')->from($table_name);
+        $query = $this->db->get();
+		
+		$data=array();
+		
+        foreach($query->result_array() as $prod) {
+			$data[$prod['productId']]=$prod;
+		}
+		
+		return $data;
+    }
+	
+	public function removeSavedSearch($productId) {
+		$customerId = $this->session->userdata('interfaceUserId');
+		 $sql="delete from saved_search where product_id=".$productId." AND customerId=".$customerId;
+		$this->db->query($sql);
+		return true;
+	}
     
 }
 

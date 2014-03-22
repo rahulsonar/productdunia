@@ -946,21 +946,25 @@ class Common_model extends CI_Model {
         }
 		return $data;
 	}
-	public function Savesaved_search($prodoct_name, $product_id,$availableAtStoresIds, $areasSelected) {
+	public function Savesaved_search($prodoct_name, $product_id,$availableAtStoresIds, $areasSelected,$customerId) {
+	
 		sort($areasSelected,SORT_NUMERIC);
 		
 		sort($availableAtStoresIds,SORT_NUMERIC);
 		
 		//
-		$area_ids=(implode(",",$areasSelected)!="")?implode(",",$areasSelected):"";
+		$aIds=implode(",",$areasSelected);
+		$area_ids=(!empty($aIds))?$aIds:"";
+		if(empty($area_ids)) $area_ids='';
 		$store_ids=(implode(",",$availableAtStoresIds)!="")?implode(",",$availableAtStoresIds):"";
-		$sql="select * from saved_search WHERE product_id=".$product_id." AND area_ids='".$area_ids."' AND store_ids='".$store_ids."'";
+		$sql="select * from saved_search WHERE product_id=".$product_id." AND area_ids='".$area_ids."' AND store_ids='".$store_ids."' and customerId=".$customerId;
 		$query = $this->db->query($sql);
 		if($query->num_rows==0) {
 			$data=array(
+			'customerId'=>$customerId,
 			'name'=>str_replace(" ","",substr($prodoct_name,0,10)),
 			'product_id'=>$product_id,
-			'area_ids'=>implode(",",$areasSelected),
+			'area_ids'=>$aIds,
 			'store_ids'=>implode(",",$availableAtStoresIds));
 			
 		$this->db->insert('saved_search',$data);
