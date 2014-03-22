@@ -557,6 +557,77 @@ class User_model extends CI_Model {
     	$this->session->set_userdata($session_data);
     	return true;
     }
+    function BargainSubmit() {
+    	 
+    	$bargainMaster['customerId']=$this->session->userdata['interfaceUserId'];
+    	$bargainMaster['storeId']=$this->input->post('storeid');
+    	$bargainMaster['productId']=$this->session->userdata['productId'];
+    	$bargainMaster['customer_mobile']=$this->input->post('mobile');
+    	$bargainMaster['status']='1';
+    	$query=$this->db->get_where('bargain_master',array('storeId'=>$bargainMaster['storeId'],'productId'=>$bargainMaster['productId'],'customerId'=>$bargainMaster['customerId']));
+    	if($query->num_rows() > 0) {return false;}
+    	else{
+    		$this->db->insert('bargain_master', $bargainMaster);
+    		$result=$this->db->get_where('bargain_master',array('storeId'=>$bargainMaster['storeId'],'productId'=>$bargainMaster['productId'],'customerId'=>$bargainMaster['customerId']));
+    		$bargainid=$result->row()->bargainId;
+    	}
+    	$bargainCustRequest['bargainId']=$bargainid;
+    	$bargainCustRequest['expectedPrice']=$this->input->post('bargainprice');
+    	$bargainCustRequest['quantity']=$this->input->post('quantity');
+    	$bargainCustRequest['shipping_pinCode']=$this->input->post('shippingPincode');
+    	$bargainCustRequest['customer_msg']=$this->input->post('comment');
+    	$bargainCustRequest['request_time']=date("Y-m-d H:i:s");
+    	 
+    	if($this->db->insert('bargain_custrequest', $bargainCustRequest))
+    	{
+    		return true;
+    
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    
+    }
+    function reBargainSubmit(){
+    	$bargainCustRequest['bargainId']=10;
+    	$bargainCustRequest['expectedPrice']=$this->input->post('bargainprice');
+    	$bargainCustRequest['quantity']=$this->input->post('quantity');
+    	$bargainCustRequest['shipping_pinCode']=$this->input->post('shippingPincode');
+    	$bargainCustRequest['customer_msg']=$this->input->post('comment');
+    	$bargainCustRequest['request_time']=date("Y-m-d H:i:s");
+    	 
+    	if($this->db->insert('bargain_custrequest', $bargainCustRequest))
+    	{
+    		return true;
+    		 
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+    
+    function bargainResponse()
+    {
+    	$bargainResponse['customer_requestId']=10;
+    	$bargainResponse['bargainId']=10;
+    	$bargainResponse['quantity']=$this->input->post('quantity');
+    	$bargainResponse['offer_price']=$this->input->post('offerprice');
+    	$bargainResponse['validity_date']=$this->input->post('redate');
+    	$bargainResponse['store_msg']=$this->input->post('comment');
+    	$bargainResponse['storeResponse_time']=date("Y-m-d H:i:s");
+    	 
+    	if($this->db->insert('store_response', $bargainResponse))
+    	{
+    		return true;
+    
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
 
 }
 

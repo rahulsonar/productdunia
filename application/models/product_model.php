@@ -798,334 +798,6 @@ class Product_model extends CI_Model {
         return $specGroup;
     }
     
-    public function getSpecificationGroupBy($target='',$targetId='') {
-    	$specGroup = array();
-    	if($target=="groupId"){
-    		$this->db->where('groupId', $targetId);
-    	} elseif ($target=="groupName") {
-    		$this->db->where('groupName', $targetId);
-    	}
-    	$this->db->select('*');
-    	$query = $this->db->get('specification_group');
-    	foreach ($query->result() as $row){
-    		$specGroup[$row->groupId] = $row->groupName;
-    	};
-    	return $specGroup;
-    }
-    
-    /* Replace with */
-    
-    
-    public function getSpecificationByCat($catId='')
-    {
-    	if($catId!="")
-    	{
-    		$specGroup = array();
-    
-    		$query = $this->db->query('select labelId,labelLevel,labelName from spec_templet where catId='.$catId);
-    		//var_dump($query);
-    
-    		return $query->result();
-    	}
-    	else
-    	{
-    		echo "Error occured while reading Templet";
-    	}
-    }
-     
-    public function getExcelLabels($sheetData='')
-    {
-    	$specStr="";
-    	foreach ($sheetData as $row)
-    	{
-    		foreach ($row as $key=>$rowValue)
-    		{
-    			if($rowValue=="" )
-    				continue;
-    			if($key=='B')
-    				$specStr.=ucfirst(strtolower($rowValue)).":";
-    		}
-    	}
-    	$specLabels = explode(':', $specStr);
-    	array_shift($specLabels);
-    	array_pop($specLabels);
-    	return $specLabels;
-    }
-    
-    
-    public function getSkuList($temp_Brand,$temp_Model,$tsId)
-    {
-    	$temp_SKU=array();
-    	$masterList=$this->getMasterlist();
-    	//echo "<br>Brand: ".$temp_Brand."<br>";
-    	//echo "<br>Model: ".$temp_Model."<br>";
-    	//echo "<br>*******************Master List*******************<br>";
-    	//var_dump($masterList);
-    
-    	foreach ($masterList as $row)
-    	{
-    		if( strcmp($temp_Brand,ucfirst(strtolower($row->brandName)))===0   &&  strcmp($temp_Model,ucfirst(strtolower($row->productModel)))===0	)
-    		{
-    			$temp_SKU[]=array(
-    					'skuId'=>$row->productSKU,
-    					'tsId'=>$tsId
-    			);
-    		}
-    	}
-    	//echo "<br>*******************temp sku List*******************<br>";
-    	//var_dump($temp_SKU);
-    	return $temp_SKU;
-    }
-    
-    
-    
-    public function getMasterlist()
-    {
-    	$query = $this->db->query('select productSKU,br.brandName, productModel from products pr,brands br where pr.brandId=br.brandId');
-    
-    	return $query->result();
-    }
-    
-    public function insertSKUTS($skuList)
-    {
-    	//echo "<br>*******************SKU_TS table data*******************<br>";
-    	//var_dump($skuList);
-    	//die();
-    	$this->db->insert_batch("sku_ts",$skuList);
-    }
-    
-    
-    public function uploadProdSpecXLS($sheetData,$fields,$catId)
-    {
-    	$errorMsg = "";
-    	$prodSKU="";
-    	$tsId=0;
-    	$groupName="";
-    	$labelId="";
-    	$groupFlag=0;
-    	$prodFlag=0;
-    	$temp_GroupId="";
-    	$temp_Brand=NULL;
-    	$temp_Model=NULL;
-    	$userData=array();
-    	$firstIteration=1;
-    	$errorMsg="";
-    
-    
-    	//echo "<br>&&&&&&&&&&&&&&&&&&&&&&&&  field data &&&&&&&&&&&&&&&&&&&&&&&<br>";
-    	//var_dump($fields);
-    	foreach ($sheetData as $key=>$rowVal)
-    	{
-    
-    		if($firstIteration=="1")
-    		{
-    			$firstIteration = 0;
-    			$isValidXls = $this->common_model->isValidXls($rowVal, $fields);
-    			//echo "<br>&&&&&&&&&&&&&&&&&&&&&&&&  excel valid value: ".$isValidXls ." &&&&&&&&&&&&&&&&&&&&&&&<br>";
-    			if(!$isValidXls)
-    			{
-    				echo "<br> Error occur in excel Validation <br> please check the fields";
-    				return $errorMsg = $this->lang->line('invalidXlsFields');
-    			}
-    			//echo "<br>&&&&&&&&&&&&&&&&&&&&&&&& Validation End &&&&&&&&&&&&&&&&&&&&&&&<br>";
-    			continue;
-    		}
-    
-    
-    		//die();
-    
-    		if(		($rowVal['A']===NULL  &&  $rowVal['B']===NULL  &&  $rowVal['C']===NULL )	 ||		(	isset($rowVal['A'])!=1  &&  isset($rowVal['B'])!=1  &&  isset($rowVal['C'])!=1	)	)
-    		{
-    			continue;
-    		}
-    
-    		if( (	isset($rowVal['A'])!=1  &&  isset($rowVal['B'])!=1  &&  isset($rowVal['C'])==1	) )
-    		{
-    			continue;
-    		}
-    
-    		if($rowVal['A']!=NULL)//To get prodSKU for each product
-    		{
-    			//$prodSKU=$rowVal['A'];
-    			$tsId+=1;
-    			$prodFlag=1;
-    		}
-    		//echo $rowVal['A']." :: ".$rowVal['B']." :: ".$rowVal['C']."<br>";
-    
-    		if(		(	isset($rowVal['A'])==1  &&  isset($rowVal['B'])==1  &&  isset($rowVal['C'])!=1)    ||	 (  isset($rowVal['A'])!=1  &&  isset($rowVal['B'])==1  &&  isset($rowVal['C'])!=1))
-    		{
-    			$groupFlag=1;
-    			$groupName= ucfirst(strtolower($rowVal['B']));
-    			//echo $prodSKU." :: ".$groupName."<br>";
-    			continue;
-    		}
-    
-    		if (	isset($rowVal['A'])!=1	&&	isset($rowVal['B'])==1	&&	isset($rowVal['C'])==1   )
-    		{
-    			$temp_Label=ucfirst(strtolower($rowVal['B']));
-    			$temp_Value=ucfirst(strtolower($rowVal['C']));
-    			 
-    			if(strcmp($temp_Label,'Brand')===0)
-    			{
-    				$temp_Brand=$temp_Value;
-    			}
-    			 
-    			if(strcmp($temp_Label,'Model')===0)
-    			{
-    				$temp_Model=$temp_Value;
-    			}
-    			 
-    			if( $prodFlag==1 && isset($temp_Brand)==1 && isset($temp_Model)==1)
-    			{
-    				//var_dump($temp_Brand);
-    				//var_dump($temp_Model);
-    				$skuList=$this->getSkuList($temp_Brand,$temp_Model,$tsId);
-    				//echo "<br>***************sku list for:".$tsId."  ***************<br>";
-    				//var_dump($skuList);
-    				//echo "<br>***************sku list count:".count($skuList)."  ***************<br>";
-    
-    				if(count($skuList)>0)
-    				{
-    					 
-    					$this->insertSKUTS($skuList);
-    					//echo "<br>*************** skuts inserted  ***************<br>";
-    				}
-    				//die();
-    				//echo "<br>***************sku list for:".$prodSKU."  ***************<br>";
-    				//var_dump($skuList);
-    				$prodFlag=0;
-    				$temp_Brand=NULL;
-    				$temp_Model=NULL;
-    				//die();
-    			}
-    			 
-    			 
-    			//write seperate function for getting groupId
-    			//TO get gruopId
-    			if ($groupFlag==1)
-    			{
-    				$temp_GroupId=$this->getGroupId($groupName,$catId);
-    				$groupFlag=0;
-    			}
-    
-    			//Code to get label id for current label
-    			//Write function to get label id
-    			$labelId=$this->getLabelId($temp_GroupId,$temp_Label,$catId);
-    			 
-    		}//sub label and value
-    
-    		//echo $tsId."  		::		  ".$labelId."  		::		 ".$temp_Value."<br>";
-    		//For Creation of array for each rec[Bulk array creation]
-    
-    		$userData[]= array(
-    				$fields['productSKU']=>$tsId,
-    				$fields['labelId']=>$labelId,
-    				$fields['labelValue']=>$temp_Value
-    		);
-    		 
-    	}//End of Outer for
-    	//die();
-    
-    	var_dump($userData);
-    	//echo "<br>prodSKU :: temp_GroupId  ::  groupName ::  labelId  ::  temp_Label  :: temp_Value";
-    	 
-    	//Insert bulk data into database[In 1 attempt]
-    	if($this->db->insert_batch("prod_spec",$userData))
-    	{
-    		$errorMsg = $this->lang->line('operationSuccess');
-    	}
-    	return $errorMsg;
-    }//End of uploadProdSpecXLS()
-    
-    
-    
-    public function getGroupId($groupName,$catId)
-    {
-    	$groupFlag=0;
-    	$specTemplet = $this->getSpecificationByCat($catId);
-    	 
-    	 
-    	foreach ($specTemplet as $specRow)
-    	{
-    		if(		isset($specRow->labelId)==1		&&		isset($specRow->labelLevel)!=1		&&		 isset($specRow->labelName)==1		)
-    		{
-    			if(strcmp($groupName,ucfirst(strtolower($specRow->labelName)))==0)
-    			{
-    				$temp_GroupId=$specRow->labelId;
-    				$groupFlag=1;
-    				break;
-    			}
-    		}
-    	}
-    	 
-    	if (!$groupFlag)
-    	{
-    		$data = array();
-    		$query=$this->db->query("SELECT labelId FROM spec_templet order BY labelId DESC LIMIT 1");
-    		$data = $query->row_array();
-    		 
-    		$tempLabelId=intval($data['labelId']);
-    		$tempLabelId+=1;
-    		$groupData=array(
-    				'labelId'=>$tempLabelId,
-    				'labelLevel'=>NULL,
-    				'labelName'=>$groupName,
-    				'catId'=>$catId
-    		);
-    		$this->db->insert("spec_templet",$groupData);
-    		$temp_GroupId=$this->getGroupId($groupName, $catId);
-    		//echo "<br>New group id is: ".$temp_GroupId."<br>";
-    		$groupFlag=0;
-    		return $temp_GroupId;
-    	}
-    	else
-    	{
-    		return $temp_GroupId;
-    	}
-    }
-    
-    
-    public function getLabelId($GroupId,$Label,$catId)
-    {
-    	$labelFlag=0;
-    	$specTemplet = $this->getSpecificationByCat($catId);
-    	foreach ($specTemplet as $specRow)
-    	{
-    		if(	$specRow->labelLevel==$GroupId		&&		strcmp(ucfirst(strtolower($Label)),ucfirst(strtolower($specRow->labelName)))==0		)
-    		{
-    			$temp_LabelId=$specRow->labelId;
-    			$labelFlag=1;
-    			break;
-    		}
-    	}
-    	 
-    	if (!$labelFlag)
-    	{
-    		$data = array();
-    		$query=$this->db->query("SELECT labelId FROM spec_templet order BY labelId DESC LIMIT 1");
-    		$data = $query->row_array();
-    		 
-    		$tempLabelId=intval($data['labelId']);
-    		$tempLabelId+=1;
-    		$labelData=array(
-    				'labelId'=>$tempLabelId,
-    				'labelLevel'=>$GroupId,
-    				'labelName'=>$Label,
-    				'catId'=>$catId
-    		);
-    		$this->db->insert("spec_templet",$labelData);
-    		$temp_LabelId=$this->getLabelId($GroupId, $Label, $catId);
-    		//echo "<br>New Label id is: ".$temp_LabelId."<br>";
-    		$labelFlag=0;
-    		return $temp_LabelId;
-    	}
-    	else
-    	{
-    		return $temp_LabelId;
-    	}
-    	 
-    }
-    
     public function getSpecLabelAutoComplete($keyword) {
         $customers = array();
         $this->db->like('specLabel', $keyword);
@@ -1191,24 +863,20 @@ class Product_model extends CI_Model {
         return $errorMsg;
     }
     
-public function uploadProdMasterXLS($sheetData,$fields)
+    public function uploadProdMasterXLS($sheetData,$fields)
     {
         $errorMsg = "";
         $firstIteration = "1";
-        //echo "<br>*********************in model SHEETDATA ***********************";
-        
         foreach ($sheetData as $sheetRowKey => $sheetColVal){
             if($firstIteration=="1"){
                 $indexArr = $sheetColVal;
                 $firstIteration = 0;
                 $isValidXls = $this->common_model->isValidXls($indexArr, $fields);
-                
                 if(!$isValidXls){
                     return $errorMsg = $this->lang->line('invalidXlsFields');
                 }
                 continue;
             }
-            
             $prodData = array('productImg'=>'noImage.png');
             $prodMetaData = array();
             $prodCategoryData = array();
@@ -1629,7 +1297,6 @@ public function uploadProdMasterXLS($sheetData,$fields)
             $brand['category'] = 'brand';
             $brand['id'] = $row->brandId;
             $brand['label'] = highlight_phrase($row->brandName, $keyword, '<span style="color:#FAA323">', '</span>');
-            //$brand['label'] = $row->brandName;
             $brand['value'] = $row->brandName;
             $brand['url'] = site_url('product/brand/'.$row->brandId.'/'.url_title(strtolower($row->brandName)));;
             $suggestions[$i] = $brand;
@@ -1775,10 +1442,33 @@ public function uploadProdMasterXLS($sheetData,$fields)
         $query = $this->db->get();
         return ($query->row_array());
     }
-
-    public function getSavedSearch() {
     
-    }  
+    public function mybargain(){
+    	
+    	$customerId = $this->session->userdata('interfaceUserId');
+    	$table_Master = "bargain_master";
+    	$store_response = "store_response";
+    	//$bargain_customerRequest = "bargin_custRequest";
+    	//$this->db->where('customerId', $customerId);
+    	//$this->db->where('status != ', 'Closed');
+    	//$myBargainStatus = array();
+    	//$this->db->select('*')->from($table_Master);
+    	//$query = $this->db->get();
+    	$query=$this->db->query("select * from bargain_master where customerId='$customerId'");
+    	//var_dump($query->result());
+    	//die();
+    	/*foreach ($query->result_array() as $row) {
+    		$master[$row['customerId']] = $row;
+    	}*/
+    	$master=$query->result_array();
+    	///var_dump($master);
+    	//die();
+    	return $master;
+    	 
+    }
+    
+
+    
 }
 
 ?>

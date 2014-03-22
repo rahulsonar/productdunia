@@ -189,6 +189,21 @@ class Product extends MY_Controller {
             $temp['data'] = $data;	
             $this->load->view($this->config->item('themeCode')."/common_view",$temp);
         }
+        
+        public function mybargain()
+        {
+        	$data['master'] = $this->product_model->mybargain();
+        	$data['template'] = "mybargain";
+        	$temp['data'] = $data;
+        	$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+        }
+        
+       public function bargainRequest()
+       {
+       	$data['template']="bargainrequest";
+       	$temp['data'] = $data;
+       	$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+       }
 		
 		public function savearea() {
 			$a=explode(",",$_POST['final_val']);
@@ -317,7 +332,7 @@ class Product extends MY_Controller {
                 $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
                 $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
-
+                $data['availableAtStoresForBargain'] =$data['availableAtStores'];
                 $data['availableAtStoresTotal'] = $this->common_model->getAvailableAtStoresTotal($productId);
 
 
@@ -556,6 +571,17 @@ class Product extends MY_Controller {
 			$objResponse->assign("storeList","innerHTML", $ret);
 			
 			return $objResponse;
+		}
+		public function CustomerBargainStatus(){
+			//$session_data['productId'] = $productId;
+			 
+			$data['master'] = $this->product_model->getBargainStatus();
+			
+			 
+			$data['template']='test';
+			$temp['data'] = $data;
+			$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+		
 		}
         
 }

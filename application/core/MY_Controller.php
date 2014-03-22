@@ -23,6 +23,12 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('shortLoginSubmit', &$this, 'shortLoginSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('shortLoginConfirmSubmit', &$this, 'shortLoginConfirmSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('isUsernameAvailable', &$this, 'isUsernameAvailable'));
+        $this->xajax->register(XAJAX_FUNCTION, array('BargainSubmit', &$this, 'BargainSubmit'));
+        $this->xajax->register(XAJAX_FUNCTION, array('reBargainSubmit', &$this, 'reBargainSubmit'));
+        $this->xajax->register(XAJAX_FUNCTION, array('bargainResponse', &$this, 'bargainResponse'));
+        
+    
+        
         //$this->xajax->processRequest();
         $this->_setDefaultCity();
         $this->_googleLoginUrl();
@@ -204,19 +210,79 @@ class MY_Controller extends CI_Controller {
 			}
 			else
 			{
-				/*$params = array('next' => site_url('customer/logout'));
+				$params = array('next' => site_url('customer/logout'));
                 $logoutUrl = $this->facebook->getLogoutUrl($params);
 				$session_data['logoutUrl'] = $logoutUrl;
                 $this->session->set_userdata($session_data);
 
                 $user_profile = $this->facebook->api('/me');
-                $response = $this->user_model->signupFacebookUser($user_profile);*/
+                $response = $this->user_model->signupFacebookUser($user_profile);
 			}
         }
     }
     public function twitterLoginUrl() {
 		
     }
+    public function BargainSubmit($formData) { 
+      foreach ($formData as $id => $field) {
+                $_POST[$id] = $field;
+            }
+            $objResponse = new xajaxResponse();        
+            $response = $this->user_model->BargainSubmit();
+            if($response)
+            {  
+           		$objResponse->Alert("Your Bargain Request Sent successfully.");
+				$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+				$this->session->unset_userdata('redirectTo');
+				$objResponse->redirect(site_url($redirectTo));
+            	return $objResponse;  
+            }
+            else 
+            {
+            	$objResponse->Alert("Sorry ! You Are Alrady Requested For This Product.");
+            	$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+            	$this->session->unset_userdata('redirectTo');
+            	$objResponse->redirect(site_url($redirectTo));
+            	return $objResponse;
+            }     
+        
+    }
+    
+    public function reBargainSubmit($formData) {
+    	foreach ($formData as $id => $field) {
+    		$_POST[$id] = $field;
+    	}
+    	$objResponse = new xajaxResponse();
+    	$response = $this->user_model->reBargainSubmit();
+    	if($response)
+    	{
+    		$objResponse->Alert("Your Bargain Request Sent successfully.");
+    		$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+    		$this->session->unset_userdata('redirectTo');
+    		$objResponse->redirect(site_url($redirectTo));
+    		return $objResponse;
+    	}
+    }	
+    
+    public function bargainResponse($formData)
+    {
+    	foreach ($formData as $id => $field) {
+    		$_POST[$id] = $field;
+    	}
+    	$objResponse = new xajaxResponse();
+    	$response = $this->user_model->bargainResponse();
+    	if($response)
+    	{
+    		$objResponse->Alert("Your Response Sent successfully.");
+    		$redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+    		$this->session->unset_userdata('redirectTo');
+    		$objResponse->redirect(site_url($redirectTo));
+    		return $objResponse;
+    	}
+    }
+    
+     
+    
     
 }
 

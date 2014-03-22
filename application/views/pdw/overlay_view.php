@@ -534,11 +534,12 @@ you are not a robot! </p>
                
    </div>
 <!--bargain overlay-->
-<div style="display: none">
+        <div style="display: none">
 <div id="bargainreq"> 
    		<div class="hearderholder">Bargain<span class="smalltextbox"></span></div>
                 <div class="lightboxcontent" style="padding: 0px 0px">
                     <div class="leftwarp bargainproddetail">
+                    <?php foreach ($availableAtStoresForBargain as $storeId => $storeArr) { ?>
                         <ul>
                             <li><span class="imgbox">
                                      <a href="#">
@@ -550,57 +551,219 @@ you are not a robot! </p>
                         <div class="bargaindetailleft">
                         <div class="cell_textaria">
                             <label><b>Product</b></label>
-                            <label>Lava XOLO Q800v (BLACK)</label>
+                            <label><?php echo $product['productName']; ?></label>
                         </div>
                         <div class="cell_textaria">
                             <label><b>Store</b></label>
-                            <label>Croma, Viman Nagar, Pune</label>
+                            <label><?php echo $storeArr['storeName']; ?></label>
                         </div>
                         <div class="cell_textaria">
                             <label><b>Actual Price</b></label>
-                            <label>INR 8000</label>
+                            <label><?php echo $storeArr['sellPrice']; ?></label>
                         </div>
                         <div class="cell_textaria">
                             <label><b>Offer</b></label>
-                            <label>Yes</label>
+                            <label><?php echo $storeArr['offerPrice']; ?></label>
                              
                         </div>
                         </div>
+                        <?php }?>
                         </div>
                     <div class="right">
                         <div class="bargaindetailright">
+                            <form name="frmBargain" id="frmBargain">
                             <div class="left">
                                 <div class="cell_textaria">
                                     <label>Expected Bargained Price <span style="color: #bab7b7;">(Per Unit)</span></label>
-                                    <input type="text" name="bargainprice"/>
+                                    <input type="text" name="bargainprice" id="bargainprice"/>
+                                    <input type="hidden" name="storeid" value="<?php echo $storeArr['storeId']; ?>"/>
                                 </div>
                                 <div class="space10"></div>
                                 <div class="cell_textaria">
                                     <label>Shipping Pincode <span style="color: #bab7b7;">(Pune)</span></label>
-                                    <input type="text" name="bargainprice"/>
+                                    <input type="text" name="shippingPincode"id="shippingPincode"/>
                                 </div>
                             </div>
                             <div class="right" style="margin-left: 15px">
                                 <div class="cell_textaria">
                                     <label>Quantity <span style="color: #bab7b7;">(In Units)</span></label>
-                                    <input type="text" name="bargainprice" style="width: 110px"/>
+                                    <input type="text" name="quantity" id="quantity" style="width: 110px"/>
                                 </div>
                                 <div class="space10"></div>
                                 <div class="cell_textaria">
                                     <label>Mobile No <span style="color: #bab7b7;">(Verify)</span></label>
-                                    <input type="text" name="bargainprice" style="width: 110px"/>
+                                    <input type="text" name="mobile" id="mobile" style="width: 110px"/>
                                     <label><a href="#" class="right">Change</a></label>
                                 </div>
                             </div>
                         
                         <div class="cell_textaria">
                             <label>Comment <span style="color: #bab7b7;">(Optional)</span></label>
-                            <textarea style="width: 410px;height: 100px"></textarea>
+                            <textarea name="comment" id="comment"style="width: 410px;height: 100px"></textarea>
                         </div>
                             <div class="space20"></div>
                             <div class="right">
-                            <input type="button" class="btncomman rounded" value="Save"/>
+                            <input type="submit" class="" value="Save"/>
                         </div>
+                            </form>
+                      </div>
+                    </div>
+                </div>
+                </div>
+                
+</div>
+
+<!-- rebargain overlay -->
+
+        <div style="display: none">
+<div id="rebargainreq"> 
+   		<div class="hearderholder">Re-Bargain<span class="smalltextbox"></span></div>
+                <div class="lightboxcontent" style="padding: 0px 0px">
+                    <div class="leftwarp bargainproddetail">
+                    <?php foreach ($availableAtStoresForBargain as $storeId => $storeArr) { ?>
+                        <ul>
+                            <li><span class="imgbox">
+                                     <a href="#">
+                                         <img alt="" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
+                                     </a>
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="bargaindetailleft">
+                        <div class="cell_textaria">
+                            <label><b>Product</b></label>
+                            <label><?php echo $product['productName']; ?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Store</b></label>
+                            <label><?php echo $storeArr['storeName']; ?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Actual Price</b></label>
+                            <label><?php echo $storeArr['sellPrice']; ?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Offer</b></label>
+                            <label><?php echo $storeArr['offerPrice']; ?></label>
+                             
+                        </div>
+                        </div>
+                        <?php }?>
+                        </div>
+                    <div class="right">
+                        <div class="bargaindetailright">
+                            <form name="frmreBargain" id="frmreBargain">
+                            <div class="left">
+                                <div class="cell_textaria">
+                                    <label>Expected Bargained Price <span style="color: #bab7b7;">(Per Unit)</span></label>
+                                    <input type="text" name="bargainprice" id="bargainprice"/>
+                                    <input type="hidden" name="storeid" value="<?php echo $storeArr['storeId']; ?>"/>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="cell_textaria">
+                                    <label>Shipping Pincode <span style="color: #bab7b7;">(Pune)</span></label>
+                                    <input type="text" name="shippingPincode"id="shippingPincode"/>
+                                </div>
+                            </div>
+                            <div class="right" style="margin-left: 15px">
+                                <div class="cell_textaria">
+                                    <label>Quantity <span style="color: #bab7b7;">(In Units)</span></label>
+                                    <input type="text" name="quantity" id="quantity" style="width: 110px"/>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="cell_textaria">
+                                    <label>Mobile No <span style="color: #bab7b7;">(Verify)</span></label>
+                                    <input type="text" name="mobile" id="mobile" style="width: 110px"/>
+                                    <label><a href="#" class="right">Change</a></label>
+                                </div>
+                            </div>
+                        
+                        <div class="cell_textaria">
+                            <label>Comment <span style="color: #bab7b7;">(Optional)</span></label>
+                            <textarea name="comment" id="comment"style="width: 410px;height: 100px"></textarea>
+                        </div>
+                            <div class="space20"></div>
+                            <div class="right">
+                            <input type="submit" class="" value="Save"/>
+                        </div>
+                            </form>
+                      </div>
+                    </div>
+                </div>
+                </div>
+                
+</div>
+
+<!-- END OF REBARGAIN -->
+<!-- -------bargain response quotation -->
+<div style="display: none">
+<div id="quotation"> 
+   		<div class="hearderholder">Send Quotation<span class="smalltextbox"></span></div>
+                <div class="lightboxcontent" style="padding: 0px 0px">
+                    <div class="leftwarp bargainproddetail">
+                        <ul>
+                            <li><span class="imgbox">
+                                     <a href="#">
+                                         <img alt="" src="images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
+                                     </a>
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="bargaindetailleft">
+                        <div class="cell_textaria">
+                            <label><b>Product</b></label>
+                            <label>Lava XOLO Q800v (BLACK)</label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Customer Name</b></label>
+                            <label>Amit Sharma</label>
+                        </div>
+                             <div class="cell_textaria">
+                            <label><b>Customer Contact</b></label>
+                            <label>8542316475</label>
+                             
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Actual Price</b></label>
+                            <label>INR 8000</label>
+                        </div>
+                       
+                        </div>
+                        </div>
+                    <div class="right">
+         `               <div class="bargaindetailright">
+         					<form name="frmquotation" id="frmquotation">
+                            <div class="left">
+                                <div class="cell_textaria">
+                                    <label>Offered Price <span style="color: #bab7b7;">(Per Unit)</span></label>
+                                    <input type="text" name="offerprice" id="offerprice"/>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="cell_textaria">
+                                    <label>Valid Upto <span style="color: #bab7b7;">(Quotation)</span></label>
+                                    <input type="text" name="redate" id="datepicker"/>
+                                </div>
+                            </div>
+                            <div class="right" style="margin-left: 15px">
+                                <div class="cell_textaria">
+                                    <label>Quantity <span style="color: #bab7b7;">(In Units)</span></label>
+                                    <input type="text" name="quantity" id="quantity" style="width: 110px"/>
+                                </div>
+                                <div class="space10"></div>
+                               
+                            </div>
+                        
+                        <div class="cell_textaria">
+                            <label>Comment <span style="color: #bab7b7;">(Optional)</span></label>
+                            <textarea style="width: 410px;height: 130px" name="comment" id="comment"></textarea>
+                        </div>
+                            <div class="space20"></div>
+                            <div class="right">
+                           <!--  a href="#quotation" class="quot inline btncomman rounded" value="Send Quotation">Save</a-->
+                            
+                           <input type="submit" value="response"/>
+                        </div>
+                        </form>
                       </div>
                     </div>
                 </div>
@@ -608,3 +771,116 @@ you are not a robot! </p>
                 
                
    </div>
+<!-- -------end of bargain response -->
+
+<script type="text/javascript">
+;(function($) { 
+$(document).ready(function() {
+	$("#frmBargain").validate({
+		rules: {
+			bargainprice: {
+				required: true,
+                number:true                
+			},
+            shippingPincode: {
+				required: true,
+                number:true,
+                minlength:6,
+                maxlength:6               
+			},
+            quantity: {
+				required: true,
+                number:true,
+                minlength:1,
+                maxlength:3         
+			},
+            mobile: {
+				required: true,
+                minlength:10,
+                maxlength:10            
+			}
+                      
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_BargainSubmit(xajax.getFormValues('frmBargain'));
+		}
+		
+	});	
+
+	//-----------rebargain--------
+
+		$("#frmreBargain").validate({
+		rules: {
+			bargainprice: {
+				required: true,
+                number:true                
+			},
+            shippingPincode: {
+				required: true,
+                number:true,
+                minlength:6,
+                maxlength:6               
+			},
+            quantity: {
+				required: true,
+                number:true,
+                minlength:1,
+                maxlength:3         
+			},
+            mobile: {
+				required: true,
+                minlength:10,
+                maxlength:10            
+			}
+                      
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_reBargainSubmit(xajax.getFormValues('frmreBargain'));
+		}
+		
+	});
+	//------------end of rebargain------------
+		// ----------frmQuotation---------------//
+				$("#frmquotation").validate({
+		rules: {
+			offerprice: {
+				required: true,
+                number:true                
+			},
+            quantity: {
+				required: true,
+                number:true,
+                minlength:1,
+                maxlength:3         
+			},
+            redate: {
+				required: true
+                            
+			}
+                      
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_bargainResponse(xajax.getFormValues('frmquotation'));
+		}
+		
+	});
+		
+		//----------end of frmQuotation---------------//
+})
+})(jQuery); 
+</script>
