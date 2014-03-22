@@ -135,6 +135,12 @@ class Customer extends MY_Controller {
                 redirect(site_url('customer/login'));
             }
         }
+        public function savedsearch() {
+        	$data=array();
+        	$data['template']='customer_savedsearch';
+        	$temp['data'] = $data;
+        	$this->load->view($this->config->item('themeCode')."/common_view", $temp);
+        }
         
         public function personalInfoSubmit($formData)
         {
