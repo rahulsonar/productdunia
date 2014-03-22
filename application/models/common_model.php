@@ -1015,6 +1015,18 @@ class Common_model extends CI_Model {
 		}
 		return $data;
 	}
+	public function bargainlist(){
+		//$query=$this->db->query('select * from bargains b, products p where b.productId=p.productId');
+		//            var_dump($query->result());
+		//            die();
+		return $query;
+	}
+	public function bargain(){
+		//$query=$this->db->query('select * from bargains b, bargain_user b1 where b.bargainId=b1.bargainId ');
+		//            var_dump($query->result());
+		//            die();
+		return $query;
+	}
 }
 
 
