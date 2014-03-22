@@ -1,29 +1,29 @@
 <script type="text/javascript">
-;(function($) { 
-$(document).ready(function() {
-	$("#frmPersonalInfo").validate({
-		rules: {
-			name: {
-				required: true
-			},
-                        email: {
-				required: true,
-				email: true
-			},
-			mobile: {
-				required: true,
-				minlength: 10,
-                                maxlength: 10
-			}		},errorElement: "div",
-		errorPlacement: function(error, element) {
-			error.insertAfter(element);
-		},
-		submitHandler: function(){
+    ;(function($) { 
+        $(document).ready(function() {
+            $("#frmPersonalInfo").validate({
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    mobile: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 10
+                    }		},errorElement: "div",
+                errorPlacement: function(error, element) {
+                    error.insertAfter(element);
+                },
+                submitHandler: function(){
                     xajax_personalInfoSubmit(xajax.getFormValues('frmPersonalInfo'));
-		}
-	});	
-})
-})(jQuery); 
+                }
+            });	
+        })
+    })(jQuery); 
 </script>
 <div id="main">
     <div class="mainholder">
@@ -39,45 +39,43 @@ $(document).ready(function() {
         <div class="rightwarp">
             <?php $this->load->view($this->config->item('themeCode') . "/breadcrumbs_view"); ?>
             <div class="subheadingholder">
-                <h2>My Account</h2>
+                <h2>Saved Search</h2>
             </div>
-            <div class="subheadingholder">
-                <h2>Personal Information</h2>
+            <div class="prodsubbox"> 
+                <?php $this->load->view($this->config->item('themeCode') . "/SavedsearchGrid_view",$products); ?>
             </div>
-            <form name="frmPersonalInfo" id="frmPersonalInfo">
-            <div class="form_holder">
-                <div class="left_row">
-                    <div class="cell_input">
-                        <label class="label">First Name</label> 
-                        <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
-                    </div>
-                    <div class="cell_input">
-                        <label class="label">Mobile Number</label> 
-                        <input type="text" value="<?php echo $customerData['mobile']; ?>" name="mobile" id="mobile" class="input"/> 
-                    </div>
-                    <div class="cell_input">
-                        <label class="label">Gender</label> 
-                        <select class="gender" name="gender" id="gender">
-                            <option <?php if($customerData['gender']=='Male'){ ?>selected='selected'<?php } ?>>Male</option>
-                            <option <?php if($customerData['gender']=='Female'){ ?>selected='selected'<?php } ?>>Female</option>
-                        </select>
-                    </div>
-                </div> 
-                <div class="right_row">
-                    <div class="cell_input">
-                        <label class="label">Last Name</label> 
-                        <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
-                    </div>
-                    <div class="cell_input">
-                        <label class="label">Email ID</label> 
-                        <input type="text" value="<?php echo $customerData['email']; ?>" name="email" id="email" class="input"> 
-                    </div>                    
-                                        
-                    <div class="right">
-                        <input type="submit" name="save" id="save" value="Save" class="btncomman rounded" /></div>	 
-                </div>
-            </div>
-            </form>
+            <!--<div class="paginate">
+                <ul>
+                    <li class="next"><a href="#">Next</a></li>
+                    <li><a class="active" href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li class="prev"><a href="#">Prev</a></li>
+                </ul>
+            </div>-->
+            <div class="space15"></div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">    
+    function callRating(){        
+        <?php foreach ($products as $proKey => $product) { ?>
+                $('#productId-<?php echo $product['productId'];?>').raty({
+                        score: <?php echo $product['rating'];?>,
+                        readOnly: true,
+                        starOn: '<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star-on.png',
+                        starOff: '<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star-off.png',
+                        starHalf: '<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star-half.png'
+                });
+        <?php } ?>        
+    }
+    
+    ;(function($) {
+        $(document).ready(function() {
+            callRating();
+        })
+    })(jQuery);
+</script>

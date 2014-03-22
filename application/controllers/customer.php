@@ -137,6 +137,8 @@ class Customer extends MY_Controller {
         }
         public function savedsearch() {
         	$data=array();
+        	
+        	$products=$this->product_model->getSavedSearch();
         	$data['template']='customer_savedsearch';
         	$temp['data'] = $data;
         	$this->load->view($this->config->item('themeCode')."/common_view", $temp);

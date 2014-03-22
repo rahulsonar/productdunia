@@ -4,8 +4,8 @@
             <h3 class="activities">My Activities</h3>
             <ul>
                 <li><a href="<?php echo site_url('customer/account/wishlist'); ?>">Wishlist</a></li>
-                <li><a href="<?php echo site_url('customer/savedsearch'); ?>">Saved Searches</a></li>
-                <li><a href="<?php echo site_url('customer/myreviews'); ?>">Reviews</a></li>
+                <li><a href="#">Saved Searches</a></li>
+                <li><a href="#">Reviews</a></li>
             </ul>
         </div>
         <div class="box_holder_act">
