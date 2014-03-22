@@ -36,7 +36,36 @@ $config['storeLogoPath']='/uploads/stores/';
 $config['brandImgPath'] = './uploads/brands/';
 $config['tempXls'] = './uploads/excels/temp/';
 $config['pathToXls'] = '/uploads/excels/temp/';
-$config['xlsCongif'] = array('product-specification.xls'=> array("function" => "uploadProdSpecXLS", "fields" => array("productid"=>"productId","group"=>"groupId","speclabel"=>"specLabel","specvalue"=>"specValue")), 'products-master.xls'=> array("function" => "uploadProdMasterXLS", "fields" => array("product-sku"=>"productSKU", "brand-id"=>"brandId", "product-model-no"=>"productModel", "product-name"=>"productName", "product-varient"=>"productVariant", "product-color"=>"productColor", "product-description"=>"productDesc", "product-mrp"=>"productMRP", "product-dp"=>"productDP", "product-features"=>"productFeatures", "category-id"=>"categoryId", "page-title"=>"pageTitle", "meta-keyword"=>"metaKeyword", "meta-desc"=>"metaDesc")));
+$config['xlsCongif'] = array(
+		'product-specification.xls'=> array(
+								"function" => "uploadProdSpecXLS",
+								"fields" =>array(
+                						'productSKU'=>'tsId',
+                						'labelId'=>'labelId',
+                						'labelValue'=>'labelValue'
+												)                		
+                							),
+		'products-master.xls'=> array(
+							"function" => "uploadProdMasterXLS",
+							"fields" => array(
+									"product-sku"=>"productSKU",
+									"brand-id"=>"brandId",
+									"product-model-no"=>"productModel",
+									"product-name"=>"productName",
+									"product-varient"=>"productVariant",
+									"product-color"=>"productColor",
+									"product-description"=>"productDesc",
+									"product-mrp"=>"productMRP",
+									"product-dp"=>"productDP",
+									"product-features"=>"productFeatures",
+									"category-id"=>"categoryId",
+									"page-title"=>"pageTitle",
+									"meta-keyword"=>"metaKeyword",
+									"meta-desc"=>"metaDesc"
+											)
+									)
+							);
+
 $config['bannerUploadPath']='uploads/banners';
 
 $config['pd_gplus'] = 'https://plus.google.com/101473748875611918148/posts';

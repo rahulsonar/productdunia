@@ -779,50 +779,94 @@ class Catalog extends CI_Controller {
         print_r($customers); // print response to populate in drop down.
     }
     
-    public function uploadProdSpecXLS(){
+public function uploadProdSpecXLS(){
         $userData = array();
         $indexArr = array();
         $fields = array();
+                
         $productId = $this->input->post("productId");
+        
         $xlsCongif = $this->config->item('xlsCongif');
+              
         $fileData = $this->common_model->_uploadXLS();
-        if(array_key_exists($fileData['upload_data']['client_name'], $xlsCongif)){
-            $functionName = $xlsCongif[$fileData['upload_data']['client_name']]['function'];
-            if($functionName == __FUNCTION__){
-                $fields = $xlsCongif[$fileData['upload_data']['client_name']]['fields'];
+             
+        if(array_key_exists('product-specification.xls', $xlsCongif))
+        {
+        	$functionName = $xlsCongif['product-specification.xls']['function'];
+        	//$functionName = $xlsCongif[$fileData['upload_data']['client_name']]['function'];
+        	
+            if($functionName == __FUNCTION__)
+            {
+                //$fields = $xlsCongif[$fileData['upload_data']['client_name']]['fields'];
+                $fields = $xlsCongif['product-specification.xls']['fields'];
                 $sheetData = $this->common_model->_readXlsFile($fileData['upload_data']['file_name']);
-                $errorMsg = $this->product_model->uploadProdSpecXLS($sheetData,$fields);
+					
+                //array_shift($sheetData);//TO REMOVE FIRST ELEMENT OF ARRAY
+                //echo "<br>%%%%%%%%%%%%	In Con	%%%%%%%%%%%%";
+                //var_dump($sheetData);
+                //ToDo:Delete array null elements without loop
+                //ToDo:get respective Category id
+                $catId=1;      
+                $errorMsg = $this->product_model->uploadProdSpecXLS($sheetData,$fields,$catId);
+                
+        
             }else{
                 $errorMsg = $this->lang->line('invalidXlsFunctionName');
             }
         }else{
+       
             $errorMsg = $this->lang->line('invalidXlsFileName');
-        }
+        }       
+
+        //die();
+        
         $this->common_model->_deleteTempXlsFile($fileData['upload_data']['file_name']);
-        $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">Ã—</button>' . $errorMsg . '</div>');
+        $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $errorMsg . '</div>');
         redirect(site_url($this->config->item('controlPanel') . '/catalog/productSpecificationListShow/' . $productId));
     }
+    
+    
+ /* End By Sandy  */
+    
+    
+    
     
     public function uploadProdMasterXLS(){
         $userData = array();
         $indexArr = array();
         $fields = array();
         $xlsCongif = $this->config->item('xlsCongif');
+		//echo "<br>*********************XLSCONFIG***********************";
+        //var_dump($xlsCongif);
+         
         $fileData = $this->common_model->_uploadXLS();
-        if(array_key_exists($fileData['upload_data']['client_name'], $xlsCongif)){
-            $functionName = $xlsCongif[$fileData['upload_data']['client_name']]['function'];
+        //echo "<br>*********************filedata***********************";
+        //var_dump($fileData);
+        
+        
+        if(array_key_exists('products-master.xls', $xlsCongif))
+        {
+            $functionName = $xlsCongif['products-master.xls']['function'];            
             if($functionName == __FUNCTION__){
-                $fields = $xlsCongif[$fileData['upload_data']['client_name']]['fields'];
+                $fields = $xlsCongif['products-master.xls']['fields'];
+                //echo "<br>*********************fields***********************";
+                //var_dump($fields);
                 $sheetData = $this->common_model->_readXlsFile($fileData['upload_data']['file_name']);
+                
+                
+                
                 $errorMsg = $this->product_model->uploadProdMasterXLS($sheetData,$fields);
+                //echo "<br>********************* Msg ***********************";
+                //var_dump($errorMsg);
             }else{
                 $errorMsg = $this->lang->line('invalidXlsFunctionName');
             }            
         }else{
             $errorMsg = $this->lang->line('invalidXlsFileName');
         }
+        //DIE();
         $this->common_model->_deleteTempXlsFile($fileData['upload_data']['file_name']);
-        $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">Ã—</button>' . $errorMsg . '</div>');
+        $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $errorMsg . '</div>');
         redirect(site_url($this->config->item('controlPanel') . '/catalog/productListShow/'));
     }
     
