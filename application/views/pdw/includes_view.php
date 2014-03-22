@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/css/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 <!-- favicon Start-->
 <link rel="icon" href="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/favicon.ico" type="image/x-icon" />
 <!-- favicon End-->
