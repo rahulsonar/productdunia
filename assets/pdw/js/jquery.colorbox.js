@@ -837,7 +837,14 @@
 		makeSettings();
 		
 		trigger(event_purge);
-		
+//		$('body').css('overflow','hidden');
+//                $('body').keypress(function (e){
+//                    if(e.which==37||e.which==38||e.which==39||e.which==40){
+//                        $('body').preventDefault();
+//                        $('body').stopPropagation();
+//                    }
+//                })
+
 		trigger(event_load, settings.onLoad);
 		
 		settings.h = settings.height ?
