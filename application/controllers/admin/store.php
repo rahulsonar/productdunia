@@ -248,12 +248,12 @@ class Store extends CI_Controller {
         return $uploadStatus;
     }
     
-    public function storeSubmit($formData) {
+    public function storeSubmit() {
         $this->access_control_model->check_access('storeSubmit', __CLASS__, __FUNCTION__, 'basic');
         foreach ($formData as $id => $field) {
             $_POST[$id] = $field;
         }
-        //print_debug($_POST, __FILE__, __LINE__, 1);
+        
         //$objResponse = new xajaxResponse();
         
         if($_FILES['storeLogo']['name']!=""){
@@ -268,11 +268,18 @@ class Store extends CI_Controller {
             $fileName = $this->input->post('storeLogoImg');
         }
         
+		if(!empty($_POST['agency'])) {
+			$agencyId=$_POST['agency'];
+		}
+		else {
+			$agencyId=$this->store_model->getAgencyIdByName($_POST['agencyNameNew']);
+		}
+		
         
         if ($_POST['storeId'] != '') {
-            $response = $this->store_model->update_store($fileName);
+            $response = $this->store_model->update_store($fileName,$agencyId);
         } else {
-            $response = $this->store_model->insert_store($fileName);
+            $response = $this->store_model->insert_store($fileName,$agencyId);
         }
         if ($response) {
             $this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('storeSuccess') . '</div>');

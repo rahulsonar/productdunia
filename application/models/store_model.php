@@ -173,8 +173,9 @@ class Store_model extends CI_Model {
         return ($query->row_array());
     }
 
-    function insert_store($fileName) {
-        $userData['agencyId'] = $this->input->post('agency');
+    function insert_store($fileName,$agencyId) {
+        //$userData['agencyId'] = $this->input->post('agency');
+        $userData['agencyId'] = $agencyId;
         $userData['countryId'] = $this->input->post('country');
         $userData['cityId'] = $this->input->post('city');
         $userData['areaId'] = $this->input->post('area');
@@ -203,9 +204,10 @@ class Store_model extends CI_Model {
         }
     }
 
-    function update_store($fileName) {
+    function update_store($fileName,$agencyId) {
         $storeId = $this->input->post('storeId');
-        $userData['agencyId'] = $this->input->post('agency');
+        //$userData['agencyId'] = $this->input->post('agency');
+        $userData['agencyId'] = $agencyId;
         $userData['countryId'] = $this->input->post('country');
         $userData['cityId'] = $this->input->post('city');
         $userData['areaId'] = $this->input->post('area');
@@ -610,6 +612,26 @@ class Store_model extends CI_Model {
     	
     	return array('msg'=>'Banner Added Successfully');
     }
+	
+	public function getAgencyIdByName($Name) {
+		
+		$this->db->where('agencyName',$Name);
+		$this->db->from('agencies');
+		$query=$this->db->get();
+		$row = $query->result();
+		
+		if($query->num_rows==0) {
+			$data=array('agencyName'=>$Name);
+			$query1=$this->db->insert('agencies',$data);
+			$agency_id=$this->db->insert_id();
+			
+		}
+		else {
+			$agency_id=$row[0]->agencyId;
+		}
+		return $agency_id;
+		
+	}
 
 }
 

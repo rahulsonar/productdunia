@@ -1,11 +1,20 @@
 <script type="text/javascript">
 ;(function($) { 
 $(document).ready(function() {
+
 	$("#frmStore").validate({
                 ignore: ":hidden:not(select)",
 		rules: {
 			agency: {
-				required: true
+				required: function(element){
+					
+					return ($("#agencyNameNew").val()=='');
+				}
+			},
+			agencyNameNew: {
+				required:function(element){
+					return ($("#agency").val()=='');
+				}
 			},
                         country: {
 				required: true
@@ -69,6 +78,7 @@ function callChangeAgency(){
 						<div class="controls">
                                                         <input type='hidden' value="<?php echo $agencyName ?>" name='agencyName' id='agencyName'>
 							<?php echo form_dropdown($sel_agency['name'],$sel_agency['options'],$sel_agency['selected_agency'],$sel_agency['attribute']); ?>
+							<input type="text" name="agencyNameNew" value="" id="agencyNameNew" />
 						</div>
 					</div>
                                         <?php }else{ ?>
