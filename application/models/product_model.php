@@ -1839,7 +1839,13 @@ class Product_model extends CI_Model {
     	//$myBargainStatus = array();
     	//$this->db->select('*')->from($table_Master);
     	//$query = $this->db->get();
-    	$query=$this->db->query("select * from bargain_master where customerId='$customerId'");
+    	$query=$this->db->query("
+    			SELECT bc.*,bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP
+FROM bargain_custrequest bc
+LEFT JOIN bargain_master bm ON (bm.bargainId=bc.bargainId)
+LEFT JOIN products p ON (bm.productId=p.productId)
+LEFT JOIN stores s ON (s.storeId=bm.storeId)
+WHERE bm.customerId='".$customerId."'");
     	//var_dump($query->result());
     	//die();
     	/*foreach ($query->result_array() as $row) {

@@ -565,12 +565,13 @@ class User_model extends CI_Model {
     	$bargainMaster['customer_mobile']=$this->input->post('mobile');
     	$bargainMaster['status']='1';
     	$query=$this->db->get_where('bargain_master',array('storeId'=>$bargainMaster['storeId'],'productId'=>$bargainMaster['productId'],'customerId'=>$bargainMaster['customerId']));
-    	if($query->num_rows() > 0) {return false;}
-    	else{
-    		$this->db->insert('bargain_master', $bargainMaster);
-    		$result=$this->db->get_where('bargain_master',array('storeId'=>$bargainMaster['storeId'],'productId'=>$bargainMaster['productId'],'customerId'=>$bargainMaster['customerId']));
-    		$bargainid=$result->row()->bargainId;
+    	if($query->num_rows() > 0) {
+    		return false;
     	}
+    	
+    		$this->db->insert('bargain_master', $bargainMaster);
+    		$bargainid=$this->db->insert_id();
+    	
     	$bargainCustRequest['bargainId']=$bargainid;
     	$bargainCustRequest['expectedPrice']=$this->input->post('bargainprice');
     	$bargainCustRequest['quantity']=$this->input->post('quantity');

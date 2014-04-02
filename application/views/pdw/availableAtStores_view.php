@@ -164,7 +164,7 @@
 							}
 							?>
                                 <a href="<?php echo $targetBox; ?>" id="buyNow_<?php echo $storeId; ?>" class="btncomman rounded btnshadow">BUY NOW</a>
-								<a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow">BARGAIN</a>
+								<a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow bargainBtn">BARGAIN</a>
                             </td>
                         </tr>
                         <tr>

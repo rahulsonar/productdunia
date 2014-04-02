@@ -190,13 +190,7 @@ class Product extends MY_Controller {
             $this->load->view($this->config->item('themeCode')."/common_view",$temp);
         }
         
-        public function mybargain()
-        {
-        	$data['master'] = $this->product_model->mybargain();
-        	$data['template'] = "mybargain";
-        	$temp['data'] = $data;
-        	$this->load->view($this->config->item('themeCode')."/common_view",$temp);
-        }
+        
         
        public function bargainRequest()
        {

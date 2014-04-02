@@ -1,31 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <?php include 'links.php';?>
-        <link href="css/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
-    </head>
-<body>
-<!-- Header -->
- <?php include 'header.php';
- include 'overlay-bargain.php';?>
-
-<!-- Main -->  
+<script type="text/javascript">
+;(function($) { 
+$(document).ready(function() {
+	$("#frmPersonalInfo").validate({
+		rules: {
+			name: {
+				required: true
+			},
+                        email: {
+				required: true,
+				email: true
+			},
+			mobile: {
+				required: true,
+				minlength: 10,
+                                maxlength: 10
+			}		},errorElement: "div",
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+                    xajax_personalInfoSubmit(xajax.getFormValues('frmPersonalInfo'));
+		}
+	});	
+})
+})(jQuery); 
+</script>
 <div id="main">
-	<div class="mainholder">
-    <div class="add">
-       <ul>
-         <li> <img src="images/add1.jpg" alt=""></li>
-       </ul>
-    </div>
-	<!-- Left Warp --> 
-        <?php include 'leftprofilemenu.php';?>
-	
-	
-	<!-- Right Warp -->  
-    <div class="rightwarp">
+    <div class="mainholder">
+        <div class="add">
+            <ul>
+                <li> <img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/add1.jpg" alt="" /></li>
+            </ul>
+        </div>
+        <!-- Left Warp -->  
+        <?php $this->load->view($this->config->item('themeCode') . "/account_left_section_view", $data); ?>
+
+        <!-- Right Warp -->  
+          <div class="rightwarp">
         <ul class="breadcrumbs">
 		<li><a href="#">Home</a></li>
-		<li class="divder">»</li>
+		<li class="divder">�</li>
 		<li>My Bargains</li>
 	</ul>
         <div class="subheadingholder nonmargin">
@@ -76,52 +90,53 @@
 		</table>		
 	</div>
         <div class="space15"></div>
-
+        
+        <?php 
+       //var_dump($master); 
+		foreach ($master as $bargainId => $value) {   ?>
         <div class="proddbox">
                         
             <div class="left bargainreqimg">
-                <img src="images/automobile4.jpg" height="90px" width="90px"/>
+                <img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/automobile4.jpg" height="90px" width="90px"/>
                 </div>
             
            
             <div class="left bargainreq" style="margin-left: 15px">
                 <div class="left">
-                 
-                ?>
-                	
-                   
-                     <table style="width: 300px">
+                    <table style="width: 350px;">
                         <tr>
                             <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
-                            <td><label style="width: 200px">Nokia</label></td>
+                            <td><label style="width: 200px"><?php echo  $value['productName'] ;?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Store Name:</strong></label></td>
-                            <td><label>Croma</label></td>
+                            <td><label><?php echo  $value['storeName'] ; ?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Store Contact Person:</strong></label></td>
-                            <td><label>Vijay</label></td>
+                            <td><label><?php echo  $value['storeContactPerson'] ;  ?></label></td>
                         </tr>
                    
                         <tr>
                             <td><label><strong>Store Contact Detail:</strong></label></td>
-                            <td><label>7507546002</label></td>
+                            <td><label><?php echo  $value['storeMobile'] ;  ?></label></td>
                         </tr>
+                        
                     
                 </table>
                     
                 </div>
                 
                 <div class="right bargainreqrigthe">
-                    <table style="width: 200px">
+                   
+                    <table style="width: 150px">
                         <tr>
                             <td><label><strong>Actual Price:</strong></label></td>
-                            <td><label style="width: 200px">INR 6000</span></label></label></td>
+                            <td><label style="width: 200px">INR <?php  echo  $value['productMRP'];  ?></span></label></label></td>
                         </tr>
                     <tr>
                             <td><label><strong>Offer:</strong></label></td>
-                            <td style="height: 15px"><label>NA</label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['offer'] ; ?></label></td>
                         </tr>
                   </table>
                    
@@ -129,99 +144,23 @@
                 </div>
                 
             </div>
-            
+            <div class="space20"></div>
+            <div class="left" style="padding: 6px 30px;margin-left: 16px"><span class="reply">Reply: <?php echo count($response)  ?></span></div>
             <div class="right">
+               
                 <input type="button" class="btncomman rounded" value="Send Reminder"/>
-             
-                <a href="#rebargainreq" class="btncomman rounded bargain_req inline" value="re-bargain">re-bargain</a>
-                <input type="button" class="btncomman rounded" value="Buy"/>
+                <a href="javascript:void(0)" class="rounded right btncommanpe">Buy</a>
             </div>
+            
              <a href="javascript:void(0)" class="bargainsubarrowd"></a>
             <a href="javascript:void(0)" class="bargainsubarrow"></a>
             <div class="bargainview proddbox" style="display: none;border-bottom: 0px solid;padding: 0px 0px;">
             <div class="space5"></div>
-            <div class="left_row bargaintab">
-                 <div class="box">
-                     <h3 style="margin-left: 33px"><strong>My Requests</strong></h3>
-                    </div>
-                    <table class="shorttable">
-                        <tr>
-                            <th width="20px" style="background-color: #FFFFFF;border: 1px solid #ffffff;border-right:1px solid #b5b5b5 "></th>
-                            <th width="50%">
-                                My Message
-                            </th>
-                            <th width="8%" align="center">
-                                Quantity
-                            </th>
-                            <th width="13%">
-                               Expected Price 
-                            </th>
-                            <th width="13%">
-                                Date (Time)
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                            <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td >
-                                <span class="trow">1</span>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span>
-                              
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                        </tr>
-                        <tr class="newbargainreq">
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                             <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td>
-                                <center><span class="trow left">1</span></center>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span><br/>
-                                <span class="trow left">NA</span> 
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                            <td class="active">
-                                <span >NEW</span>
-                            </td>
-                        </tr>
-                        
-                    </table>
-                </div>
-            <div class="space10"></div>
-           <div class="right">
-             
-                <a href="#rebargainreq" class="btncomman rounded bargain_req inline" value="re-bargain">re-bargain</a>
-               
-            </div>
-            <div class="left_row bargaintab">
+               <div class="left_row bargaintab">
                  <div class="box">
                      <h3 style="margin-left: 33px"><strong>Store Quotations</strong></h3>
                     </div>
-                    <table class="shorttable">
+                    <table class="shorttable" style="border-left: 0px solid">
                         <tr>
                             <th width="20px" style="background-color: #FFFFFF;border: 1px solid #ffffff;border-right:1px solid #b5b5b5 "></th>
                             <th width="50%">
@@ -240,51 +179,32 @@
                                 Time
                             </th>
                         </tr>
-                        <tr>
-                            <td>
+                        
+                         <?php   foreach ($response as $Id => $val) { ?>
+                       <tr class="newbargainreq">
+                            <td style="border:1px solid #fff;background-color: white;border-right: 1px solid #d9d9d9">
                                  <input type="radio" class="left" name="bargain"/>
                             </td>
                             <td>
                                
-                                <span class="trow left">26 Jan</span>
+                                <span class="trow left"><?php  echo  $val['store_msg'];  ?></span>
                             </td>
-                            <td >
-                                <span class="trow">1</span>
-                            </td>
-                            
                             <td>
-                                <span class="trow left">INR 7000</span>
+                                <span class="trow"><?php  echo  $val['quantity'];  ?></span>
+                            </td>
+                            <td>
+                                <span class="trow left">INR  <?php  echo  $val['offer_price'];  ?></span>
                               
                             </td>
                             <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
+                                <span class="trow left"> <?php  echo  $val['validity_date'];  ?></span>
+                            </td>
+                            <td>                         
+                                <span class="trow left"><?php  echo  $val['storeResponse_time']; ?></span> 
                             </td>
                         </tr>
-                        <tr class="newbargainreq">
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                             <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td>
-                                <center><span class="trow left">1</span></center>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span><br/>
-                                <span class="trow left">NA</span> 
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                            <td class="active">
-                                <span >NEW</span>
-                            </td>
-                        </tr>
+                         <?php   } ?> 
+ 
                         
                     </table>
                 </div>
@@ -293,231 +213,202 @@
                
                 <input type="button" class="btncomman rounded bargain_req inline" value="Buy"/>
             </div>
-            </div>
-        </div>
-
-        <div class="proddbox">
-                        
-            <div class="left bargainreqimg">
-                <img src="images/automobile4.jpg" height="90px" width="90px"/>
-                </div>
-           
-            <div class="left bargainreq" style="margin-left: 15px">
-                <div class="left">
-                   
-                     <table style="width: 300px">
-                        <tr>
-                            <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
-                            <td><label style="width: 200px">Nokia</label></td>
-                        </tr>
-                        <tr>
-                            <td><label><strong>Store Name:</strong></label></td>
-                            <td><label>Croma</label></td>
-                        </tr>
-                        <tr>
-                            <td><label><strong>Store Contact Person:</strong></label></td>
-                            <td><label>Vijay</label></td>
-                        </tr>
-                   
-                        <tr>
-                            <td><label><strong>Store Contact Detail:</strong></label></td>
-                            <td><label>7507546002</label></td>
-                        </tr>
-                    
-                </table>
-                    
-                </div>
-                
-                <div class="right bargainreqrigthe">
-                    <table style="width: 200px">
-                        <tr>
-                            <td><label><strong>Actual Price:</strong></label></td>
-                            <td><label style="width: 200px">INR 6000</span></label></label></td>
-                        </tr>
-                    <tr>
-                            <td><label><strong>Offer:</strong></label></td>
-                            <td style="height: 15px"><label>NA</label></td>
-                        </tr>
-                  </table>
-                   
-                    
-                </div>
-                
-            </div>
-            
-            <div class="right">
-                <input type="button" class="btncomman rounded" value="Send Reminder"/>
-             
-                <a href="#rebargainreq" class="btncomman rounded bargain_req inline" value="re-bargain">re-bargain</a>
-                <input type="button" class="btncomman rounded" value="Buy"/>
-            </div>
-             <a href="javascript:void(0)" class="bargainsubarrowd"></a>
-            <a href="javascript:void(0)" class="bargainsubarrow"></a>
-            <div class="bargainview proddbox" style="display: none;border-bottom: 0px solid;padding: 0px 0px;">
-            <div class="space5"></div>
-            <div class="left_row bargaintab">
+            <div class="right_row bargaintab" style="width: 716px">
                  <div class="box">
-                     <h3 style="margin-left: 33px"><strong>My Requests</strong></h3>
+                     <h3 ><strong>My Requests</strong></h3>
                     </div>
-                    <table class="shorttable">
-                        <tr>
-                            <th width="20px" style="background-color: #FFFFFF;border: 1px solid #ffffff;border-right:1px solid #b5b5b5 "></th>
-                            <th width="50%">
-                                My Message
-                            </th>
-                            <th width="8%" align="center">
-                                Quantity
-                            </th>
-                            <th width="13%">
-                               Expected Price 
-                            </th>
-                            <th width="13%">
-                                Date (Time)
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                            <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td >
-                                <span class="trow">1</span>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span>
-                              
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                        </tr>
-                        <tr class="newbargainreq">
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                             <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td>
-                                <center><span class="trow left">1</span></center>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span><br/>
-                                <span class="trow left">NA</span> 
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                            <td class="active">
-                                <span >NEW</span>
-                            </td>
-                        </tr>
+                <div class="space5"></div>
+                   
+                <div class="proddbox" style="background-color: #fff;border: 1px solid #B5B5B5">
+                    <div class="left msg">
+                        <label><b>My Message</b></label>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p><?php echo $value['customer_msg'];?></p>
+                                </td>
+                            </tr>
+                        </table>
                         
-                    </table>
+                    </div>
+                    
+                    <div class="right">
+                        <div class="left">
+                    <div class="left mybargain">
+                        <label><b>Quantity</b></label><br/>
+                        <label><?php echo $value['quantity'];?> pcs</label>
+                    </div>
+                            <div class="space5"></div>
+                    <div class="mybargain">
+                        <label><b>Expected Price</b></label><br/>
+                        <label>INR <?php echo $value['expectedPrice'];?></label>
+                    </div>
+                        </div>
+                        <div class="right">
+                    <div class="left mybargain">
+                        <label><b>Status</b></label><br/>
+                        <label><?php echo $value['status'];?></label>
+                    </div>
+                            <div class="space5"></div>
+                        <div class="mybargain">
+                        <label><b>Date(Time)</b></label><br/>
+                        <label><?php echo $value['request_time'];?></label>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
             <div class="space10"></div>
            <div class="right">
-                
-                <a href="#rebargainreq" class="btncomman rounded bargain_req inline" value="re-bargain"></a>
-               
+             	<?php $overlay_name='modify'.$value['bargainId'];?>
+                <a href="#<?php echo $overlay_name; ?>" class="btncomman rounded bargain_req inline" value="Modify">Modify</a>
+               <?php //echo $overlay_name;?>
             </div>
-            <div class="left_row bargaintab">
-                 <div class="box">
-                     <h3 style="margin-left: 33px"><strong>Store Quotations</strong></h3>
-                    </div>
-                    <table class="shorttable">
-                        <tr>
-                            <th width="20px" style="background-color: #FFFFFF;border: 1px solid #ffffff;border-right:1px solid #b5b5b5 "></th>
-                            <th width="50%">
-                                Store Message
-                            </th>
-                            <th width="8%" align="center">
-                                Quantity
-                            </th>
-                            <th width="13%">
-                               Offered Price 
-                            </th>
-                            <th width="13%">
-                                Validity 
-                            </th>
-                            <th>
-                                Time
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                            <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td >
-                                <span class="trow">1</span>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span>
-                              
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                        </tr>
-                        <tr class="newbargainreq">
-                            <td>
-                                 <input type="radio" class="left" name="bargain"/>
-                            </td>
-                             <td>
-                               
-                                <span class="trow left">26 Jan</span>
-                            </td>
-                            <td>
-                                <center><span class="trow left">1</span></center>
-                            </td>
-                            
-                            <td>
-                                <span class="trow left">INR 7000</span><br/>
-                                <span class="trow left">NA</span> 
-                            </td>
-                            <td>
-                                <span class="trow left">26 Jan</span><br/>
-                                <span class="trow left">12:43 PM</span> 
-                            </td>
-                            <td class="active">
-                                <span >NEW</span>
-                            </td>
-                        </tr>
-                        
-                    </table>
-                </div>
-            <div class="space10"></div>
-            <div class="right">
-               
-                <input type="button" class="btncomman rounded bargain_req inline" value="Buy"/>
+         
             </div>
-            </div>
-        </div>
+            
+            <!--    SCRIPT AND VALIDATION FOR EACH FORM WHICH CREATE DYNAMITICALLY -->
+                    <script type="text/javascript">
+;(function($) { 
+$(document).ready(function() {
+	<?php $form_name="frm".$value['bargainId'];?>
+	$("#<?php echo $form_name;?>").validate({
+		rules: {
+			bargainprice: {
+				required: true,
+                number:true                
+			},
+            shippingPincode: {
+				required: true,
+                number:true,
+                minlength:6,
+                maxlength:6               
+			},
+            quantity: {
+				required: true,
+                number:true,
+                minlength:1,
+                maxlength:3         
+			},
+            mobile: {
+				required: true,
+                minlength:10,
+                maxlength:10            
+			}
+                      
+		},errorElement: "div",
+		messages: {
+		},
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+			xajax_modifyBargain(xajax.getFormValues('<?php echo $form_name;?>'));
+		}
+		
+	});	
+});
+})(jQuery); 
 
+</script>
+            
+            <!-- -----END OF SCRIPT -->
+       <!-- modify overlay -->
+           <div style="display: none">
+        
+		<div id="<?php echo $overlay_name;?>"> 
+   		<div class="hearderholder">Modify Your Bargain Request<span class="smalltextbox"></span></div>
+                <div class="lightboxcontent" style="padding: 0px 0px">
+                    <div class="leftwarp bargainproddetail">
+                  
+                        <ul>
+                            <li><span class="imgbox">
+                                     <a href="#">
+                                         <img alt="" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
+                                     </a>
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="bargaindetailleft">
+                        <div class="cell_textaria">
+                            <label><b>Product</b></label>
+                            <label><?php echo  $value['PName'] ;?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Store</b></label>
+                            <label><?php echo  $value['SName'] ; ?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Actual Price</b></label>
+                            <label><?php echo $value['ActualPrice']; ?></label>
+                        </div>
+                        <div class="cell_textaria">
+                            <label><b>Offer</b></label>
+                            <label><?php echo $value['offer']; ?></label>
+                             
+                        </div>
+                        </div>
+                       
+                        </div>
+                    <div class="right">
+                        <div class="bargaindetailright">
+                           <form name="<?php echo $form_name?>" id="<?php echo $form_name;?>">
+                            <div class="left">
+                                <div class="cell_textaria">
+                                    <label>Expected Bargain Price <span style="color: #bab7b7;">(Per Unit)</span></label>
+                                    <input type="text" name="bargainprice" id="bargainprice" value="<?php echo $value['expectedPrice'];?>"/>
+                                    <input type="hidden" name="bargainid" value="<?php echo $value['bargainId']; ?>"/>
+                                    <input type="hidden" name="custreqid" value="<?php echo $value['customer_requestId']?>"/>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="cell_textaria">
+                                    <label>Shipping Pincode <span style="color: #bab7b7;">(Pune)</span></label>
+                                    <input type="text" name="shippingPincode"id="shippingPincode" value="<?php echo $value['shipping_pinCode'];?>"/>
+                                </div>
+                            </div>
+                            <div class="right" style="margin-left: 15px">
+                                <div class="cell_textaria">
+                                    <label>Quantity <span style="color: #bab7b7;">(In Units)</span></label>
+                                    <input type="text" name="quantity" value="<?php echo $value['quantity'];?>" id="quantity" style="width: 110px"/>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="cell_textaria">
+                                    <label>Mobile No <span style="color: #bab7b7;">(Verify)</span></label>
+                                    <input type="text" name="mobile" id="mobile" value="<?php  echo $value['customer_mobile'];?>" style="width: 110px"/>
+                                    <label><a href="#" class="right">Change</a></label>
+                                </div>
+                            </div>
+                        
+                        <div class="cell_textaria">
+                            <label>Comment <span style="color: #bab7b7;">(Optional)</span></label>
+                            <textarea name="comment" id="comment"style="width: 410px;height: 100px"><?php echo $value['customer_msg'];?></textarea>
+                        </div>
+                            <div class="space20"></div>
+                            <div class="right">
+                            <input type="submit" class="btnprced" value="Save"/>
+                        </div>
+                            </form>
+                      </div>
+                    </div>
+                </div>
+                </div>
+                
+</div>
+       
+       <!-- end of modify overlay -->     
+            
+            
+       
+           
+        </div>
+        
+        
+        <?php }?>
+
+               
         
 		<div class="space15"></div>
 	</div>
-  </div>
- </div>
- 
-<!-- Footer -->  
-<?php include 'footer.php';?>
-</body>
-</html>
+    </div>
+</div>

@@ -267,6 +267,14 @@ class Customer extends MY_Controller {
 			</script>
 			<?php
 		}
+		
+		public function mybargain()
+		{
+			$data['master'] = $this->product_model->mybargain();
+			$data['template'] = "mybargain";
+			$temp['data'] = $data;
+			$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+		}
 }
 
 /* End of file welcome.php */
