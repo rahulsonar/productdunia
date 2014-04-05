@@ -125,7 +125,7 @@ line-height: 1.5;
                     <a href="#signin" class="verificationinline">Create Store</a>          
                 <?php } else { ?>
                     <!--<a href="#verification" class="verificationinline">Create Store</a>-->
-                    <a href="<?php echo site_url('customer/account/profile'); ?>">Create Store</a>
+                    <a href="<?php echo site_url('customer/create_store'); ?>">Create Store</a>
                 <?php } ?>
 
                 <?php if ($this->session->userdata('interfaceUsername') == '') { ?>

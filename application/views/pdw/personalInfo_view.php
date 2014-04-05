@@ -13,8 +13,16 @@ $(document).ready(function() {
 			mobile: {
 				required: true,
 				minlength: 10,
-                                maxlength: 10
-			}		},errorElement: "div",
+				maxlength: 10
+			}
+			<?php if(empty($customerData['password'])) { ?>
+			,
+			password: {
+				required:true,
+				minlength:8
+			} <?php } ?>
+		},
+		errorElement: "div",
 		errorPlacement: function(error, element) {
 			error.insertAfter(element);
 		},
@@ -44,6 +52,15 @@ $(document).ready(function() {
             <div class="subheadingholder">
                 <h2>Personal Information</h2>
             </div>
+            <div style="color:red;">
+            <?php
+            
+             if($this->session->userdata('error_msg1')!="") {
+            	echo $this->session->userdata('error_msg1');
+            	$this->session->unset_userdata(array('error_msg1'=>''));
+            }
+            ?>
+            </div>
             <form name="frmPersonalInfo" id="frmPersonalInfo">
             <div class="form_holder">
                 <div class="left_row">
@@ -71,6 +88,10 @@ $(document).ready(function() {
                     <div class="cell_input">
                         <label class="label">Email ID</label> 
                         <input type="text" value="<?php echo $customerData['email']; ?>" name="email" id="email" class="input"> 
+                    </div>  
+                    <div class="cell_input">
+                        <label class="label">Password</label> 
+                        <input type="password" value="" name="password" id="password" class="input"> 
                     </div>                    
                                         
                     <div class="right">

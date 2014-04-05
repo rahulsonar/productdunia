@@ -169,6 +169,10 @@ class Customer extends MY_Controller {
             $response = $this->user_model->personalInfoSubmit();
             $objResponse->Alert("Personal information updated successfully.");
             $redirectTo = ($this->session->userdata('redirectTo') != '') ? ($this->session->userdata('redirectTo')) : ('');
+            if($this->session->userdata('redirect_uri')!="") {
+            	$redirectTo=$this->session->userdata('redirect_uri');
+            	$this->session->unset_userdata('redirect_uri');
+            }
             $this->session->unset_userdata('redirectTo');
             $objResponse->redirect(site_url($redirectTo));
             return $objResponse;
@@ -275,6 +279,29 @@ class Customer extends MY_Controller {
 			$temp['data'] = $data;
 			$this->load->view($this->config->item('themeCode')."/common_view",$temp);
 		}
+		
+		public function create_store() {
+			
+			$userName=$this->session->userdata('interfaceUsername');
+			$user=$this->user_model->getUserByUserName($userName);
+			if(empty($user->email) || empty($user->password)) {
+				$sessionData=array('error_msg1'=>'Please add your email address and create a password',
+								'redirect_uri'=>'customer/create_store'
+								);
+				$this->session->set_userdata($sessionData);
+				
+				redirect(site_url('customer/account/profile'));
+				die();
+			}
+			else {
+				$data['template'] = "createStore";
+				$temp['data'] = $data;
+				$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+			
+		}
+		}
+		
+		
 }
 
 /* End of file welcome.php */

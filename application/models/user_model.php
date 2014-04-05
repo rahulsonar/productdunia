@@ -499,6 +499,9 @@ class User_model extends CI_Model {
         $userData['email'] = $this->input->post('email');
         $userData['mobile'] = $this->input->post('mobile');
         $userData['gender'] = $this->input->post('gender');
+        if($this->input->post('password')!="") {
+        	$userData['password']=$this->encrypt->encode($newPass);
+        }
         $userData['modify_date'] = date("Y-m-d H:i:s");
         $userData['modify_by'] = 'self';
         if ($this->db->update('customers', $userData)) {            
@@ -629,6 +632,33 @@ class User_model extends CI_Model {
     		return false;
     	}
     }
+    
+    public function getUserByUserName($userName) {
+    	$this->db->where('username',$userName);
+    	$this->db->from('customers');
+    	$this->db->select('*');
+    	$query = $this->db->get();
+    	if($query->num_rows==0) {
+    		return false;
+    	}
+    	
+    	$row=$query->row();
+    	return $row;
+    }
+    
+	public function getStoreUserByEmail($email) {
+		$this->db->where('email',$email);
+		$this->db->where('type','store');
+		$this->db->where('status','active');
+		$this->db->from('system_users');
+		$this->db->select('*');
+		$query=$this->db->get();
+		if($query->num_rows==0)
+			return false;
+		
+		$row=$query->row();
+		return $row;
+	}
 
 }
 
