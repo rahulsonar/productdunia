@@ -7,6 +7,7 @@ class Customer extends MY_Controller {
 	 */
 	function __construct(){
 		parent::__construct();
+		$this->load->model('store_model');
                 $this->xajax->register(XAJAX_FUNCTION, array('personalInfoSubmit', &$this, 'personalInfoSubmit'));
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromWishlist', &$this, 'removeFromWishlist'));
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromSavedSearch', &$this, 'removeFromSavedSearch'));
@@ -277,6 +278,18 @@ class Customer extends MY_Controller {
 			<?php
 		}
 		
+		public function bargainRequest()
+		{
+			$userName=$this->session->userdata('interfaceUsername');
+			$user=$this->user_model->getUserByUserName($userName);
+			
+			$storeUser=$this->user_model->getStoreUserByEmail($user->email);
+			
+			$data['bargains']=$this->user_model->getBargainRequests($storeUser->id);
+			$data['template']="bargainrequest";
+			$temp['data'] = $data;
+			$this->load->view($this->config->item('themeCode')."/common_view",$temp);
+		}
 		public function mybargain()
 		{
 			$data['master'] = $this->product_model->mybargain();
@@ -496,9 +509,77 @@ class Customer extends MY_Controller {
 		}
 		
 		public function createStoreSubmit() {
-			echo "Welcome";
+					//	$this->access_control_model->check_access('storeSubmit', __CLASS__, __FUNCTION__, 'basic');
+			foreach ($formData as $id => $field) {
+				$_POST[$id] = $field;
+			}
+			
+			//$objResponse = new xajaxResponse();$storeUser=$this->user_model->getStoreUserByEmail($user->email);
+			
+			if(!empty($_POST['agencyId'])) {
+				$agencyId=$_POST['agencyId'];
+			}
+			else {
+				$agencyId=$this->store_model->getAgencyIdByName($_POST['agencyName']);
+			}
+			
+			$userName=$this->session->userdata('interfaceUsername');
+			$user=$this->user_model->getUserByUserName($userName);
+			$storeUser=$this->user_model->getStoreUserByEmail($user->email);
+				if(empty($storeUser)) {
+					$this->user_model->createStoreUserForCustomer($user,$agencyId);
+				}
+			
+			if($_FILES['storeLogo']['name']!=""){
+				$uploadStatus = $this->_uploadStoreLogo();
+				if (isset($uploadStatus['error'])) {
+					$error = $uploadStatus['error'];
+					$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $error . '</div>');
+					redirect(site_url($this->config->item('controlPanel') . '/store/storeListShow'));
+				}
+				$fileName = $uploadStatus['upload_data']['file_name'];
+			}else{
+				$fileName = $this->input->post('storeLogoImg');
+			}
+			
+			
+			
+			if ($_POST['storeId'] != '') {
+				$response = $this->store_model->update_store($fileName,$agencyId);
+			} else {
+				$response = $this->store_model->insert_store($fileName,$agencyId);
+			}
+			if ($response) {
+				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('storeSuccess') . '</div>');
+				//$objResponse->redirect(site_url('customer/account/profile'));
+				redirect(site_url('customer/account/profile'));
+			} else {
+				//$objResponse->Assign("errorMsg", "innerHTML", '<div class="alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
+				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
+				redirect(site_url('customer/account/profile'));
+			}
 		}
-}
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+		
+		function _uploadStoreLogo() {
+			$this->load->helper('string');
+		
+			$config['upload_path'] = FCPATH.$this->config->item('storeLogoPath');
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size'] = '2048';
+			$config['max_width'] = '49';
+			$config['max_height'] = '49';
+			$config['file_name'] = random_string('unique');
+			$this->load->library('upload', $config);
+		
+			if (!$this->upload->do_upload('storeLogo')) {
+				$uploadStatus = array('error' => $this->upload->display_errors());
+			} else {
+				$uploadStatus = array('upload_data' => $this->upload->data());
+			}
+			return $uploadStatus;
+		}
+		
+	}
+			
+			/* End of file welcome.php */
+			/* Location: ./application/controllers/welcome.php */

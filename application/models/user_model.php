@@ -445,16 +445,28 @@ class User_model extends CI_Model {
     }
     
     public function login($loginData, $skipPass = "0") {
+    	
+    	if(filter_var($loginData['username'], FILTER_VALIDATE_EMAIL)) {
+    		$field='email';
+    	}
+    	else if(is_numeric($loginData['username'])) {
+    		$field='mobile';
+    	}
+    	else {
+    		$field='username';
+    	}
         $table_name = "customers as mc";
-        $this->db->where('mc.username', $loginData['username']);
+        $this->db->where('mc.'.$field, $loginData['username']);
         $this->db->where('mc.status', 'Active');
         $this->db->select('mc.*')->from($table_name);
         $query = $this->db->get();
+        
         
         if ($query->num_rows ==0) {
             return FALSE;
         } else {
             $row = $query->row();
+            
             if ($skipPass == '0') {
                 if (($loginData['password'] != $this->encrypt->decode($row->password))) {
                     return false;
@@ -499,7 +511,8 @@ class User_model extends CI_Model {
         $userData['email'] = $this->input->post('email');
         $userData['mobile'] = $this->input->post('mobile');
         $userData['gender'] = $this->input->post('gender');
-        if($this->input->post('password')!="") {
+        $newPass=$this->input->post('password');
+        if(!empty($newPass)) {
         	$userData['password']=$this->encrypt->encode($newPass);
         }
         $userData['modify_date'] = date("Y-m-d H:i:s");
@@ -661,7 +674,57 @@ class User_model extends CI_Model {
 	}
 	
 	public function getStoreAgency($storeUser) {
-		return '';
+		$this->db->where('sud.store_user_id',$storeUser->id);
+		$this->db->join('agencies as a','a.agencyId=sud.agencyId','left');
+		$this->db->from('store_user_detail as sud');
+		$this->db->select('a.*');
+		$query=$this->db->get();
+		
+		$row=$query->row();
+		if(!empty($row))
+			return $row;
+		else 
+			return false;
+	}
+	
+	public function createStoreUserForCustomer($customer,$agencyId) {
+	$userData['branch_id'] = 1;
+	$Name=$customer->name;
+	$Name1=explode(" ",$Name);
+        $userData['username'] = $customer->username;
+        $userData['password'] = $customer->password;
+        $userData['email'] = $customer->email;
+        $userData['time_zone'] = '+5.5';
+        $userData['status'] = 'Active';
+        $userData['type'] = 'store';
+        $userData['create_date'] = date("Y-m-d H:i:s");
+        $userData['create_by'] = $this->session->userdata('sysuser_loggedin_user');
+        $userData['first_name'] =$Name1[0]; 
+        $userData['last_name'] = $Name1[1];
+
+        if ($this->db->insert('system_users', $userData)) {
+            $storeUserId = $this->db->insert_id();
+            $this->insert_store_user_detail($storeUserId,$agencyId);
+            return true;
+        } else {
+            return false;
+        }
+	
+	}
+	
+	function insert_store_user_detail($storeUserId,$agencyId) {
+		$userData['agencyId'] = $agencyId;
+		$userData['store_user_id'] = $storeUserId;
+		if ($this->db->insert('store_user_detail', $userData)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function getBargainRequests($storeUserId) {
+		
+		
 	}
 
 }

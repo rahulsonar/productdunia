@@ -192,12 +192,7 @@ class Product extends MY_Controller {
         
         
         
-       public function bargainRequest()
-       {
-       	$data['template']="bargainrequest";
-       	$temp['data'] = $data;
-       	$this->load->view($this->config->item('themeCode')."/common_view",$temp);
-       }
+       
 		
 		public function savearea() {
 			$a=explode(",",$_POST['final_val']);

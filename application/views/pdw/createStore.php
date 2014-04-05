@@ -3,24 +3,29 @@
 $(document).ready(function() {
 	$("#frmStore").validate({
 		rules: {
-			name: {
+			agencyName: {
 				required: true
 			},
-                        email: {
-				required: true,
-				email: true
+			country: {
+				required: true
 			},
-			mobile: {
-				required: true,
-				minlength: 10,
-				maxlength: 10
+			city: {
+				required: true
+			},
+			area: {
+				required:true
+			},
+			
+			storeName: {
+				required:true
+			},
+			latitude: {
+				required: true
+			},
+			longitude: {
+				required: true
 			}
-			<?php if(empty($customerData['password'])) { ?>
-			,
-			password: {
-				required:true,
-				minlength:8
-			} <?php } ?>
+			
 		},
 		errorElement: "div",
 		errorPlacement: function(error, element) {
@@ -65,9 +70,10 @@ $(document).ready(function() {
                     <div class="cell_input">
                         <label class="label"><?php echo $this->lang->line('agency'); ?></label> 
                         <?php if(empty($agency)) { ?>
-                        <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
+                        <input type="text" value="" name="agencyName" id="agencyName" class="input"/> 
                         <?php } else { ?>
-                        <?php echo $agency;  ?>
+                        <input type="text" value="<?php echo $agency->agencyName; ?>" name="agency" id="agency" disabled="disabled" class="input"/>
+                        <input type="hidden" value="<?php echo $agency->agencyId; ?>" name="agencyId" id="agencyId" class="input"/>
                         <?php } ?>
                     </div>
                     

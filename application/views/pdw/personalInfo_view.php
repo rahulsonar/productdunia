@@ -59,6 +59,7 @@ $(document).ready(function() {
             	echo $this->session->userdata('error_msg1');
             	$this->session->unset_userdata(array('error_msg1'=>''));
             }
+            echo $this->session->flashdata('Msg');
             ?>
             </div>
             <form name="frmPersonalInfo" id="frmPersonalInfo">
