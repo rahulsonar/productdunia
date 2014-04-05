@@ -12,6 +12,7 @@ class Customer extends MY_Controller {
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromSavedSearch', &$this, 'removeFromSavedSearch'));
                 $this->xajax->register(XAJAX_FUNCTION, array('getAreaBy', &$this, 'getAreaBy'));
                 $this->xajax->register(XAJAX_FUNCTION, array('getCityBy', &$this, 'getCityBy'));
+                $this->xajax->register(XAJAX_FUNCTION, array('createStoreSubmit', &$this, 'createStoreSubmit'));
                 $this->xajax->processRequest();
 	}
 	
@@ -349,7 +350,109 @@ class Customer extends MY_Controller {
 						'class' => 'input-xlarge focused'
 				);
 
+				$data['contactPerson'] = array(
+						'name' => 'contactPerson',
+						'id' => 'contactPerson',
+						'value' => (isset($store['contactPerson'])) ? ($store['contactPerson']) : (set_value('contactPerson')),
+						'maxlength' => '100',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
 
+				$data['mobile'] = array(
+						'name' => 'mobile',
+						'id' => 'mobile',
+						'value' => (isset($store['mobile'])) ? ($store['mobile']) : (set_value('mobile')),
+						'maxlength' => '10',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+				
+				$data['phone'] = array(
+						'name' => 'phone',
+						'id' => 'phone',
+						'value' => (isset($store['phone'])) ? ($store['phone']) : (set_value('phone')),
+						'maxlength' => '15',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+				
+				$data['alternatPhone'] = array(
+						'name' => 'alternatPhone',
+						'id' => 'alternatPhone',
+						'value' => (isset($store['alternatPhone'])) ? ($store['alternatPhone']) : (set_value('alternatPhone')),
+						'maxlength' => '15',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+				
+				$data['storeTimings'] = array(
+						'name' => 'storeTimings',
+						'id' => 'storeTimings',
+						'value' => (isset($store['storeTimings'])) ? ($store['storeTimings']) : (set_value('storeTimings')),
+						'size' => '20',
+						'class' => 'input-xlarge focused',
+						'style' => 'height:75px;'
+				);
+				
+				$data['storeEmail'] = array(
+						'name' => 'storeEmail',
+						'id' => 'storeEmail',
+						'value' => (isset($store['storeEmail'])) ? ($store['storeEmail']) : (set_value('storeEmail')),
+						'maxlength' => '100',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+
+				$data['latitude'] = array(
+						'name' => 'latitude',
+						'id' => 'latitude',
+						'value' => (isset($store['latitude'])) ? ($store['latitude']) : (set_value('latitude')),
+						'maxlength' => '100',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+				
+				$data['longitude'] = array(
+						'name' => 'longitude',
+						'id' => 'longitude',
+						'value' => (isset($store['longitude'])) ? ($store['longitude']) : (set_value('longitude')),
+						'maxlength' => '100',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+				$data['storeLogo'] = array(
+						'name' => 'storeLogo',
+						'id' => 'storeLogo',
+						'value' => (isset($store['storeLogo'])) ? ($store['storeLogo']) : (set_value('storeLogo')),
+						'maxlength' => '100',
+						'size' => '20',
+						'class' => 'input-file uniform_on focused'
+				);
+
+				$data['sel_isParking']['name'] = 'isParking';
+				$data['sel_isParking']['attribute'] = 'id = "isParking" data-rel="chosen"';
+				$data['sel_isParking']['options'] = array(
+						'1' => 'Yes',
+						'0' => 'No'
+				);
+				$data['sel_isParking']['selected_isParking'] = (isset($store['isParking'])) ? ($store['isParking']) : ('0');
+				
+				$data['sel_status']['name'] = 'status';
+				$data['sel_status']['attribute'] = 'id = "status" data-rel="chosen"';
+				$data['sel_status']['options'] = array(
+						'Active' => 'Active',
+						'Inactive' => 'Inactive'
+				);
+				$data['sel_status']['selected_status'] = (isset($store['status'])) ? ($store['status']) : ('Inactive');
+				$data['frm_submit'] = array(
+						'name' => 'submit',
+						'id' => 'submit',
+						'value' => 'Login'
+				);
+				$data['action'] = site_url('customer/createStoreSubmit');
+				$data['attributes'] = array('name' => 'frmStore', 'id' => 'frmStore', 'class' => 'form-horizontal');
+				$data['storeLogoImg'] = '';
 				$data['storeUser'] = $storeUser;
 				$data['agency'] = $agency;
 				$data['template'] = "createStore";
@@ -360,7 +463,7 @@ class Customer extends MY_Controller {
 		}
 		
 		public function getAreaBy($target,$targetId,$extraOption) {
-			$this->access_control_model->check_access('getAreaBy', __CLASS__, __FUNCTION__, 'basic');
+			//$this->access_control_model->check_access('getAreaBy', __CLASS__, __FUNCTION__, 'basic');
 			$objResponse = new xajaxResponse();
 			$areaArr = $this->common_model->getAreaBy($target,$targetId,$extraOption);
 		
@@ -376,7 +479,7 @@ class Customer extends MY_Controller {
 		}
 		
 		public function getCityBy($target,$targetId,$extraOption) {
-			$this->access_control_model->check_access('getCityBy', __CLASS__, __FUNCTION__, 'basic');
+			//$this->access_control_model->check_access('getCityBy', __CLASS__, __FUNCTION__, 'basic');
 			$objResponse = new xajaxResponse();
 			$cityArr = $this->common_model->getCityBy($target,$targetId,$extraOption);
 		
@@ -390,6 +493,10 @@ class Customer extends MY_Controller {
 			$objResponse->Assign("cityHolder", "innerHTML", $areaSelect);
 			$objResponse->Script("$('#city').chosen();");
 			return $objResponse;
+		}
+		
+		public function createStoreSubmit() {
+			echo "Welcome";
 		}
 }
 

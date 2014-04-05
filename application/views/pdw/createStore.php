@@ -1,7 +1,7 @@
 <script type="text/javascript">
 ;(function($) { 
 $(document).ready(function() {
-	$("#frmPersonalInfo").validate({
+	$("#frmStore").validate({
 		rules: {
 			name: {
 				required: true
@@ -25,10 +25,8 @@ $(document).ready(function() {
 		errorElement: "div",
 		errorPlacement: function(error, element) {
 			error.insertAfter(element);
-		},
-		submitHandler: function(){
-                    xajax_personalInfoSubmit(xajax.getFormValues('frmPersonalInfo'));
 		}
+		
 	});	
 })
 })(jQuery); 
@@ -60,12 +58,12 @@ $(document).ready(function() {
             <div style="color:red;">
             
             </div>
-            <form name="frmPersonalInfo" id="frmPersonalInfo">
+            <?php echo form_open_multipart($action,$attributes); ?>
             <div class="form_holder">
                 <div class="left_row" style="width:auto; ">
                 
                     <div class="cell_input">
-                        <label class="label">Agency</label> 
+                        <label class="label"><?php echo $this->lang->line('agency'); ?></label> 
                         <?php if(empty($agency)) { ?>
                         <input type="text" value="<?php echo $customerData['name']; ?>" name="name" id="name" class="input"/> 
                         <?php } else { ?>
@@ -106,11 +104,88 @@ $(document).ready(function() {
                         <?php echo form_input($storeName); ?>
                     </div>
                     
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('contactPerson'); ?></label>
+                        <?php echo form_input($contactPerson); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('storeEmail'); ?></label>
+                        <?php echo form_input($storeEmail); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('mobile'); ?></label>
+                        <?php echo form_input($mobile); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('phone'); ?></label>
+                        <?php echo form_input($phone); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('alternatPhone'); ?></label>
+                        <?php echo form_input($alternatPhone); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('storeTimings'); ?></label>
+                        <?php echo form_textarea($storeTimings); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('latitude'); ?></label>
+                        <?php echo form_input($latitude); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('longitude'); ?></label>
+                        <?php echo form_input($longitude); ?>
+                    </div>
+                    
+                    <div class="cell_input" <?php if(empty($storeLogoImg)) { ?> style="display: none;"<?php } ?>>
+                        <label class="label"><?php echo $this->lang->line('storeLogoImg'); ?></label>
+                        <img alt="storeLogoImg" src="<?php echo base_url() . $this->config->item('storeLogoPath') . $storeLogoImg?>">
+                        <a href="javascript:void(0)" onClick="xajax_deleteStoreLogoImage('<?php echo $storeId; ?>','<?php echo $storeLogoImg; ?>')" title="Click to delete"><span class="icon32 icon-red icon-trash"/></span></a>
+                    </div>
+                    
+                    <div class="cell_input <?php if($storeLogoImg!=''){ ?> hidden<?php } ?>">
+                        <label class="label"><?php echo $this->lang->line('storeLogoImg'); ?></label>
+                        <?php echo form_upload($storeLogo); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('paymentMethods'); ?></label>
+                        
+                        <input type="checkbox" name="paymentMethods[]" value="card" <?php if(in_array('card', $paymentMethods)) { ?> checked <?php } ?>>&nbsp;Credit/Debit card &nbsp;
+                        <input type="checkbox" name="paymentMethods[]" value="cash" <?php if(in_array('cash', $paymentMethods)) { ?> checked <?php } ?>>&nbsp;Cash accepted<br />
+                        
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('parking'); ?></label>
+                        <?php echo form_dropdown($sel_isParking['name'],$sel_isParking['options'],$sel_isParking['selected_isParking'],$sel_isParking['attribute']); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <label class="label"><?php echo $this->lang->line('storeUserSignupStatus'); ?></label>
+                        <?php echo form_dropdown($sel_status['name'],$sel_status['options'],$sel_status['selected_status'],$sel_status['attribute']); ?>
+                    </div>
+                    
+                    <div class="cell_input">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+						<button type="button" class="btn" onClick="javascript:history.back();">Cancel</button>
+                    </div>
+                    <div class="cell_input">
+                        &nbsp;
+                    </div>
                     
                 </div> 
    
             </div>
-            </form>
+            
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
