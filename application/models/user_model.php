@@ -659,6 +659,10 @@ class User_model extends CI_Model {
 		$row=$query->row();
 		return $row;
 	}
+	
+	public function getStoreAgency($storeUser) {
+		return '';
+	}
 
 }
 

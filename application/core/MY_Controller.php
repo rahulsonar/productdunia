@@ -27,6 +27,8 @@ class MY_Controller extends CI_Controller {
         $this->xajax->register(XAJAX_FUNCTION, array('reBargainSubmit', &$this, 'reBargainSubmit'));
         $this->xajax->register(XAJAX_FUNCTION, array('bargainResponse', &$this, 'bargainResponse'));
         
+        
+        
     
         
         //$this->xajax->processRequest();
@@ -282,7 +284,7 @@ class MY_Controller extends CI_Controller {
     }
     
      
-    
+  
     
 }
 

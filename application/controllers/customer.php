@@ -10,6 +10,8 @@ class Customer extends MY_Controller {
                 $this->xajax->register(XAJAX_FUNCTION, array('personalInfoSubmit', &$this, 'personalInfoSubmit'));
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromWishlist', &$this, 'removeFromWishlist'));
                 $this->xajax->register(XAJAX_FUNCTION, array('removeFromSavedSearch', &$this, 'removeFromSavedSearch'));
+                $this->xajax->register(XAJAX_FUNCTION, array('getAreaBy', &$this, 'getAreaBy'));
+                $this->xajax->register(XAJAX_FUNCTION, array('getCityBy', &$this, 'getCityBy'));
                 $this->xajax->processRequest();
 	}
 	
@@ -33,6 +35,8 @@ class Customer extends MY_Controller {
             }
             echo $msg;
        }
+       
+    
        
         public function logout() {
             //$this->cart->destroy();
@@ -294,6 +298,60 @@ class Customer extends MY_Controller {
 				die();
 			}
 			else {
+				$storeUser=$this->user_model->getStoreUserByEmail($user->email);
+				$agency='';
+				if(!empty($storeUser)) {
+					$agency=$this->user_model->getStoreAgency($storeUser);
+				}
+				
+				$countryArr = $this->common_model->getCountries(1);
+				
+				$data['sel_country']['name'] = 'country';
+				$data['sel_country']['attribute'] = 'id = "country" data-rel="chosen" onChange="xajax_getCityBy(\'countryId\',this.value,1)"';
+				$data['sel_country']['options'] = $countryArr;
+				$data['sel_country']['selected_country'] = (isset($store['countryId'])) ? ($store['countryId']) : ('');
+				
+				$data['sel_city']['name'] = 'city';
+				$data['sel_city']['attribute'] = 'id = "city" data-rel="chosen" onChange="xajax_getAreaBy(\'cityId\',this.value,1)"';
+				$data['sel_city']['options'] = $cityArr;
+				$data['sel_city']['selected_city'] = (isset($store['cityId'])) ? ($store['cityId']) : ('');
+				
+				$data['sel_area']['name'] = 'area';
+				$data['sel_area']['attribute'] = 'id = "area" data-rel="chosen"';
+				$data['sel_area']['options'] = $areaArr;
+				$data['sel_area']['selected_area'] = (isset($store['areaId'])) ? ($store['areaId']) : ('');
+				
+				
+				$data['address'] = array(
+						'name' => 'address',
+						'id' => 'address',
+						'value' => (isset($store['address'])) ? ($store['address']) : (set_value('address')),
+						'size' => '20',
+						'class' => 'input-xlarge focused',
+						'style' => 'height:75px;'
+				);
+				
+				$data['pincode'] = array(
+						'name' => 'pincode',
+						'id' => 'pincode',
+						'value' => (isset($store['pincode'])) ? ($store['pincode']) : (set_value('pincode')),
+						'maxlength' => '6',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+
+				$data['storeName'] = array(
+						'name' => 'storeName',
+						'id' => 'storeName',
+						'value' => (isset($store['storeName'])) ? ($store['storeName']) : (set_value('storeName')),
+						'maxlength' => '200',
+						'size' => '20',
+						'class' => 'input-xlarge focused'
+				);
+
+
+				$data['storeUser'] = $storeUser;
+				$data['agency'] = $agency;
 				$data['template'] = "createStore";
 				$temp['data'] = $data;
 				$this->load->view($this->config->item('themeCode')."/common_view",$temp);
@@ -301,7 +359,38 @@ class Customer extends MY_Controller {
 		}
 		}
 		
+		public function getAreaBy($target,$targetId,$extraOption) {
+			$this->access_control_model->check_access('getAreaBy', __CLASS__, __FUNCTION__, 'basic');
+			$objResponse = new xajaxResponse();
+			$areaArr = $this->common_model->getAreaBy($target,$targetId,$extraOption);
 		
+			$sel_area['name'] = 'area';
+			$sel_area['attribute'] = 'id = "area" data-rel="chosen"';
+			$sel_area['options'] = $areaArr;
+			$sel_area['selected_area'] = (isset($store['areaId'])) ? ($store['areaId']) : ('');
+		
+			$areaSelect = form_dropdown($sel_area['name'],$sel_area['options'],$sel_area['selected_area'],$sel_area['attribute']);
+			$objResponse->Assign("areaHolder", "innerHTML", $areaSelect);
+			$objResponse->Script("$('#area').chosen();");
+			return $objResponse;
+		}
+		
+		public function getCityBy($target,$targetId,$extraOption) {
+			$this->access_control_model->check_access('getCityBy', __CLASS__, __FUNCTION__, 'basic');
+			$objResponse = new xajaxResponse();
+			$cityArr = $this->common_model->getCityBy($target,$targetId,$extraOption);
+		
+			$sel_city['name'] = 'city';
+			$sel_city['attribute'] = 'id = "city" data-rel="chosen" onChange="xajax_getAreaBy(\'cityId\',this.value,1)"';
+			$sel_city['options'] = $cityArr;
+			$sel_city['selected_city'] = (isset($store['cityId'])) ? ($store['cityId']) : ('');
+		
+			$areaSelect = form_dropdown($sel_city['name'],$sel_city['options'],$sel_city['selected_city'],$sel_city['attribute']);
+			$objResponse->Script("$.uniform.update();");
+			$objResponse->Assign("cityHolder", "innerHTML", $areaSelect);
+			$objResponse->Script("$('#city').chosen();");
+			return $objResponse;
+		}
 }
 
 /* End of file welcome.php */

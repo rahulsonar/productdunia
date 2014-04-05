@@ -1,5 +1,5 @@
 <!-- content starts -->
-<a class="btn btn-large" href="<?php echo site_url($this->config->item('controlPanel') . '/store/addStore') ?>"><i class="icon-plus"></i> Add Store User</a>
+<a class="btn btn-large" href="<?php echo site_url($this->config->item('controlPanel') . '/store/addStore') ?>"><i class="icon-plus"></i> Add Store</a>
 <div class="row-fluid sortable">
     <div class="box span12">
         <div class="box-header well" data-original-title>
