@@ -1216,6 +1216,7 @@ public function uploadProdSpecXLS(){
             $sJS = "noty({text: '".$msg."',layout:'top',type:'error', animateOpen: {'opacity': 'show'}});";
         }
         $objResponse->script($sJS);
+        $objResponse->redirect(site_url($this->config->item('controlPanel') . '/store/'));
         return $objResponse;
     }
     
