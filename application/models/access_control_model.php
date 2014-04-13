@@ -24,9 +24,14 @@ class access_control_model extends CI_Model {
                         }
                         
 			$this->db->where($where);
+			
 			$query = $this->db->get('module_access_control',$data);
+			
 			$row = $query->row();
+			
 			if($row->cnt <= 0){
+				
+				
 				$this->master_module_insert($human_txt,$module_code,$func_type);
 				if($func_type=='functional'){
 					$this->access_deny();
@@ -41,10 +46,12 @@ class access_control_model extends CI_Model {
 
 	function master_module_insert($human_txt,$module_code,$moduletype)
 	{
+		
 		$moduleData['module_code'] = $module_code;
 		$this->db->select('count(*) as cnt');
 		$query = $this->db->get_where('master_module',$moduleData);
 		$row = $query->row();
+		
 		
 		if($row->cnt <= 0){
 			$moduleDataEntry['module_code'] = $module_code;
@@ -53,7 +60,8 @@ class access_control_model extends CI_Model {
 			$this->db->insert('master_module', $moduleDataEntry);
 			$this->access_control_insert($module_code,'admin',$this->config->item('adminProfileId'));
 		}
-		if($moduletype=='basic'){
+		if($moduletype=='basic')
+		{
 			$username = $this->session->userdata('sysuser_loggedin_user');
 			$this->access_control_insert($module_code,$username,'');
 		}

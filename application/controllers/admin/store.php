@@ -936,7 +936,7 @@ class Store extends CI_Controller {
 				'name'        => 'username',
 				'id'          => 'username',
 				'value'       => (isset($storeUser['username']))?($storeUser['username']):(set_value('username')),
-				'maxlength'   => '10',
+				
 				'size'        => '20',
 				'class'       => 'input-xlarge focused',
                                 'readonly'    => 'readonly'
@@ -961,7 +961,7 @@ class Store extends CI_Controller {
 				'name'        => 'username',
 				'id'          => 'username',
 				'value'       => (isset($storeUser['username']))?($storeUser['username']):(set_value('username')),
-				'maxlength'   => '10',
+				
 				'size'        => '20',
 				'class'       => 'input-xlarge focused',
                                 'readonly'    => 'readonly'

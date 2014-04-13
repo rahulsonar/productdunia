@@ -563,6 +563,35 @@ class Product extends MY_Controller {
 			$temp['sorting']=$sortingData;
 			$ret=$this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp,true);
 			$objResponse->assign("storeList","innerHTML", $ret);
+			$script=  <<<EOD
+	
+             $('a.prodsubarrow').bind('click',function(){
+				 $(this).addClass("prodsubarrowd");
+                		
+            $(this).parent().parent().addClass("proddboxheight");
+				});
+				$('a.prodsubarrowd').bind('click',function(){
+					$(this).addClass("prodsubarrow");
+            $(this).parent().parent().removeClass("proddboxheight");
+				});
+                		
+                		$( "a.prodsubarrow" ).bind('click',function() {
+  $(this).next('.pdetailsexpand').slideToggle();
+  $(this).css("display", 'none');
+});
+                		
+                		$( "a.prodsubarrowd" ).bind('click',function() {
+  $(this).next('.pdetailsexpand').slideUp();
+
+   });
+                		$('.bargainBtn').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
+			
+EOD;
+			$objResponse->script($script);
 			
 			return $objResponse;
 		}

@@ -543,7 +543,7 @@ you are not a robot! </p>
                         <ul>
                             <li><span class="imgbox">
                                      <a href="#">
-                                         <img alt="" src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/thumb2.jpg" style="border: 2px solid #bfbfbf" />
+                                         <img id="bargainBoxProdImg" alt="" src="" width="150" style="border: 2px solid #bfbfbf" />
                                      </a>
                                 </span>
                             </li>
@@ -804,7 +804,8 @@ $(document).ready(function() {
 		messages: {
 		},
 		errorPlacement: function(error, element) {
-			error.insertAfter(element);
+			//error.insertBefore(element);
+			return false;
 		},
 		submitHandler: function(){
 			xajax_BargainSubmit(xajax.getFormValues('frmBargain'));

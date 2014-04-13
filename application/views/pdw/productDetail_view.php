@@ -220,3 +220,9 @@ ul#thumblist li a.zoomThumbActive{
    
     });
 </script>
+<script>
+$(function(){
+		$("#bargainBoxProdImg").attr('src','<?php echo base_url().$this->config->item('productLargeImgPath') . $product['productImg']?>');
+	
+});
+</script>

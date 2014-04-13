@@ -1178,7 +1178,8 @@ public function uploadProdSpecXLS(){
             //$this->store_model->getStores($storeUser['agencyId']);
         }else{
             $storeAgencyId = $this->session->userdata('storeAgencyId');
-            $storeUserId = $this->session->userdata('storeUserId');            
+            
+            $storeUserId = $this->session->userdata('storeUserId');
             $stores = $this->store_model->getUserStores($storeUserId);
             $data['storesArr'] = $stores;
             $data['agency'] = $storeAgencyId;            

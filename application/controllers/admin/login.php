@@ -27,7 +27,7 @@ class Login extends CI_Controller {
 				'name'        => 'username',
 				'id'          => 'username',
 				'value'       => set_value('username'),
-				'maxlength'   => '10',
+				
 				'class'       => 'input-large'
 				);
 			$data['password_txt'] = array(

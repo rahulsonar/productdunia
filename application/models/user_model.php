@@ -302,6 +302,7 @@ class User_model extends CI_Model {
     function signupSubmit() {
         $userData['fbId'] = '0';
         $userData['googleId'] = '0';
+        $userData['twitterId'] = '0';
         $userData['email'] = $this->input->post('signupEmail');
         $userData['username'] = $this->input->post('signupEmail');
         $userData['password'] = $this->encrypt->encode($this->input->post('signupPassword'));
@@ -333,6 +334,7 @@ class User_model extends CI_Model {
     }
     
     function signupGoogleUser($userFbData) {
+    		
         $email = ($userFbData['contact/email'] != '') ? ($userFbData['contact/email']) : ($userFbData['namePerson/first']);
         $google_id = $userFbData['contact/email'];
         $firstName = $userFbData['namePerson/first'] . ' ' . $userFbData['namePerson/last'];
@@ -343,12 +345,14 @@ class User_model extends CI_Model {
         $create_by = 'self';
         $login = FALSE;
 
-        $data['username'] = $username;
+        $data['email'] = $username;
         $queryUser = $this->db->get_where('customers', $data);
         if ($queryUser->num_rows > 0) {
             $userData['googleId'] = $google_id;
             $userData['name'] = $firstName;
-            $this->db->where('username', $username);
+            $userData['email'] = $email;
+            $userData['username'] = $email;
+            $this->db->where('email', $username);
             $this->db->update('customers', $userData);
             $login = true;
         } else {
@@ -358,7 +362,7 @@ class User_model extends CI_Model {
         }
             
         if ($login) {
-            $loginData['username'] = $username;
+            $loginData['email'] = $email;
             $skipPass = '1';
             $response = $this->login($loginData, $skipPass);
             return true;
@@ -369,22 +373,23 @@ class User_model extends CI_Model {
     
     function signupFacebookUser($userFbData) {
         
-        $email = ($userFbData['email'] != '') ? ($userFbData['email']) : ($userFbData['first_name']);
+        $email = ($userFbData['email'] != '') ? ($userFbData['email']) : ($userFbData['id']);
         $fb_id = $userFbData['id'];
         $firstName = $userFbData['name'];
         $email = $email;        
-        $username = $email;
+        $username = $userFbData['username'];
         $status = 'Active';
         $create_date = date("Y-m-d H:i:s");
         $create_by = 'self';
         $login = FALSE;
 
-        $data['username'] = $username;
+        $data['email'] = $email;
         $queryUser = $this->db->get_where('customers', $data);
+        
         if ($queryUser->num_rows > 0) {
             $userData['fbId'] = $fb_id;
             $userData['name'] = $firstName;
-            $this->db->where('username', $username);
+            $this->db->where('email', $email);
             $this->db->update('customers', $userData);
             $login = true;
         } else {
@@ -393,9 +398,9 @@ class User_model extends CI_Model {
             $login = true;
         }
             
-            
+        
         if ($login) {
-            $loginData['username'] = $username;
+            $loginData['email'] = $email;
             $skipPass = '1';
             $response = $this->login($loginData, $skipPass);
             
@@ -403,18 +408,19 @@ class User_model extends CI_Model {
         } else {
             return false;
         }
+        
     }
 	
 	function signupTwitterUser($userFbData) {
-	
+		
         $userFbData=(array)$userFbData;
 		$firstName = $userFbData['name'];
 		
         $email = (!empty($userFbData['email'])) ? ($userFbData['email']) : ($userFbData['id']);
         $fb_id = $userFbData['id'];
         
-        $email = $email;        
-        $username = $email;
+        
+        $username = $userFbData['id'];
         $status = 'Active';
         $create_date = date("Y-m-d H:i:s");
         $create_by = 'self';
@@ -423,19 +429,21 @@ class User_model extends CI_Model {
         $data['username'] = $username;
         $queryUser = $this->db->get_where('customers', $data);
         if ($queryUser->num_rows > 0) {
-            $userData['fbId'] = $fb_id;
+            $userData['twitterId'] = $fb_id;
             $userData['name'] = $firstName;
             $this->db->where('username', $username);
             $this->db->update('customers', $userData);
             $login = true;
         } else {
-            $sql = "INSERT INTO customers (fbId, name, email, username, status, create_date, create_by) VALUES (" . $this->db->escape($fb_id) . ", " . $this->db->escape($firstName) . ", " . $this->db->escape($email) . ", " . $this->db->escape($username) . ", " . $this->db->escape($status) . ", " . $this->db->escape($create_date) . ", " . $this->db->escape($create_by) . ") ON DUPLICATE KEY UPDATE fbId=" . $this->db->escape($fb_id);
+         echo   $sql = "INSERT INTO customers (twitterId, name, email, username, status, create_date, create_by) VALUES (" . $this->db->escape($fb_id) . ", " . $this->db->escape($firstName) . ", '', " . $this->db->escape($username) . ", " . $this->db->escape($status) . ", " . $this->db->escape($create_date) . ", " . $this->db->escape($create_by) . ") ON DUPLICATE KEY UPDATE fbId=" . $this->db->escape($fb_id);
             $this->db->query($sql);
             $login = true;
         }
             
+        
         if ($login) {
-            $loginData['username'] = $username;
+            $loginData['email'] = $email;
+            $loginData['type'] = 'twitter';
             $skipPass = '1';
             $response = $this->login($loginData, $skipPass);
             return true;
@@ -445,22 +453,29 @@ class User_model extends CI_Model {
     }
     
     public function login($loginData, $skipPass = "0") {
-    	
-    	if(filter_var($loginData['username'], FILTER_VALIDATE_EMAIL)) {
+    
+    	if(filter_var($loginData['email'], FILTER_VALIDATE_EMAIL)) {
     		$field='email';
     	}
-    	else if(is_numeric($loginData['username'])) {
+    	else if(is_numeric($loginData['email'])) {
     		$field='mobile';
     	}
     	else {
     		$field='username';
     	}
+    	
+    	if(!empty($loginData['type']) && $loginData['type']=='twitter') {
+    		$field='username';
+    	}
+    	
         $table_name = "customers as mc";
-        $this->db->where('mc.'.$field, $loginData['username']);
+        $this->db->where('mc.'.$field, $loginData['email']);
         $this->db->where('mc.status', 'Active');
         $this->db->select('mc.*')->from($table_name);
+        
         $query = $this->db->get();
         
+    
         
         if ($query->num_rows ==0) {
             return FALSE;
@@ -517,6 +532,8 @@ class User_model extends CI_Model {
         }
         $userData['modify_date'] = date("Y-m-d H:i:s");
         $userData['modify_by'] = 'self';
+        $customerId=$this->session->userdata['interfaceUserId'];
+        $this->db->where('customerId', $customerId);
         if ($this->db->update('customers', $userData)) {            
             return true;
         } else {
@@ -723,7 +740,7 @@ class User_model extends CI_Model {
 	}
 	
 	public function getBargainRequests($storeUserId) {
-		
+		$this->db->where("");
 		
 	}
 
