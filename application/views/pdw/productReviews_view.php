@@ -80,7 +80,7 @@
 			},
                         prodReviewDesc: {
 				required: true,
-                                minlength: 100,
+                                
                                 maxlength: 2000
 			},
                         score: {
