@@ -97,99 +97,82 @@ $recentlyViewedProds = $this->common_model->getRecentViewProducts();
             </ul>  
         </div>
 
-<div class="space20"></div> 
+                  <ul class="list">
+        <li>
+            <a href="#" class="btntopcomman btnred">SALE</a>
+            <span class="imgbox"><a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/book-4.jpg" alt="" /></a></span>
+            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
+			<span class="productstarholder">
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+			</span> 
+            <span class="avil">Available in 34 stores</span>
+            <span class="price">Rs. 4567- Rs 6789</span>
+        </li>
+        <li>
+            <a href="#" class="btntopcomman btnred">SALE</a>
+            <span class="imgbox"><a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/book-4.jpg" alt="" /></a></span>
+            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
+			<span class="productstarholder">
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+			</span> 
+            <span class="avil">Available in 34 stores</span>
+            <span class="price">Rs. 4567- Rs 6789</span>
+        </li>
+        <li>
+        	<a href="#" class="btntopcomman btnred">SALE</a>
+            <span class="imgbox"><a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/book-5.jpg" alt="" /></a></span>
+            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>  
+			<span class="productstarholder">
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+			</span>  
+            <span class="avil">Available in 34 stores</span>
+            <span class="price">Rs. 4567- Rs 6789</span>
+        </li>
+		<li>
+            <a href="#" class="btntopcomman btnred">SALE</a>
+            <span class="imgbox"><a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/book-4.jpg" alt="" /></a></span>
+            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
+			<span class="productstarholder">
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+			</span> 
+            <span class="avil">Available in 34 stores</span>
+            <span class="price">Rs. 4567- Rs 6789</span>
+        </li>
+        <li>
+            <a href="#" class="btntopcomman btnred">SALE</a>
+            <span class="imgbox"><a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/book-4.jpg" alt="" /></a></span>
+            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
+			<span class="productstarholder">
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+				<a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/star.jpg" /></a>
+			</span> 
+            <span class="avil">Available in 34 stores</span>
+            <span class="price">Rs. 4567- Rs 6789</span>
+        </li>
+      </ul>
+      <div class="space10"></div>
+
         <div class="ad">
             <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/add.jpg" alt="" /></a>
         </div>  
         <div class="space20"></div> 
 
-        <!--<div id="pinger" class="tabbed-box">
-            <ul class="tabs">
-                <li><a href="#pinger1">Product Pinger</a></li>
-                <li class="last"><a href="#pinger2">STORE Pinger</a></li>
-            </ul>
-            <div id="pinger1" class="tabbed-content">
-                <ul class="tablist">
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb.jpg" /></a>
-                        </span>
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb2.jpg" /></a>
-                        </span>
-
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb1.jpg" /></a>
-                        </span>
-
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                </ul>
-            </div>
-            <div id="pinger2" class="tabbed-content">
-                <ul class="tablist">
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb1.jpg" /></a>
-                        </span>
-
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb.jpg" /></a>
-                        </span>
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                    <li>
-                        <span class="imgbox">
-                            <a href="#"><img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/smthumb2.jpg" /></a>
-                        </span>
-
-                        <span class="namebox">
-                            <span class="title"><a href="#">HP Laptop 67AZ <br /> (White)</a></span>   
-                            <span class="avil">Available in 34 stores</span>
-                            <span class="price">Rs. 4567- Rs 6789</span>
-                        </span>
-
-                    </li>
-                </ul>
-            </div>
-            <a href="#" class="draglink">Drag and drop product here to add to the store pinger. Its fun and easy.</a>
-        </div>-->
-        
-        <div class="homesliderholder">
+      
+        <!--  <div class="homesliderholder">
             <div class="homesliderbox">
                 <h2>NEW ARRIVALS</h2>
                 <div id="arrivals">
@@ -285,7 +268,8 @@ $recentlyViewedProds = $this->common_model->getRecentViewProducts();
             </div>
         </div>
         
-        
+        -->
+        <?php /* ?>
         <?php $brands = $this->common_model->getPublishedBrands(); ?>
         <?php if(count($brands) > 0){ ?>
         <div id="ourbrands" >
@@ -297,3 +281,4 @@ $recentlyViewedProds = $this->common_model->getRecentViewProducts();
             </ul>
         </div>
         <?php } ?>
+        <?php */ ?>

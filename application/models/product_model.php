@@ -1883,6 +1883,40 @@ WHERE bm.customerId='".$customerId."'");
 		return true;
 	}
     
+	public function categoryTreeForProduct($productId) {
+		// get the first category
+		$this->db->where("pc.productId",$productId);
+		$this->db->from("product_category pc");
+		$this->db->select("pc.categoryId, c.*");
+		$this->db->join('categories c','pc.categoryId=c.categoryId');
+		$query=$this->db->get();
+		$row=$query->row();
+		$categoryId=$row->categoryId;
+		$category1=$categoryId;
+		$data=array();
+		$parentId=$row->parentId;
+		
+		$data[$category1]=$row->categoryName;
+		
+		
+		while($parentId !='0') {
+				
+			$this->db->where("categoryId",$parentId);
+			$this->db->from("categories");
+			$this->db->select("*");
+			
+			$query=$this->db->get();
+			$row=$query->row();
+			
+			$category1=$row->categoryId;
+			
+			
+			$parentId=$row->parentId;
+			
+			$data[$category1]=$row->categoryName;
+		}
+		return $data;
+	}
 }
 
 ?>

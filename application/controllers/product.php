@@ -313,7 +313,8 @@ class Product extends MY_Controller {
                 
                 $offset = (empty($offset))?(0):($offset);
                 $prodRating = '0';                
-		$data['product'] = $this->common_model->getProductDetail($productId);
+				$data['product'] = $this->common_model->getProductDetail($productId);
+				
                 if(count($data['product']) == 0){
                     redirect(site_url());
                 }
@@ -321,6 +322,7 @@ class Product extends MY_Controller {
                 $data['isInWishlist'] = $this->common_model->isInWishlist($productId,$customerId);
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
                 $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
+                $data['StoreCountOfferValues']=$this->common_model->getStoreCountOfferValues($productId);
                 $data['availableAtStoresForBargain'] =$data['availableAtStores'];
                 $data['availableAtStoresTotal'] = $this->common_model->getAvailableAtStoresTotal($productId);
 
@@ -357,7 +359,12 @@ class Product extends MY_Controller {
                 //$d = $this->common_model->getBreadcrumbCategoryChain($productId);
                 //print_debug($d, __FILE__, __LINE__, 1);
                 /* Breadcrumb Start */
+                $categoryTreeForProduct=$this->product_model->categoryTreeForProduct($productId);
+                ksort($categoryTreeForProduct);
                 $this->breadcrumb->append_crumb('Home', site_url());
+                foreach($categoryTreeForProduct as $catId1=>$cat1) {
+					$this->breadcrumb->append_crumb($cat1, site_url('/product/cat/'.$catId1.'/'.strtolower($cat1)));
+				}
                 $this->breadcrumb->append_crumb($data['product']['productName'], site_url('/product/detail/').$productId);
                 /* Breadcrumb End */
 

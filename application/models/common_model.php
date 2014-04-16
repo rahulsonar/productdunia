@@ -517,6 +517,7 @@ class Common_model extends CI_Model {
         }
         return $availableAtStores;
     }
+    
 	public function getAvailableAtStoresTotal($productId)
     {
         //$offset = ($offset!='')?($offset):($this->config->item('homePageProductCount'));
@@ -537,6 +538,11 @@ class Common_model extends CI_Model {
 		return $num_rows;
     }
     
+    public function getStoreCountOfferValues($productId) {
+    	$query=$this->db->query('select count(*) as cnt from stores_has_products shp where shp.productId='.$productId.' and shp.offerPrice >0');
+    	$row=$query->row();
+    	return ($row->cnt);
+    }
     public function getProductReviews($productId)
     {
         $orderBy = $this->session->userdata('orderBy');
