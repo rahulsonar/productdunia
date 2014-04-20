@@ -553,11 +553,11 @@ class Customer extends MY_Controller {
 			if ($response) {
 				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('storeSuccess') . '</div>');
 				//$objResponse->redirect(site_url('customer/account/profile'));
-				//redirect(site_url('customer/account/profile'));
+				redirect(site_url('customer/account/profile'));
 			} else {
 				//$objResponse->Assign("errorMsg", "innerHTML", '<div class="alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
 				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
-				//redirect(site_url('customer/account/profile'));
+				redirect(site_url('customer/account/profile'));
 			}
 		}
 		
