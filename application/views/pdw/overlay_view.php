@@ -4,7 +4,9 @@
 <?php //$this->load->view($this->config->item('themeCode')."/shortLogin_view"); ?>
 
 <script type="text/javascript">
-;(function($) { 
+;(function($) {
+
+
 $(document).ready(function() {
 	$("#frmShortLogin").validate({
 		rules: {
@@ -539,8 +541,7 @@ you are not a robot! </p>
    		<div class="hearderholder">Bargain<span class="smalltextbox"></span></div>
                 <div class="lightboxcontent" style="padding: 0px 0px">
                     <div class="leftwarp bargainproddetail">
-                    <?php foreach ($availableAtStoresForBargain as $storeId => $storeArr) { ?>
-                        <ul>
+					 <ul>
                             <li><span class="imgbox">
                                      <a href="#">
                                          <img id="bargainBoxProdImg" alt="" src="" width="150" style="border: 2px solid #bfbfbf" />
@@ -548,6 +549,9 @@ you are not a robot! </p>
                                 </span>
                             </li>
                         </ul>
+                    <?php foreach ($availableAtStoresForBargain as $storeId => $storeArr) { ?>
+					<div id="bargainStore_<?php echo $storeId; ?>" style="display:none;" class="bargainStore">
+                       
                         <div class="bargaindetailleft">
                         <div class="cell_textaria">
                             <label><b>Product</b></label>
@@ -567,6 +571,7 @@ you are not a robot! </p>
                              
                         </div>
                         </div>
+					</div>
                         <?php }?>
                         </div>
                     <div class="right">
@@ -576,12 +581,12 @@ you are not a robot! </p>
                                 <div class="cell_textaria">
                                     <label>Expected Bargained Price <span style="color: #bab7b7;">(Per Unit)</span></label>
                                     <input type="text" name="bargainprice" id="bargainprice"/>
-                                    <input type="hidden" name="storeid" value="<?php echo $storeArr['storeId']; ?>"/>
+                                    <input type="hidden" name="storeidforBargain" id="storeidforBargain" value=""/>
                                 </div>
                                 <div class="space10"></div>
                                 <div class="cell_textaria">
                                     <label>Shipping Pincode <span style="color: #bab7b7;">(Pune)</span></label>
-                                    <input type="text" name="shippingPincode"id="shippingPincode"/>
+                                    <input type="text" name="shippingPincode" id="shippingPincode"/>
                                 </div>
                             </div>
                             <div class="right" style="margin-left: 15px">

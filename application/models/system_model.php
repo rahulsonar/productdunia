@@ -11,7 +11,6 @@ class System_model extends CI_Model {
     	$data['username'] = $loginData['username'];
 		$data['status'] = 'Active';
 		$query = $this->db->get_where('system_users', $data);
-		
 		if ($query->num_rows != 1) {
 			return FALSE;
 		} else {

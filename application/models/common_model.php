@@ -620,8 +620,12 @@ class Common_model extends CI_Model {
     function getMetaData($metaTarget='',$metaTargetCode='') {
         $data = array();
         $table_name = "meta_data";
+		if(!empty($metaTarget)) 
         $this->db->where('target', $metaTarget);
+		
+		if(!empty($metaTargetCode)) 
         $this->db->where('targetCode', $metaTargetCode);
+		
         $this->db->select('*')->from($table_name);
         $query = $this->db->get();
         $data = $query->row_array();

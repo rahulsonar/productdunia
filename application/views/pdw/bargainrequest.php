@@ -1,29 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <?php include 'links.php';?>
-        <link href="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/css/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
-    </head>
-<body>
-<!-- Header -->
-  
-<!-- Main -->  
+<script type="text/javascript">
+;(function($) { 
+$(document).ready(function() {
+	$("#frmPersonalInfo").validate({
+		rules: {
+			name: {
+				required: true
+			},
+                        email: {
+				required: true,
+				email: true
+			},
+			mobile: {
+				required: true,
+				minlength: 10,
+                                maxlength: 10
+			}		},errorElement: "div",
+		errorPlacement: function(error, element) {
+			error.insertAfter(element);
+		},
+		submitHandler: function(){
+                    xajax_personalInfoSubmit(xajax.getFormValues('frmPersonalInfo'));
+		}
+	});	
+})
+})(jQuery); 
+</script>
 <div id="main">
-	<div class="mainholder">
-    <div class="add">
-       <ul>
-         <li> <img src="images/add1.jpg" alt=""></li>
-       </ul>
-    </div>
-	<!-- Left Warp --> 
-        <?php include 'leftprofilemenu.php';?>
-	
-	
-	<!-- Right Warp -->  
+    <div class="mainholder">
+        <div class="add">
+            <ul>
+                <li> <img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/add1.jpg" alt="" /></li>
+            </ul>
+        </div>
+        <!-- Left Warp -->  
+        <?php $this->load->view($this->config->item('themeCode') . "/leftprofilemenu", $data); ?>
+
+        <!-- Right Warp -->  
     <div class="rightwarp">
         <ul class="breadcrumbs">
 		<li><a href="#">Home</a></li>
-		<li class="divder">»</li>
+		<li class="divder">Â»</li>
 		<li>Bargain Request</li>
 	</ul>
         <div class="subheadingholder nonmargin">
@@ -66,11 +82,11 @@
 	</div>
         <div class="space15"></div>
         
-        
+        <?php foreach ($master as $bargainId => $value) {   ?>
         <div class="proddbox">
                         
                 <div class="left bargainreqimg">
-                <img src="images/lava_img1.jpg" height="90px" width="90px"/>
+                <img src="<?php echo base_url().$this->config->item('productImgPath').$value['productImg']; ?>" width="90px"/>
                 </div>
            
             <div class="left bargainreq">
@@ -79,15 +95,15 @@
                      <table style="width: 300px">
                         <tr>
                             <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
-                            <td><label style="width: 200px">Nokia</label></td>
+                            <td><label style="width: 200px"><?php echo $value['productName']; ?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Customer Name:</strong></label></td>
-                            <td><label>Pravinkumar</label></td>
+                            <td><label><?php echo $value['customerName']; ?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Contact Detail:</strong></label></td>
-                            <td><label>7507546002</label></td>
+                            <td><label><?php echo $value['customer_mobile']; ?></label></td>
                         </tr>
                    
                        
@@ -278,12 +294,8 @@
             </div>
             </div>
         </div>
+        <?php } ?>
 		<div class="space15"></div>
 	</div>
-  </div>
- </div>
- 
-<!-- Footer -->  
-<?php include 'footer.php';?>
-</body>
-</html>
+    </div>
+</div>

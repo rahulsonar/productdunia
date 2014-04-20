@@ -1831,30 +1831,26 @@ class Product_model extends CI_Model {
     public function mybargain(){
     	
     	$customerId = $this->session->userdata('interfaceUserId');
-    	$table_Master = "bargain_master";
-    	$store_response = "store_response";
-    	//$bargain_customerRequest = "bargin_custRequest";
-    	//$this->db->where('customerId', $customerId);
-    	//$this->db->where('status != ', 'Closed');
-    	//$myBargainStatus = array();
-    	//$this->db->select('*')->from($table_Master);
-    	//$query = $this->db->get();
-    	$query=$this->db->query("
-    			SELECT bc.*,bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP
-FROM bargain_custrequest bc
-LEFT JOIN bargain_master bm ON (bm.bargainId=bc.bargainId)
-LEFT JOIN products p ON (bm.productId=p.productId)
-LEFT JOIN stores s ON (s.storeId=bm.storeId)
-WHERE bm.customerId='".$customerId."'");
-    	//var_dump($query->result());
-    	//die();
-    	/*foreach ($query->result_array() as $row) {
-    		$master[$row['customerId']] = $row;
-    	}*/
-    	$master=$query->result_array();
-    	///var_dump($master);
-    	//die();
-    	return $master;
+    	
+    	$query=$this->db->query("select bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP,p.productImg
+						from bargain_master bm 
+						LEFT JOIN products p ON (bm.productId=p.productId)
+						LEFT JOIN stores s ON (bm.storeId=s.storeId)
+						where bm.customerId='".$customerId."'");
+    	$data=array();
+    	$masters=$query->result_array();
+		foreach($masters as $master) {
+			$bargainId=$master['bargainId'];
+			$query2=$this->db->query("SELECT br.*
+					FROM bargain_responses br 
+					
+					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC LIMIT 0,1");
+			$responses=$query2->result_array();
+			
+			$data[$bargainId]=array_merge($responses[0],$master);
+		}
+		
+    	return $data;
     	 
     }
     

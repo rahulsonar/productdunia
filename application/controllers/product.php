@@ -97,7 +97,8 @@ class Product extends MY_Controller {
                     $objResponse->script("$('.loadMoreItems').html('No More Items');");
                 }else{
                     $objResponse->script("$('.loadMoreItems').html('Load More Items');");
-                }                
+                }
+			
 		$objResponse->append("prodlist","innerHTML", $refinedData);
                 $objResponse->script("callRating();");                
 		return $objResponse;
@@ -323,7 +324,7 @@ class Product extends MY_Controller {
                 $data['productSpecification'] = $this->product_model->getProductSpecifications($productId);
                 $data['availableAtStores'] = $this->common_model->getAvailableAtStores($productId,0,1);
                 $data['StoreCountOfferValues']=$this->common_model->getStoreCountOfferValues($productId);
-                $data['availableAtStoresForBargain'] =$data['availableAtStores'];
+                $data['availableAtStoresForBargain'] =$this->common_model->getAvailableAtStores($productId);
                 $data['availableAtStoresTotal'] = $this->common_model->getAvailableAtStoresTotal($productId);
 
 
@@ -592,6 +593,14 @@ class Product extends MY_Controller {
 
    });
                 		$('.bargainBtn').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize(); 
+    }    
+});
+$(".bargain_req").bind('click',function(){
+	showBargainStore($(this));
+});
+$('.bargain_req').colorbox({ inline:true, 
     onComplete : function() { 
        $(this).colorbox.resize(); 
     }    

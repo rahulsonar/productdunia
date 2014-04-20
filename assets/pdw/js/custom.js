@@ -520,3 +520,13 @@ $(function() {
 		$( "#amount_f" ).text( "Rs " + $( "#slider-range" ).slider( "values", 0 ));
 		$( "#amount_t" ).text("Rs" + $( "#slider-range" ).slider( "values", 1 ) );
 	});
+	
+function showBargainStore(store) {
+		var id=store.attr('id');
+		var id1=id.split('_');
+		var id2=id1[1];
+		console.log(id2);
+		$('.bargainStore').hide();
+		$('#bargainStore_'+id2).show();
+		$('#storeidforBargain').val(id2);
+	}

@@ -104,7 +104,30 @@
                 $this->load->view($this->config->item('themeCode') . "/availableAtStores_view",$temp); 
             }
         ?>
-        
+			<script>
+	function SavePDF(product_id) {
+		window.open('<?php echo site_url('product/pdf/'); ?>/'+product_id);
+	}
+	function sortAreas(){
+		var filterVal=$("#areaFilter").val();
+		var sortVal=$("#sortStores").val();
+        xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>,filterVal,sortVal);
+    }
+	 
+	$(function(){
+	
+	$(".bargain_req").click(function(){
+		showBargainStore($(this));
+		
+	});
+	
+	
+	$('.loadmorestore').click(function(){
+		xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>);
+	});
+	});
+	
+</script>
          <?php 
         if(count($productSpecification) > 0){
             $temp['productSpecification'] = $productSpecification;

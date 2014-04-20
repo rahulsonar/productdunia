@@ -285,7 +285,7 @@ class Customer extends MY_Controller {
 			
 			$storeUser=$this->user_model->getStoreUserByEmail($user->email);
 			
-			$data['bargains']=$this->user_model->getBargainRequests($storeUser->id);
+			$data['master']=$this->user_model->getBargainRequests($storeUser->id);
 			$data['template']="bargainrequest";
 			$temp['data'] = $data;
 			$this->load->view($this->config->item('themeCode')."/common_view",$temp);

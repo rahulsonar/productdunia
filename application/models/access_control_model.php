@@ -60,7 +60,7 @@ class access_control_model extends CI_Model {
 			$this->db->insert('master_module', $moduleDataEntry);
 			$this->access_control_insert($module_code,'admin',$this->config->item('adminProfileId'));
 		}
-		if($moduletype=='basic')
+		//if($moduletype=='basic')
 		{
 			$username = $this->session->userdata('sysuser_loggedin_user');
 			$this->access_control_insert($module_code,$username,'');

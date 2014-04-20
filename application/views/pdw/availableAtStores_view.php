@@ -97,7 +97,7 @@
 							}
 							?>
 					<a href="<?php echo $targetBox; ?>" id="buyNow_<?php echo $storeId; ?>" class="btncomman rounded btnshadow">BUY NOW</a> 
-					<a href="<?php echo $targetBox; ?>" class="btncomman rounded btnshadow bargain_req inline">BARGAIN</a>
+					<a href="<?php echo $targetBox; ?>" id="bargainBtn_<?php echo $storeId; ?>" class="btncomman rounded btnshadow bargain_req inline">BARGAIN</a>
 					<ul class="listorange">
 					<li><a href="#">12 Store Reviews</a></li>
 					<?php if($storeArr['offerPrice']>0) { ?>
@@ -231,21 +231,3 @@
         </div>
 
 </div>
-<script>
-	function SavePDF(product_id) {
-		window.open('<?php echo site_url('product/pdf/'); ?>/'+product_id);
-	}
-	function sortAreas(){
-		var filterVal=$("#areaFilter").val();
-		var sortVal=$("#sortStores").val();
-        xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>,filterVal,sortVal);
-    }
-	 
-	$(function(){
-	
-	$('.loadmorestore').click(function(){
-		xajax_loadmorestores(<?php echo $product['productId']; ?>,<?php echo $availableAtStoresTotal; ?>);
-	});
-	});
-	
-</script>

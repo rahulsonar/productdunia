@@ -593,7 +593,7 @@ class User_model extends CI_Model {
     function BargainSubmit() {
     	 
     	$bargainMaster['customerId']=$this->session->userdata['interfaceUserId'];
-    	$bargainMaster['storeId']=$this->input->post('storeid');
+    	$bargainMaster['storeId']=$this->input->post('storeidforBargain');
     	$bargainMaster['productId']=$this->session->userdata['productId'];
     	$bargainMaster['customer_mobile']=$this->input->post('mobile');
     	$bargainMaster['status']='1';
@@ -606,13 +606,17 @@ class User_model extends CI_Model {
     		$bargainid=$this->db->insert_id();
     	
     	$bargainCustRequest['bargainId']=$bargainid;
+    	$bargainCustRequest['from_type']='customer';
     	$bargainCustRequest['expectedPrice']=$this->input->post('bargainprice');
+    	$bargainCustRequest['offer_price']='';
+    	$bargainCustRequest['is_read']='0';
     	$bargainCustRequest['quantity']=$this->input->post('quantity');
     	$bargainCustRequest['shipping_pinCode']=$this->input->post('shippingPincode');
-    	$bargainCustRequest['customer_msg']=$this->input->post('comment');
-    	$bargainCustRequest['request_time']=date("Y-m-d H:i:s");
+    	$bargainCustRequest['msg']=$this->input->post('comment');
+    	
+    	$bargainCustRequest['added_time']=date("Y-m-d H:i:s");
     	 
-    	if($this->db->insert('bargain_custrequest', $bargainCustRequest))
+    	if($this->db->insert('bargain_responses', $bargainCustRequest))
     	{
     		return true;
     
@@ -740,7 +744,28 @@ class User_model extends CI_Model {
 	}
 	
 	public function getBargainRequests($storeUserId) {
-		$this->db->where("");
+		$query=$this->db->query("select bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP,p.productImg,
+						c.name as customerName
+						from bargain_master bm 
+						LEFT JOIN products p ON (bm.productId=p.productId)
+						LEFT JOIN stores s ON (bm.storeId=s.storeId)
+						LEFT JOIN customers c ON (c.customerId=bm.customerId)
+						where bm.storeId IN (SELECT storeId from user_has_stores WHERE userId='".$storeUserId."')");
+		
+		$data=array();
+		$masters=$query->result_array();
+		foreach($masters as $master) {
+			$bargainId=$master['bargainId'];
+			$query2=$this->db->query("SELECT br.*
+					FROM bargain_responses br
+			
+					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC LIMIT 0,1");
+			$responses=$query2->result_array();
+				
+			$data[$bargainId]=array_merge($responses[0],$master);
+		}
+		
+		return $data;
 		
 	}
 

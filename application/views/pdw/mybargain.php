@@ -97,7 +97,7 @@ $(document).ready(function() {
         <div class="proddbox">
                         
             <div class="left bargainreqimg">
-                <img src="<?php echo base_url(); ?>assets/<?php echo $this->config->item('themeCode'); ?>/images/automobile4.jpg" height="90px" width="90px"/>
+                <img src="<?php echo base_url().$this->config->item('productImgPath').$value['productImg']; ?>" width="90px"/>
                 </div>
             
            
