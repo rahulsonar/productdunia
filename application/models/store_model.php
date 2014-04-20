@@ -100,6 +100,11 @@ class Store_model extends CI_Model {
         if ($this->db->insert('system_users', $userData)) {
             $storeUserId = $this->db->insert_id();
             $this->insert_store_user_detail($storeUserId);
+			$user_profile=array();
+			$user_profile['profile_id']=2;
+			$user_profile['username']=$userData['username'];
+			$this->db->insert('user_profile',$user_profile);
+			
             return true;
         } else {
             return false;
@@ -173,7 +178,7 @@ class Store_model extends CI_Model {
         return ($query->row_array());
     }
 
-    function insert_store($fileName,$agencyId) {
+    function insert_store($fileName,$agencyId,$storeUserId='') {
         //$userData['agencyId'] = $this->input->post('agency');
         $userData['agencyId'] = $agencyId;
         $userData['countryId'] = $this->input->post('country');
@@ -198,8 +203,13 @@ class Store_model extends CI_Model {
         $userData['create_date'] = date("Y-m-d H:i:s");
         $userData['create_by'] = $this->session->userdata('sysuser_loggedin_user');
         if ($this->db->insert('stores', $userData)) {
+			$storeId=$this->db->insert_id();
+			if(!empty($storeUserId)) {
+				$this->assignStoreToUserFront($storeUserId,$storeId);
+			}
             return true;
         } else {
+			
             return false;
         }
     }
@@ -542,6 +552,12 @@ class Store_model extends CI_Model {
             }
             return true;
     }
+	function assignStoreToUserFront($userId, $storeId) {
+		$userStoreData['userId'] = $userId;
+                    $userStoreData['storeId'] = $storeId;
+					
+                    $this->db->insert('user_has_stores', $userStoreData);
+	}
     
     public function getBannerList() {
     	$data = array();

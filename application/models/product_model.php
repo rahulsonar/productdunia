@@ -1844,10 +1844,11 @@ class Product_model extends CI_Model {
 			$query2=$this->db->query("SELECT br.*
 					FROM bargain_responses br 
 					
-					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC LIMIT 0,1");
+					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC");
 			$responses=$query2->result_array();
 			
-			$data[$bargainId]=array_merge($responses[0],$master);
+			$data[$bargainId]['bargain']=$master;
+			$data[$bargainId]['responses']=$responses;
 		}
 		
     	return $data;

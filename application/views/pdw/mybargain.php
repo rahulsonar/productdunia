@@ -95,9 +95,9 @@ $(document).ready(function() {
        //var_dump($master); 
 		foreach ($master as $bargainId => $value) {   ?>
         <div class="proddbox">
-                        
+                        <a class="bargainSubArrow" href="javascript:void(0)" id="bargainExpand_<?php echo $bargainId; ?>"></a>
             <div class="left bargainreqimg">
-                <img src="<?php echo base_url().$this->config->item('productImgPath').$value['productImg']; ?>" width="90px"/>
+                <img src="<?php echo base_url().$this->config->item('productImgPath').$value['bargain']['productImg']; ?>" width="90px"/>
                 </div>
             
            
@@ -106,20 +106,20 @@ $(document).ready(function() {
                     <table style="width: 350px;">
                         <tr>
                             <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
-                            <td><label style="width: 200px"><?php echo  $value['productName'] ;?></label></td>
+                            <td><label style="width: 200px"><?php echo  $value['bargain']['productName'] ;?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Store Name:</strong></label></td>
-                            <td><label><?php echo  $value['storeName'] ; ?></label></td>
+                            <td><label><?php echo  $value['bargain']['storeName'] ; ?></label></td>
                         </tr>
                         <tr>
                             <td><label><strong>Store Contact Person:</strong></label></td>
-                            <td><label><?php echo  $value['storeContactPerson'] ;  ?></label></td>
+                            <td><label><?php echo  $value['bargain']['storeContactPerson'] ;  ?></label></td>
                         </tr>
                    
                         <tr>
                             <td><label><strong>Store Contact Detail:</strong></label></td>
-                            <td><label><?php echo  $value['storeMobile'] ;  ?></label></td>
+                            <td><label><?php echo  $value['bargain']['storeMobile'] ;  ?></label></td>
                         </tr>
                         
                     
@@ -132,11 +132,15 @@ $(document).ready(function() {
                     <table style="width: 150px">
                         <tr>
                             <td><label><strong>Actual Price:</strong></label></td>
-                            <td><label style="width: 200px">INR <?php  echo  $value['productMRP'];  ?></span></label></label></td>
+                            <td><label style="width: 200px">INR <?php  echo  $value['bargain']['productMRP'];  ?></span></label></label></td>
                         </tr>
                     <tr>
                             <td><label><strong>Offer:</strong></label></td>
-                            <td style="height: 15px"><label><?php  echo  $value['offer'] ; ?></label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['bargain']['offer'] ; ?></label></td>
+                        </tr>
+						<tr>
+                            <td><label><strong>Message:</strong></label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['responses'][0]['msg'] ; ?></label></td>
                         </tr>
                   </table>
                    
@@ -144,6 +148,65 @@ $(document).ready(function() {
                 </div>
                 
             </div>
+			
+			
+<?php /* responses */ ?>
+<div style="display:none;" id="storeResponses_<?php echo $bargainId; ?>">
+<?php 
+
+$totResponses=count($value['responses']);
+
+for($i=1; $i<($totResponses); $i++) { ?>
+<div class="left bargainreq" style="margin-left: 15px">
+                <div class="left">
+                    <table style="width: 350px;">
+                        <tr>
+                            <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
+                            <td><label style="width: 200px"><?php echo  $value['bargain']['productName'] ;?></label></td>
+                        </tr>
+                        <tr>
+                            <td><label><strong>Store Name:</strong></label></td>
+                            <td><label><?php echo  $value['bargain']['storeName'] ; ?></label></td>
+                        </tr>
+                        <tr>
+                            <td><label><strong>Store Contact Person:</strong></label></td>
+                            <td><label><?php echo  $value['bargain']['storeContactPerson'] ;  ?></label></td>
+                        </tr>
+                   
+                        <tr>
+                            <td><label><strong>Store Contact Detail:</strong></label></td>
+                            <td><label><?php echo  $value['bargain']['storeMobile'] ;  ?></label></td>
+                        </tr>
+                        
+                    
+                </table>
+                    
+                </div>
+                
+                <div class="right bargainreqrigthe">
+                   
+                    <table style="width: 150px">
+                        <tr>
+                            <td><label><strong>Actual Price:</strong></label></td>
+                            <td><label style="width: 200px">INR <?php  echo  $value['bargain']['productMRP'];  ?></span></label></label></td>
+                        </tr>
+                    <tr>
+                            <td><label><strong>Offer:</strong></label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['bargain']['offer'] ; ?></label></td>
+                        </tr>
+						 <tr>
+                            <td><label><strong>Message:</strong></label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['responses'][$i]['msg'] ; ?></label></td>
+                        </tr>
+                  </table>
+                   
+                    
+                </div>
+                
+            </div>
+<?php } ?>
+</div>
+<?php /* responses end */ ?>
             <div class="space20"></div>
             <div class="left" style="padding: 6px 30px;margin-left: 16px"><span class="reply">Reply: <?php echo count($response)  ?></span></div>
             <div class="right">
@@ -412,3 +475,13 @@ $(document).ready(function() {
 	</div>
     </div>
 </div>
+<script>
+	$(function(){
+	$(".bargainSubArrow").click(function(){
+			var id1=$(this).attr('id');
+			var id2=id1.split('_');
+			var id=id2[1];
+			$('#storeResponses_'+id).toggle();
+		});
+	});
+</script>

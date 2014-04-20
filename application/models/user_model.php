@@ -648,15 +648,17 @@ class User_model extends CI_Model {
     
     function bargainResponse()
     {
-    	$bargainResponse['customer_requestId']=10;
-    	$bargainResponse['bargainId']=10;
+		
+    	$bargainResponse['bargainId']=$this->input->post('quote_bargainId');
+    	$bargainResponse['from_type']='store';
     	$bargainResponse['quantity']=$this->input->post('quantity');
     	$bargainResponse['offer_price']=$this->input->post('offerprice');
     	$bargainResponse['validity_date']=$this->input->post('redate');
-    	$bargainResponse['store_msg']=$this->input->post('comment');
-    	$bargainResponse['storeResponse_time']=date("Y-m-d H:i:s");
+    	$bargainResponse['is_read']=0;
+    	$bargainResponse['msg']=$this->input->post('comment');
+    	$bargainResponse['added_time']=date("Y-m-d H:i:s");
     	 
-    	if($this->db->insert('store_response', $bargainResponse))
+    	if($this->db->insert('bargain_responses', $bargainResponse))
     	{
     		return true;
     
@@ -702,6 +704,7 @@ class User_model extends CI_Model {
 		$query=$this->db->get();
 		
 		$row=$query->row();
+
 		if(!empty($row))
 			return $row;
 		else 
@@ -726,7 +729,7 @@ class User_model extends CI_Model {
         if ($this->db->insert('system_users', $userData)) {
             $storeUserId = $this->db->insert_id();
             $this->insert_store_user_detail($storeUserId,$agencyId);
-            return true;
+            return $storeUserId;
         } else {
             return false;
         }
@@ -744,25 +747,33 @@ class User_model extends CI_Model {
 	}
 	
 	public function getBargainRequests($storeUserId) {
+	
 		$query=$this->db->query("select bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP,p.productImg,
-						c.name as customerName
+						c.name as customerName,shp.sellPrice
 						from bargain_master bm 
 						LEFT JOIN products p ON (bm.productId=p.productId)
 						LEFT JOIN stores s ON (bm.storeId=s.storeId)
 						LEFT JOIN customers c ON (c.customerId=bm.customerId)
+						LEFT JOIN stores_has_products shp ON (shp.productId=bm.productId AND shp.productId=bm.productId)
 						where bm.storeId IN (SELECT storeId from user_has_stores WHERE userId='".$storeUserId."')");
 		
 		$data=array();
 		$masters=$query->result_array();
+		
 		foreach($masters as $master) {
+		
+		$shpQuery=$this->db->query("select * from stores_has_products as shp where shp.productId='".$master['productId']."' AND shp.storeId='".$master['storeId']."'");
+		$shp=$shpQuery->row_array();
+		$master['sellPrice']=$shp['sellPrice'];
+		
 			$bargainId=$master['bargainId'];
 			$query2=$this->db->query("SELECT br.*
 					FROM bargain_responses br
-			
-					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC LIMIT 0,1");
+					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC");
 			$responses=$query2->result_array();
 				
-			$data[$bargainId]=array_merge($responses[0],$master);
+			$data[$bargainId]['bargain']=$master;
+			$data[$bargainId]['responses']=$responses;
 		}
 		
 		return $data;

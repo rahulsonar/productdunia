@@ -463,6 +463,11 @@ $('.deleteproreview').colorbox({ inline:true,
        $(this).colorbox.resize();
     }    
 }); 
+$('.quot').colorbox({ inline:true, 
+    onComplete : function() { 
+       $(this).colorbox.resize();
+    }    
+}); 
 $('.editproreview').colorbox({ inline:true, 
     onComplete : function() { 
        $(this).colorbox.resize();

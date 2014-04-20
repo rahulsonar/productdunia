@@ -709,7 +709,7 @@ you are not a robot! </p>
                         <ul>
                             <li><span class="imgbox">
                                      <a href="#">
-                                         <img alt="" src="images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
+                                         <img alt="" id="quote_prodImg" width="150" src="images/thumb2.jpg" style="border: 2px solid #bfbfbf"></img>
                                      </a>
                                 </span>
                             </li>
@@ -717,20 +717,28 @@ you are not a robot! </p>
                         <div class="bargaindetailleft">
                         <div class="cell_textaria">
                             <label><b>Product</b></label>
-                            <label>Lava XOLO Q800v (BLACK)</label>
+                            <label><span id="quote_prodName"></span></label>
                         </div>
                         <div class="cell_textaria">
                             <label><b>Customer Name</b></label>
-                            <label>Amit Sharma</label>
+                            <label><span id="quote_customerName"></span></label>
                         </div>
                              <div class="cell_textaria">
                             <label><b>Customer Contact</b></label>
-                            <label>8542316475</label>
+                            <label><span id="quote_customerContact"></span></label>
                              
                         </div>
                         <div class="cell_textaria">
                             <label><b>Actual Price</b></label>
-                            <label>INR 8000</label>
+                            <label>INR <span id="quote_actualPrice"></span></label>
+                        </div>
+						 <div class="cell_textaria">
+                            <label><b>Expected Price</b></label>
+                            <label>INR <span id="quote_expectedPrice"></span></label>
+                        </div>
+					<div class="cell_textaria">
+                            <label><b>Quantity</b></label>
+                            <label><span id="quote_quantity"></span></label>
                         </div>
                        
                         </div>
@@ -738,6 +746,7 @@ you are not a robot! </p>
                     <div class="right">
          `               <div class="bargaindetailright">
          					<form name="frmquotation" id="frmquotation">
+							<input type="hidden" name="quote_bargainId" id="quote_bargainId" value="" />
                             <div class="left">
                                 <div class="cell_textaria">
                                     <label>Offered Price <span style="color: #bab7b7;">(Per Unit)</span></label>
@@ -878,7 +887,8 @@ $(document).ready(function() {
 		messages: {
 		},
 		errorPlacement: function(error, element) {
-			error.insertAfter(element);
+			//error.insertAfter(element);
+			return false;
 		},
 		submitHandler: function(){
 			xajax_bargainResponse(xajax.getFormValues('frmquotation'));

@@ -317,7 +317,6 @@ class Customer extends MY_Controller {
 				if(!empty($storeUser)) {
 					$agency=$this->user_model->getStoreAgency($storeUser);
 				}
-				
 				$countryArr = $this->common_model->getCountries(1);
 				
 				$data['sel_country']['name'] = 'country';
@@ -526,8 +525,10 @@ class Customer extends MY_Controller {
 			$userName=$this->session->userdata('interfaceUsername');
 			$user=$this->user_model->getUserByUserName($userName);
 			$storeUser=$this->user_model->getStoreUserByEmail($user->email);
+			
 				if(empty($storeUser)) {
 					$this->user_model->createStoreUserForCustomer($user,$agencyId);
+					$storeUser=$this->user_model->getStoreUserByEmail($user->email);
 				}
 			
 			if($_FILES['storeLogo']['name']!=""){
@@ -545,18 +546,18 @@ class Customer extends MY_Controller {
 			
 			
 			if ($_POST['storeId'] != '') {
-				$response = $this->store_model->update_store($fileName,$agencyId);
+				$response = $this->store_model->update_store($fileName,$agencyId,$storeUser->id);
 			} else {
-				$response = $this->store_model->insert_store($fileName,$agencyId);
+				$response = $this->store_model->insert_store($fileName,$agencyId,$storeUser->id);
 			}
 			if ($response) {
 				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('storeSuccess') . '</div>');
 				//$objResponse->redirect(site_url('customer/account/profile'));
-				redirect(site_url('customer/account/profile'));
+				//redirect(site_url('customer/account/profile'));
 			} else {
 				//$objResponse->Assign("errorMsg", "innerHTML", '<div class="alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
 				$this->session->set_flashdata('Msg', '<div class="alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>' . $this->lang->line('operationFail') . '</div>');
-				redirect(site_url('customer/account/profile'));
+				//redirect(site_url('customer/account/profile'));
 			}
 		}
 		
