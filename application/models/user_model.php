@@ -762,18 +762,25 @@ class User_model extends CI_Model {
 		
 		foreach($masters as $master) {
 		
-		$shpQuery=$this->db->query("select * from stores_has_products as shp where shp.productId='".$master['productId']."' AND shp.storeId='".$master['storeId']."'");
+		$shpQuery=$this->db->query("select * from stores_has_products as shp 
+					where shp.productId='".$master['productId']."' AND shp.storeId='".$master['storeId']."'");
 		$shp=$shpQuery->row_array();
 		$master['sellPrice']=$shp['sellPrice'];
 		
 			$bargainId=$master['bargainId'];
 			$query2=$this->db->query("SELECT br.*
 					FROM bargain_responses br
-					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC");
+					where br.bargainId='".$bargainId."' and br.from_type='customer' ORDER BY br.added_time DESC");
 			$responses=$query2->result_array();
+			
+			$query3=$this->db->query("SELECT br.*
+					FROM bargain_responses br
+					where br.bargainId='".$bargainId."' and br.from_type='store' ORDER BY br.added_time DESC");
+			$storeResponses=$query3->result_array();
 				
 			$data[$bargainId]['bargain']=$master;
 			$data[$bargainId]['responses']=$responses;
+			$data[$bargainId]['store']=$storeResponses;
 		}
 		
 		return $data;

@@ -280,6 +280,11 @@ class Customer extends MY_Controller {
 		
 		public function bargainRequest()
 		{
+			$customerId = $this->session->userdata('interfaceUserId');
+			if ($customerId == '') {
+				redirect(site_url('customer/login'));
+				die();
+			}
 			$userName=$this->session->userdata('interfaceUsername');
 			$user=$this->user_model->getUserByUserName($userName);
 			
@@ -292,6 +297,11 @@ class Customer extends MY_Controller {
 		}
 		public function mybargain()
 		{
+			$customerId = $this->session->userdata('interfaceUserId');
+			if ($customerId == '') {
+				redirect(site_url('customer/login'));
+				die();
+			}
 			$data['master'] = $this->product_model->mybargain();
 			$data['template'] = "mybargain";
 			$temp['data'] = $data;
