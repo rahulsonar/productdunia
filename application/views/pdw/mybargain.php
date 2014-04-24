@@ -35,8 +35,8 @@ $(document).ready(function() {
         <!-- Left Warp -->  
         <?php $this->load->view($this->config->item('themeCode') . "/account_left_section_view", $data); ?>
 
-        <!-- Right Warp -->  
-          <div class="rightwarp">
+	<!-- Right Warp -->  
+    <div class="rightwarp">
         <ul class="breadcrumbs">
 		<li><a href="#">Home</a></li>
 		<li class="divder">�</li>
@@ -92,10 +92,10 @@ $(document).ready(function() {
         <div class="space15"></div>
         
         <?php 
-       //var_dump($master); 
+       // var_dump($master); 
 		foreach ($master as $bargainId => $value) {   ?>
         <div class="proddbox">
-                        <a class="bargainSubArrow" href="javascript:void(0)" id="bargainExpand_<?php echo $bargainId; ?>"></a>
+                        
             <div class="left bargainreqimg">
                 <img src="<?php echo base_url().$this->config->item('productImgPath').$value['bargain']['productImg']; ?>" width="90px"/>
                 </div>
@@ -136,11 +136,7 @@ $(document).ready(function() {
                         </tr>
                     <tr>
                             <td><label><strong>Offer:</strong></label></td>
-                            <td style="height: 15px"><label><?php  echo  $value['bargain']['offer'] ; ?></label></td>
-                        </tr>
-						<tr>
-                            <td><label><strong>Message:</strong></label></td>
-                            <td style="height: 15px"><label><?php  echo  $value['responses'][0]['msg'] ; ?></label></td>
+                            <td style="height: 15px"><label><?php  echo  $value['offer'] ; ?></label></td>
                         </tr>
                   </table>
                    
@@ -148,65 +144,6 @@ $(document).ready(function() {
                 </div>
                 
             </div>
-			
-			
-<?php /* responses */ ?>
-<div style="display:none;" id="storeResponses_<?php echo $bargainId; ?>">
-<?php 
-
-$totResponses=count($value['responses']);
-
-for($i=1; $i<($totResponses); $i++) { ?>
-<div class="left bargainreq" style="margin-left: 15px">
-                <div class="left">
-                    <table style="width: 350px;">
-                        <tr>
-                            <td style="alignment-adjust: hanging"><label><strong>Product:</strong></label></td>
-                            <td><label style="width: 200px"><?php echo  $value['bargain']['productName'] ;?></label></td>
-                        </tr>
-                        <tr>
-                            <td><label><strong>Store Name:</strong></label></td>
-                            <td><label><?php echo  $value['bargain']['storeName'] ; ?></label></td>
-                        </tr>
-                        <tr>
-                            <td><label><strong>Store Contact Person:</strong></label></td>
-                            <td><label><?php echo  $value['bargain']['storeContactPerson'] ;  ?></label></td>
-                        </tr>
-                   
-                        <tr>
-                            <td><label><strong>Store Contact Detail:</strong></label></td>
-                            <td><label><?php echo  $value['bargain']['storeMobile'] ;  ?></label></td>
-                        </tr>
-                        
-                    
-                </table>
-                    
-                </div>
-                
-                <div class="right bargainreqrigthe">
-                   
-                    <table style="width: 150px">
-                        <tr>
-                            <td><label><strong>Actual Price:</strong></label></td>
-                            <td><label style="width: 200px">INR <?php  echo  $value['bargain']['productMRP'];  ?></span></label></label></td>
-                        </tr>
-                    <tr>
-                            <td><label><strong>Offer:</strong></label></td>
-                            <td style="height: 15px"><label><?php  echo  $value['bargain']['offer'] ; ?></label></td>
-                        </tr>
-						 <tr>
-                            <td><label><strong>Message:</strong></label></td>
-                            <td style="height: 15px"><label><?php  echo  $value['responses'][$i]['msg'] ; ?></label></td>
-                        </tr>
-                  </table>
-                   
-                    
-                </div>
-                
-            </div>
-<?php } ?>
-</div>
-<?php /* responses end */ ?>
             <div class="space20"></div>
             <div class="left" style="padding: 6px 30px;margin-left: 16px"><span class="reply">Reply: <?php echo count($response)  ?></span></div>
             <div class="right">
@@ -215,9 +152,9 @@ for($i=1; $i<($totResponses); $i++) { ?>
                 <a href="javascript:void(0)" class="rounded right btncommanpe">Buy</a>
             </div>
             
-             <a href="javascript:void(0)" class="bargainsubarrowd"></a>
+             <a href="javascript:void(0)" class="bargainSubArrow" id="bargainSubArrow_<?php echo $bargainId; ?>"></a>
             <a href="javascript:void(0)" class="bargainsubarrow"></a>
-            <div class="bargainview proddbox" style="display: none;border-bottom: 0px solid;padding: 0px 0px;">
+            <div class="bargainview proddbox" id="storeResponses_<?php echo $bargainId; ?>" style="display: none;border-bottom: 0px solid;padding: 0px 0px;">
             <div class="space5"></div>
                <div class="left_row bargaintab">
                  <div class="box">
@@ -243,14 +180,16 @@ for($i=1; $i<($totResponses); $i++) { ?>
                             </th>
                         </tr>
                         
-                         <?php   foreach ($response as $Id => $val) { ?>
+                         <?php   
+						 
+						 foreach ($value['store'] as $Id => $val) { ?>
                        <tr class="newbargainreq">
                             <td style="border:1px solid #fff;background-color: white;border-right: 1px solid #d9d9d9">
                                  <input type="radio" class="left" name="bargain"/>
                             </td>
                             <td>
                                
-                                <span class="trow left"><?php  echo  $val['store_msg'];  ?></span>
+                                <span class="trow left"><?php  echo  $val['msg'];  ?></span>
                             </td>
                             <td>
                                 <span class="trow"><?php  echo  $val['quantity'];  ?></span>
@@ -263,7 +202,7 @@ for($i=1; $i<($totResponses); $i++) { ?>
                                 <span class="trow left"> <?php  echo  $val['validity_date'];  ?></span>
                             </td>
                             <td>                         
-                                <span class="trow left"><?php  echo  $val['storeResponse_time']; ?></span> 
+                                <span class="trow left"><?php  echo  $val['added_time']; ?></span> 
                             </td>
                         </tr>
                          <?php   } ?> 

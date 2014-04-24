@@ -1828,32 +1828,50 @@ class Product_model extends CI_Model {
         return ($query->row_array());
     }
     
-    public function mybargain(){
-    	
-    	$customerId = $this->session->userdata('interfaceUserId');
-    	
-    	$query=$this->db->query("select bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP,p.productImg
+    
+	
+	public function mybargain($storeUserId) {
+		$customerId = $this->session->userdata('interfaceUserId');
+	
+		$query=$this->db->query("select bm.*,p.productName,s.storeName,s.contactPerson as storeContactPerson,s.mobile as storeMobile,p.productMRP,p.productImg,
+						c.name as customerName
 						from bargain_master bm 
 						LEFT JOIN products p ON (bm.productId=p.productId)
 						LEFT JOIN stores s ON (bm.storeId=s.storeId)
-						where bm.customerId='".$customerId."'");
-    	$data=array();
-    	$masters=$query->result_array();
+						LEFT JOIN customers c ON (c.customerId=bm.customerId)
+						
+						where bm.customerId ='".$customerId."'");
+						
+		
+		$data=array();
+		$masters=$query->result_array();
+		
 		foreach($masters as $master) {
+		
+		$shpQuery=$this->db->query("select * from stores_has_products as shp 
+					where shp.productId='".$master['productId']."' AND shp.storeId='".$master['storeId']."'");
+		$shp=$shpQuery->row_array();
+		$master['sellPrice']=$shp['sellPrice'];
+		
 			$bargainId=$master['bargainId'];
 			$query2=$this->db->query("SELECT br.*
-					FROM bargain_responses br 
-					
-					where br.bargainId='".$bargainId."' ORDER BY br.added_time DESC");
+					FROM bargain_responses br
+					where br.bargainId='".$bargainId."' and br.from_type='customer' ORDER BY br.added_time DESC");
 			$responses=$query2->result_array();
 			
+			$query3=$this->db->query("SELECT br.*
+					FROM bargain_responses br
+					where br.bargainId='".$bargainId."' and br.from_type='store' ORDER BY br.added_time DESC");
+			$storeResponses=$query3->result_array();
+				
 			$data[$bargainId]['bargain']=$master;
 			$data[$bargainId]['responses']=$responses;
+			$data[$bargainId]['store']=$storeResponses;
 		}
 		
-    	return $data;
-    	 
-    }
+		return $data;
+		
+	}
     
     public function getSavedSearch() {
 			$customerId = $this->session->userdata('interfaceUserId');
